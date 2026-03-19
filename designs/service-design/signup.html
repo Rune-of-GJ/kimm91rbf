@@ -1,0 +1,28 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakFlow | 회원가입</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=SUIT:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+<main class="shell"><header class="topbar"><h1 class="brand">SPEAKFLOW P1</h1><span class="tag">회원가입</span></header>
+<section class="layout"><aside class="sidebar"><p class="menu-title">Pages</p><nav class="menu">
+<a href="./index.html">홈 대시보드</a><a class="active" href="./signup.html">회원가입</a><a href="./login.html">로그인</a><a href="./categories.html">카테고리</a><a href="./courses.html">강의 목록</a><a href="./course-detail.html">강의 상세</a><a href="./my-courses.html">내 강의</a><a href="./lecture-player.html">강의 시청</a><a href="./progress.html">진도 관리</a>
+</nav></aside>
+<section class="content">
+  <article class="form-card">
+    <h2>회원가입</h2>
+    <p class="small-note">이메일 중복 검사, 비밀번호 강도 검증, 계정 생성일 기록 UI</p>
+    <div class="field"><label>이름</label><input type="text" placeholder="홍길동" /></div>
+    <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr" /></div>
+    <div class="field"><label>비밀번호</label><input type="password" placeholder="최소 8자" /></div>
+    <div class="field"><label>비밀번호 확인</label><input type="password" placeholder="비밀번호 재입력" /></div>
+    <div class="badge-row"><span class="badge">이메일 중복 확인</span><span class="badge">BCrypt 저장 예정</span><span class="badge">created_at 기록</span></div>
+    <div class="btn-row"><button class="btn primary" type="button">회원가입 완료</button><button class="btn" type="button">중복 이메일 확인</button></div>
+  </article>
+</section></section></main>
+</body>
+</html>

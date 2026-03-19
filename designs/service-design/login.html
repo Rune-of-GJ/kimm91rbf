@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakFlow | 로그인</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=SUIT:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+<main class="shell"><header class="topbar"><h1 class="brand">SPEAKFLOW P1</h1><span class="tag">로그인</span></header>
+<section class="layout"><aside class="sidebar"><p class="menu-title">Pages</p><nav class="menu">
+<a href="./index.html">홈 대시보드</a><a href="./signup.html">회원가입</a><a class="active" href="./login.html">로그인</a><a href="./categories.html">카테고리</a><a href="./courses.html">강의 목록</a><a href="./course-detail.html">강의 상세</a><a href="./my-courses.html">내 강의</a><a href="./lecture-player.html">강의 시청</a><a href="./progress.html">진도 관리</a>
+</nav></aside>
+<section class="content">
+  <article class="form-card">
+    <h2>로그인</h2>
+    <p class="small-note">토큰/세션 유지 정책 반영 화면. 액세스 토큰 만료, 리프레시 토큰 재발급 안내 포함.</p>
+    <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr" /></div>
+    <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력" /></div>
+    <div class="badge-row"><span class="badge">access_token</span><span class="badge">token_type: Bearer</span><span class="badge">expires_in: 3600</span></div>
+    <div class="btn-row"><button class="btn primary" type="button">로그인</button><button class="btn" type="button">리프레시 토큰 재발급</button><button class="btn" type="button">로그아웃</button></div>
+    <p class="small-note">잘못된 자격증명 오류 메시지 영역: "이메일 또는 비밀번호가 올바르지 않습니다."</p>
+  </article>
+</section></section></main>
+</body>
+</html>
