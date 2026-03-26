@@ -1,0 +1,25 @@
+﻿<% content_for :title, "SpeakFlow | 내 강의" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">내 강의</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>내 강의 목록</h2>
+        <p>수강 신청한 강의가 자동으로 추가되는 사용자 개인 학습 공간.</p>
+      </article>
+
+      <div class="grid-2">
+        <article class="card"><h3>스토리텔링 프레젠테이션</h3><p>강사: 김수현</p><div class="progress"><span style="width: 62%;"></span></div><p class="small-note">진도 62% (5/8강 완료)</p><div class="btn-row"><button class="btn primary" type="button">이어보기</button><button class="btn" type="button">상세 보기</button></div></article>
+        <article class="card"><h3>면접 답변 스피치 트레이닝</h3><p>강사: 박지연</p><div class="progress"><span style="width: 35%;"></span></div><p class="small-note">진도 35% (3/8강 완료)</p><div class="btn-row"><button class="btn primary" type="button">이어보기</button><button class="btn" type="button">상세 보기</button></div></article>
+        <article class="card"><h3>보이스 임팩트 강화</h3><p>강사: 정하늘</p><div class="progress"><span style="width: 10%;"></span></div><p class="small-note">진도 10% (1/10강 완료)</p><div class="btn-row"><button class="btn primary" type="button">시작하기</button><button class="btn" type="button">상세 보기</button></div></article>
+      </div>
+    </section>
+  </section>
+</main>

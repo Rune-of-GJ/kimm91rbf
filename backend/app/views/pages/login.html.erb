@@ -1,0 +1,24 @@
+﻿<% content_for :title, "SpeakFlow | 로그인" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">로그인</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="form-card">
+        <h2>로그인</h2>
+        <p class="small-note">세션 기반 로그인 유지, 만료 시간 안내, 오류 메시지 영역을 포함한 화면입니다.</p>
+        <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr"></div>
+        <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력"></div>
+        <div class="badge-row"><span class="badge">session auth</span><span class="badge">expires_in: 3600</span><span class="badge">logout 지원</span></div>
+        <div class="btn-row"><button class="btn primary" type="button">로그인</button><button class="btn" type="button">세션 갱신</button><button class="btn" type="button">로그아웃</button></div>
+        <p class="small-note">오류 메시지 예시: "이메일 또는 비밀번호가 올바르지 않습니다."</p>
+      </article>
+    </section>
+  </section>
+</main>

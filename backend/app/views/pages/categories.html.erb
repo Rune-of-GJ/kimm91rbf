@@ -1,0 +1,27 @@
+﻿<% content_for :title, "SpeakFlow | 카테고리" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">카테고리 조회</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>강의 카테고리</h2>
+        <p>요구사항 기준: 카테고리 이름 목록 형태 제공</p>
+      </article>
+
+      <div class="grid-3">
+        <article class="card"><h3>발표 스피치</h3><p>프레젠테이션 구조와 전달력 향상</p><div class="btn-row"><button class="btn" type="button">카테고리 선택</button></div></article>
+        <article class="card"><h3>면접 스피치</h3><p>면접 답변 구성과 긴장 완화 전략</p><div class="btn-row"><button class="btn" type="button">카테고리 선택</button></div></article>
+        <article class="card"><h3>커뮤니케이션</h3><p>직장 내 대화와 피드백 전달 기법</p><div class="btn-row"><button class="btn" type="button">카테고리 선택</button></div></article>
+        <article class="card"><h3>설득 화법</h3><p>논리 전개와 공감 기반 설득법</p><div class="btn-row"><button class="btn" type="button">카테고리 선택</button></div></article>
+        <article class="card"><h3>보이스 트레이닝</h3><p>발성, 호흡, 톤 컨트롤</p><div class="btn-row"><button class="btn" type="button">카테고리 선택</button></div></article>
+      </div>
+    </section>
+  </section>
+</main>

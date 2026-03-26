@@ -1,0 +1,40 @@
+﻿<% content_for :title, "SpeakFlow | 강의 상세" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">강의 상세 조회</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>스토리텔링 프레젠테이션</h2>
+        <p>전달력을 높이는 발표 스토리 구성법과 실제 발표 사례 분석을 포함합니다.</p>
+        <div class="badge-row"><span class="badge">강사: 김수현</span><span class="badge">총 8강</span><span class="badge">YouTube 기반</span></div>
+        <div class="btn-row"><button class="btn primary" type="button">수강 신청</button><button class="btn" type="button">내 강의에 추가</button></div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>커리큘럼</h3>
+          <table class="table">
+            <tr><th>순서</th><th>강의명</th><th>길이</th></tr>
+            <tr><td>1</td><td>청중 분석과 목표 설정</td><td>12:20</td></tr>
+            <tr><td>2</td><td>메시지 구조화</td><td>15:40</td></tr>
+            <tr><td>3</td><td>오프닝/클로징 설계</td><td>13:15</td></tr>
+            <tr><td>4</td><td>실전 피드백 라운드</td><td>17:05</td></tr>
+          </table>
+        </article>
+        <article class="card">
+          <h3>영상 목록</h3>
+          <p>각 강의는 YouTube 링크로 연결되며 임베드 또는 새 창 열기를 지원합니다.</p>
+          <div class="btn-row"><button class="btn primary" type="button">1강 시청</button><button class="btn" type="button">YouTube 새 창</button></div>
+          <div class="btn-row"><button class="btn" type="button">2강 시청</button><button class="btn" type="button">3강 시청</button><button class="btn" type="button">4강 시청</button></div>
+        </article>
+      </div>
+    </section>
+  </section>
+</main>

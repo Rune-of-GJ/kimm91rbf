@@ -1,0 +1,49 @@
+﻿<% content_for :title, "SpeakFlow | 홈" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">Service Preview</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>온라인 스피치 학습 플랫폼</h2>
+        <p>P1 문서 범위 기준으로 실제 서비스 화면 구조를 Rails view에 연결했습니다. 디자인은 정적 화면이고, API는 별도 `/api` 경로에서 동작하도록 분리했습니다.</p>
+        <div class="kpi">
+          <div class="item"><b>MAU</b><p>월간 활성 사용자</p></div>
+          <div class="item"><b>전환율</b><p>상세 -> 수강 신청</p></div>
+          <div class="item"><b>완강률</b><p>시작 대비 완료 비율</p></div>
+          <div class="item"><b>만족도</b><p>설문 기반 품질 지표</p></div>
+        </div>
+      </article>
+
+      <div class="grid-3">
+        <article class="card">
+          <h3>인증</h3>
+          <p>이메일/비밀번호 기반 회원가입 및 로그인, 세션 유지 시나리오.</p>
+          <div class="badge-row"><span class="badge">회원가입</span><span class="badge">로그인</span></div>
+        </article>
+        <article class="card">
+          <h3>강의 탐색</h3>
+          <p>카테고리 -> 강의 목록 -> 강의 상세로 이어지는 학습 흐름.</p>
+          <div class="badge-row"><span class="badge">카테고리</span><span class="badge">목록/상세</span></div>
+        </article>
+        <article class="card">
+          <h3>학습 실행</h3>
+          <p>수강 신청 후 영상 시청 및 강의 단위 진도 저장까지 연결.</p>
+          <div class="badge-row"><span class="badge">수강 신청</span><span class="badge">진도 관리</span></div>
+        </article>
+      </div>
+
+      <article class="card stack-gap" style="margin-top:12px;">
+        <h3>서비스 흐름 7단계</h3>
+        <p>회원가입/로그인 -> 카테고리 선택 -> 강의 목록 -> 강의 상세 -> 수강 신청 -> 영상 시청 -> 진도 관리</p>
+        <p class="small-note">화면은 Rails에 연결되어 바로 확인 가능하고, 데이터 처리 로직은 `/api` 경로에 별도로 구성되어 있습니다.</p>
+      </article>
+    </section>
+  </section>
+</main>

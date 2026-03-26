@@ -1,0 +1,14 @@
+﻿<aside class="sidebar">
+  <p class="menu-title">Pages</p>
+  <nav class="menu">
+    <%= design_nav_link "홈 대시보드", root_path, :dashboard, active_page %>
+    <%= design_nav_link "회원가입", signup_path, :signup, active_page %>
+    <%= design_nav_link "로그인", login_path, :login, active_page %>
+    <%= design_nav_link "카테고리", categories_path, :categories, active_page %>
+    <%= design_nav_link "강의 목록", courses_path, :courses, active_page %>
+    <%= design_nav_link "강의 상세", course_detail_path, :course_detail, active_page %>
+    <%= design_nav_link "내 강의", my_courses_path, :my_courses, active_page %>
+    <%= design_nav_link "강의 시청", lecture_player_path, :lecture_player, active_page %>
+    <%= design_nav_link "진도 관리", progress_path, :progress, active_page %>
+  </nav>
+</aside>

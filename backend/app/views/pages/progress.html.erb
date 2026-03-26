@@ -1,0 +1,42 @@
+﻿<% content_for :title, "SpeakFlow | 진도 관리" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">진도 관리</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>학습 진도 관리</h2>
+        <p>강의 단위 시청 여부를 기록하고 사용자 진도를 집계하는 화면.</p>
+        <div class="btn-row"><button class="btn primary" type="button">현재 강의 완료 저장</button><button class="btn" type="button">전체 진도 새로고침</button></div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>코스별 진도</h3>
+          <table class="table">
+            <tr><th>코스명</th><th>완료</th><th>진도율</th></tr>
+            <tr><td>스토리텔링 프레젠테이션</td><td>5/8</td><td>62%</td></tr>
+            <tr><td>면접 답변 스피치 트레이닝</td><td>3/8</td><td>35%</td></tr>
+            <tr><td>보이스 임팩트 강화</td><td>1/10</td><td>10%</td></tr>
+          </table>
+        </article>
+        <article class="card">
+          <h3>강의별 기록</h3>
+          <table class="table">
+            <tr><th>강의</th><th>watched</th><th>watched_at</th></tr>
+            <tr><td>1강. 청중 분석</td><td>true</td><td>2026-03-26 11:40</td></tr>
+            <tr><td>2강. 메시지 구조화</td><td>true</td><td>2026-03-26 11:58</td></tr>
+            <tr><td>3강. 오프닝 설계</td><td>false</td><td>-</td></tr>
+          </table>
+          <p class="small-note">DB 저장 기준: user_id, lecture_id, watched, watched_at</p>
+        </article>
+      </div>
+    </section>
+  </section>
+</main>

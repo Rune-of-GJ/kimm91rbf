@@ -1,0 +1,26 @@
+﻿<% content_for :title, "SpeakFlow | 강의 목록" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">강의 목록 조회</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>발표 스피치 카테고리 강의 목록</h2>
+        <p>요구사항 수용 기준: 강의 제목, 강사 이름, 강의 설명</p>
+      </article>
+
+      <div class="grid-2">
+        <article class="card"><h3>스토리텔링 프레젠테이션</h3><p>강사: 김수현</p><p>청중 몰입도를 높이는 구조 설계와 스토리 전달 실습.</p><div class="btn-row"><button class="btn primary" type="button">상세 보기</button><button class="btn" type="button">수강 신청</button></div></article>
+        <article class="card"><h3>10분 발표 구조화</h3><p>강사: 이민재</p><p>짧은 시간 안에 핵심을 전달하는 발표 프레임워크.</p><div class="btn-row"><button class="btn primary" type="button">상세 보기</button><button class="btn" type="button">수강 신청</button></div></article>
+        <article class="card"><h3>면접 답변 스피치 트레이닝</h3><p>강사: 박지연</p><p>질문 의도 파악부터 명확한 답변 전달까지 단계별 훈련.</p><div class="btn-row"><button class="btn primary" type="button">상세 보기</button><button class="btn" type="button">수강 신청</button></div></article>
+        <article class="card"><h3>보이스 임팩트 강화</h3><p>강사: 정하늘</p><p>톤, 속도, 호흡을 조절해 전달력을 높이는 발성 수업.</p><div class="btn-row"><button class="btn primary" type="button">상세 보기</button><button class="btn" type="button">수강 신청</button></div></article>
+      </div>
+    </section>
+  </section>
+</main>

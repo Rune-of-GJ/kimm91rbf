@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>스피치 인강 사이트 메인 페이지 시안</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        body {
+            line-height: 1.5;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .topbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .switcher {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .switcher button {
+            border: none;
+            background: #e5e7eb;
+            color: #374151;
+            padding: 10px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            font-weight: 600;
+        }
+
+        .switcher button.active {
+            background: #111827;
+            color: white;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 84px 0;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            color: #4b5563;
+            font-size: 15px;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform .15s ease, opacity .15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-dark {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-light {
+            background: white;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            color: white;
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #059669, #0f766e);
+            color: white;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #3730a3;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .headline {
+            font-size: clamp(38px, 5vw, 64px);
+            line-height: 1.08;
+            letter-spacing: -0.05em;
+            margin: 0 0 18px;
+            font-weight: 900;
+        }
+
+        .subtext {
+            font-size: 18px;
+            color: #4b5563;
+            margin: 0 0 28px;
+            max-width: 620px;
+        }
+
+        .hero-actions,
+        .inline-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-card,
+        .card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 45px rgba(17, 24, 39, .08);
+            border: 1px solid rgba(229, 231, 235, .9);
+        }
+
+        .hero-card {
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .video-thumb {
+            background: linear-gradient(135deg, #dbeafe, #ede9fe);
+            border-radius: 22px;
+            padding: 24px;
+            min-height: 340px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .play {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .92);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+            font-size: 30px;
+        }
+
+        .floating-mini {
+            position: absolute;
+            right: 18px;
+            bottom: 18px;
+            background: white;
+            border-radius: 18px;
+            padding: 14px 16px;
+            box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
+            width: 220px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 3vw, 42px);
+            letter-spacing: -0.04em;
+            margin: 0 0 12px;
+            font-weight: 900;
+        }
+
+        .section-desc {
+            color: #6b7280;
+            margin: 0 0 28px;
+            font-size: 17px;
+        }
+
+        .card-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            padding: 24px;
+        }
+
+        .course-tag {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .course-title,
+        .mini-title {
+            margin: 0 0 8px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .muted {
+            color: #6b7280;
+        }
+
+        .review {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+
+        .instructor {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c7d2fe, #bfdbfe);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            color: #1e3a8a;
+        }
+
+        .cta-band {
+            padding: 32px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer {
+            padding: 40px 0 60px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Design 2 */
+        .dark-wrap {
+            background: radial-gradient(circle at top left, #312e81, #111827 55%);
+            color: white;
+        }
+
+        .dark-wrap .nav-links,
+        .dark-wrap .subtext,
+        .dark-wrap .section-desc,
+        .dark-wrap .muted,
+        .dark-wrap .footer {
+            color: rgba(255, 255, 255, .75);
+        }
+
+        .dark-wrap .card,
+        .dark-wrap .hero-card,
+        .dark-wrap .stat {
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: white;
+            box-shadow: none;
+            backdrop-filter: blur(12px);
+        }
+
+        .anxiety-box {
+            padding: 26px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .05));
+            border: 1px solid rgba(255, 255, 255, .14);
+            min-height: 360px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pulse {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, .65), rgba(59, 130, 246, .05));
+            position: absolute;
+            right: -40px;
+            top: 20px;
+            filter: blur(4px);
+        }
+
+        .check-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .check-item {
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        /* Design 3 */
+        .career-wrap {
+            background: linear-gradient(180deg, #ecfeff 0%, #f8fafc 45%, #ffffff 100%);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #ffffff, #f0fdf4);
+            border: 1px solid #d1fae5;
+            border-radius: 32px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+            align-items: stretch;
+            box-shadow: 0 22px 50px rgba(5, 150, 105, .08);
+        }
+
+        .schedule-panel {
+            background: #0f172a;
+            color: white;
+            border-radius: 26px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 340px;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .timeline div {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+            font-size: 14px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 8px 12px;
+            background: #d1fae5;
+            color: #065f46;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .search-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 16px;
+            padding: 14px 16px;
+            width: min(520px, 100%);
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        @media (max-width: 960px) {
+
+            .hero-grid,
+            .hero-banner,
+            .card-grid-3,
+            .card-grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 12px 18px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .headline {
+                font-size: 34px;
+            }
+
+            .subtext {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">스피치 인강 사이트 메인 시안</div>
+            <div class="switcher">
+                <button class="active" data-target="design1">시안 1</button>
+                <button data-target="design2">시안 2</button>
+                <button data-target="design3">시안 3</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Design 1 -->
+    <section class="page active" id="design1">
+        <div class="container">
+            <header class="nav">
+                <div class="brand">SPEAKUP</div>
+                <div class="nav-links">
+                    <span>강의</span>
+                    <span>커리큘럼</span>
+                    <span>후기</span>
+                    <span>강사진</span>
+                    <span>무료특강</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-light">로그인</button>
+                    <button class="btn btn-dark">수강 시작</button>
+                </div>
+            </header>
+
+            <div class="section">
+                <div class="hero-grid">
+                    <div>
+                        <div class="badge">실전 발표 · 면접 · 말하기 자신감</div>
+                        <h1 class="headline">말을 잘하는 사람은<br>태어나는 게 아니라<br>훈련됩니다.</h1>
+                        <p class="subtext">발표 울렁증부터 면접 답변 구성, 전달력 있는 스피치까지. 초보도 바로 따라 할 수 있는 단계별 강의로 실전 자신감을 키워보세요.</p>
+                        <div class="hero-actions">
+                            <button class="btn btn-blue">무료 강의 보기</button>
+                            <button class="btn btn-light">커리큘럼 확인</button>
+                        </div>
+                        <div class="stats">
+                            <div class="stat"><strong>12,400+</strong>누적 수강생</div>
+                            <div class="stat"><strong>4.9 / 5</strong>평균 만족도</div>
+                            <div class="stat"><strong>32개</strong>실전 스피치 강의</div>
+                        </div>
+                    </div>
+                    <div class="hero-card">
+                        <div class="video-thumb">
+                            <div>
+                                <div class="play">▶</div>
+                            </div>
+                            <div>
+                                <h3 class="mini-title">대표 강의 미리보기</h3>
+                                <div class="muted">면접에서 떨지 않는 답변 구조 · 14분 무료 공개</div>
+                            </div>
+                            <div class="floating-mini">
+                                <strong>이번 주 인기</strong>
+                                <div class="muted" style="margin-top: 6px;">발표 공포 극복 챌린지</div>
+                                <div style="margin-top: 10px; font-weight: 800;">수강률 91%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">지금 가장 많이 듣는 강의</h2>
+                <p class="section-desc">초보자도 바로 시작할 수 있는 인기 강의들입니다.</p>
+                <div class="card-grid-3">
+                    <div class="card">
+                        <div class="course-tag">입문</div>
+                        <h3 class="course-title">발표 불안 줄이기</h3>
+                        <p class="muted">긴장 완화 루틴, 시선 처리, 첫 문장 시작법까지 한 번에.</p>
+                    </div>
+                    <div class="card">
+                        <div class="course-tag">실전</div>
+                        <h3 class="course-title">면접 답변 구조화</h3>
+                        <p class="muted">자기소개, 지원동기, 상황형 질문 대응을 체계적으로 훈련합니다.</p>
+                    </div>
+                    <div class="card">
+                        <div class="course-tag">고급</div>
+                        <h3 class="course-title">설득형 스피치 완성</h3>
+                        <p class="muted">청중을 움직이는 문장 설계와 목소리 톤 운영을 배웁니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">수강생 후기</h2>
+                <p class="section-desc">실제 변화가 느껴지는 피드백을 메인에서 바로 보여주는 구조입니다.</p>
+                <div class="card-grid-3">
+                    <div class="card review">
+                        <p>“사람들 앞에서 떨기만 했는데, 발표 순서와 호흡 잡는 법을 배우고 훨씬 안정적으로 말하게 됐어요.”</p>
+                        <div class="muted">대학생 · 발표 수업</div>
+                    </div>
+                    <div class="card review">
+                        <p>“면접에서 늘 횡설수설했는데 답변 틀을 익히고 나서 훨씬 또렷하게 말할 수 있었습니다.”</p>
+                        <div class="muted">취업 준비생</div>
+                    </div>
+                    <div class="card review">
+                        <p>“강의가 실전 위주라서 바로 써먹기 좋았고, 혼자 연습할 수 있는 방식이 마음에 들었어요.”</p>
+                        <div class="muted">직장인 · 발표 업무</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="cta-band">
+                    <div>
+                        <h2 style="margin: 0 0 8px; font-size: 32px;">첫 강의는 무료로 시작해보세요</h2>
+                        <div style="color: rgba(255,255,255,.75);">메인 CTA를 강하게 주고 싶은 경우에 잘 맞는 구조입니다.</div>
+                    </div>
+                    <div class="inline-actions">
+                        <button class="btn btn-light">샘플 강의 보기</button>
+                        <button class="btn btn-blue">회원가입</button>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">© 2026 SPEAKUP. Online Speech Training Platform.</footer>
+        </div>
+    </section>
+
+    <!-- Design 2 -->
+    <section class="page dark-wrap" id="design2">
+        <div class="container">
+            <header class="nav">
+                <div class="brand">VOICE SHIFT</div>
+                <div class="nav-links">
+                    <span>문제 진단</span>
+                    <span>훈련 방식</span>
+                    <span>변화 사례</span>
+                    <span>커뮤니티</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-light">진단하기</button>
+                    <button class="btn btn-purple">시작하기</button>
+                </div>
+            </header>
+
+            <div class="section">
+                <div class="hero-grid">
+                    <div>
+                        <div class="badge" style="background: rgba(255,255,255,.12); color: #ddd6fe;">스피치 공포 극복 중심형
+                        </div>
+                        <h1 class="headline">사람들 앞에 서면<br>머리가 하얘지시나요?</h1>
+                        <p class="subtext">말을 못하는 게 아니라, 불안이 먼저 올라오는 겁니다. 이 시안은 사용자의 두려움에 공감하고 바로 해결책을 제시하는 흐름으로 설계했습니다.
+                        </p>
+                        <div class="hero-actions">
+                            <button class="btn btn-purple">3분 진단 테스트</button>
+                            <button class="btn btn-light">변화 사례 보기</button>
+                        </div>
+                    </div>
+                    <div class="anxiety-box">
+                        <div class="pulse"></div>
+                        <h3 class="mini-title">이런 고민이 있다면</h3>
+                        <div class="check-list">
+                            <div class="check-item">발표 시작 전에 심장이 너무 빨리 뜁니다.</div>
+                            <div class="check-item">면접에서 답을 알면서도 말이 꼬입니다.</div>
+                            <div class="check-item">목소리가 떨려서 자신 없어 보입니다.</div>
+                            <div class="check-item">즉흥 질문이 나오면 머리가 하얘집니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">재능이 아니라 훈련입니다</h2>
+                <p class="section-desc">메인 페이지에서 문제 → 원인 → 해결 프로세스를 분명히 보여주는 타입입니다.</p>
+                <div class="card-grid-3">
+                    <div class="card">
+                        <h3 class="course-title">1. 불안 패턴 파악</h3>
+                        <p class="muted">언제, 왜 떨리는지부터 확인하고 자신만의 트리거를 찾습니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="course-title">2. 짧은 말하기 루틴</h3>
+                        <p class="muted">바로 써먹을 수 있는 문장 구조와 호흡 루틴을 반복합니다.</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="course-title">3. 실전 적용</h3>
+                        <p class="muted">면접, 발표, 자기소개 상황에 맞춰 실제처럼 훈련합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">숫자로 보여주는 변화</h2>
+                <div class="card-grid-4">
+                    <div class="stat"><strong>91%</strong>긴장 감소 체감</div>
+                    <div class="stat"><strong>86%</strong>답변 구조화 성공</div>
+                    <div class="stat"><strong>4주</strong>평균 변화 체감</div>
+                    <div class="stat"><strong>1:1 피드백</strong>선택 가능</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="cta-band"
+                    style="background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.08)); border: 1px solid rgba(255,255,255,.14);">
+                    <div>
+                        <h2 style="margin: 0 0 8px; font-size: 32px;">지금 내 말하기 유형부터 알아보세요</h2>
+                        <div style="color: rgba(255,255,255,.75);">감정 공감형 서비스에 잘 어울리는 메인 시안입니다.</div>
+                    </div>
+                    <button class="btn btn-purple">무료 진단 시작</button>
+                </div>
+            </div>
+
+            <footer class="footer">© 2026 VOICE SHIFT. Speak with less fear.</footer>
+        </div>
+    </section>
+
+    <!-- Design 3 -->
+    <section class="page career-wrap" id="design3">
+        <div class="container">
+            <header class="nav">
+                <div class="brand">SPEAK CAREER</div>
+                <div class="nav-links">
+                    <span>면접 대비</span>
+                    <span>직무 발표</span>
+                    <span>기업 교육</span>
+                    <span>합격 후기</span>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-light">강의 찾기</button>
+                    <button class="btn btn-green">무료 상담</button>
+                </div>
+            </header>
+
+            <div class="section">
+                <div class="hero-banner">
+                    <div style="padding: 18px 10px 18px 8px;">
+                        <div class="badge" style="background:#d1fae5; color:#065f46;">취업 · 실무 스피치 특화형</div>
+                        <h1 class="headline" style="font-size: clamp(36px, 4.7vw, 60px);">면접, PT, 보고까지<br>실무에 바로
+                            쓰는<br>스피치 훈련</h1>
+                        <p class="subtext">취업 준비생과 직장인을 겨냥한 메인 페이지입니다. 검색, 카테고리, 커리어 맥락을 강하게 보여줘서 ‘실용적인 인강 사이트’ 느낌이 납니다.
+                        </p>
+                        <div class="search-box">
+                            <input type="text" placeholder="예: 면접 자기소개, PT 발표, 회의 보고" />
+                            <button class="btn btn-green" style="padding: 10px 16px;">검색</button>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <span class="pill">면접 답변</span>
+                            <span class="pill">PT 발표</span>
+                            <span class="pill">자기소개</span>
+                            <span class="pill">보고 스피치</span>
+                        </div>
+                    </div>
+                    <div class="schedule-panel">
+                        <div>
+                            <div style="font-size: 14px; color: rgba(255,255,255,.7);">이번 달 추천 트랙</div>
+                            <h3 style="font-size: 28px; margin: 6px 0 10px;">면접 집중 4주 코스</h3>
+                            <div style="color: rgba(255,255,255,.74);">기초 → 답변 설계 → 실전 연습 → 피드백</div>
+                        </div>
+                        <div class="timeline">
+                            <div><span>1주차</span><span>자기소개와 첫인상</span></div>
+                            <div><span>2주차</span><span>지원동기 구조화</span></div>
+                            <div><span>3주차</span><span>상황형 질문 대응</span></div>
+                            <div><span>4주차</span><span>모의면접 피드백</span></div>
+                        </div>
+                        <button class="btn btn-green">코스 바로 보기</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">목적별로 바로 찾는 강의</h2>
+                <p class="section-desc">카테고리 탐색이 편해야 하는 서비스에 어울리는 구조입니다.</p>
+                <div class="card-grid-4">
+                    <div class="card">
+                        <h3 class="course-title">취업 면접</h3>
+                        <p class="muted">자기소개, 지원동기, 역량 질문 대응</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="course-title">PT 발표</h3>
+                        <p class="muted">자료 설명, 논리 전개, 결론 전달</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="course-title">업무 보고</h3>
+                        <p class="muted">핵심만 전달하는 보고 스피치</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="course-title">자신감 훈련</h3>
+                        <p class="muted">발성, 자세, 시선 처리, 긴장 완화</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">전문 강사진</h2>
+                <div class="card-grid-3">
+                    <div class="card">
+                        <div class="instructor">
+                            <div class="avatar">김</div>
+                            <div>
+                                <strong>김서연 강사</strong>
+                                <div class="muted">면접 스피치 전문</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="instructor">
+                            <div class="avatar">박</div>
+                            <div>
+                                <strong>박지훈 강사</strong>
+                                <div class="muted">PT 발표 · 기업 교육</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="instructor">
+                            <div class="avatar">이</div>
+                            <div>
+                                <strong>이도윤 강사</strong>
+                                <div class="muted">발성 · 전달력 코칭</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="cta-band" style="background: linear-gradient(135deg, #065f46, #064e3b);">
+                    <div>
+                        <h2 style="margin: 0 0 8px; font-size: 32px;">취업과 실무를 위한 스피치, 지금 시작하세요</h2>
+                        <div style="color: rgba(255,255,255,.8);">실용성과 탐색 편의성을 강조하는 메인 시안입니다.</div>
+                    </div>
+                    <div class="inline-actions">
+                        <button class="btn btn-light">상담 신청</button>
+                        <button class="btn btn-green">회원가입</button>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">© 2026 SPEAK CAREER. Speech for work and career.</footer>
+        </div>
+    </section>
+
+    <script>
+        const buttons = document.querySelectorAll('.switcher button');
+        const pages = document.querySelectorAll('.page');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.dataset.target;
+                buttons.forEach(btn => btn.classList.remove('active'));
+                pages.forEach(page => page.classList.remove('active'));
+                button.classList.add('active');
+                document.getElementById(target).classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

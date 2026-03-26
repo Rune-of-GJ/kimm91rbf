@@ -1,0 +1,31 @@
+﻿<% content_for :title, "SpeakFlow | 강의 시청" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand">SPEAKFLOW P1</h1>
+    <span class="tag">강의 시청</span>
+  </header>
+
+  <section class="layout">
+    <%= render "sidebar", active_page: @active_page %>
+
+    <section class="content">
+      <article class="hero">
+        <h2>1강. 청중 분석과 목표 설정</h2>
+        <p>YouTube 임베드 또는 새 창 재생을 지원하는 시청 화면 디자인.</p>
+        <div class="badge-row"><span class="badge">코스: 스토리텔링 프레젠테이션</span><span class="badge">러닝타임: 12:20</span><span class="badge">현재 재생: 06:34</span></div>
+      </article>
+
+      <article class="card stack-gap" style="margin-top:12px;">
+        <h3>영상 플레이어</h3>
+        <div class="video">YOUTUBE PLAYER AREA</div>
+        <div class="btn-row"><button class="btn" type="button">YouTube 새 창 열기</button><button class="btn primary" type="button">시청 완료로 표시</button><button class="btn" type="button">다음 강의</button></div>
+      </article>
+
+      <div class="grid-2">
+        <article class="card"><h3>강의 노트</h3><p>핵심 문장을 요약하고 실제 발표 상황에 적용할 문구를 기록하는 영역.</p><div class="field"><textarea placeholder="학습 노트 입력"></textarea></div></article>
+        <article class="card"><h3>다음 강의 큐</h3><table class="table"><tr><th>순서</th><th>강의명</th><th>상태</th></tr><tr><td>2</td><td>메시지 구조화</td><td>대기</td></tr><tr><td>3</td><td>오프닝/클로징 설계</td><td>대기</td></tr><tr><td>4</td><td>실전 피드백 라운드</td><td>대기</td></tr></table></article>
+      </div>
+    </section>
+  </section>
+</main>
