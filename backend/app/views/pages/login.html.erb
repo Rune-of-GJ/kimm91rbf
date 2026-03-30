@@ -1,24 +1,25 @@
-﻿<% content_for :title, "SpeakFlow | 로그인" %>
+<% content_for :title, "SpeakFlow | 로그인" %>
 
 <main class="shell">
   <header class="topbar">
-    <h1 class="brand">SPEAKFLOW P1</h1>
-    <span class="tag">로그인</span>
+    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
   </header>
 
-  <section class="layout">
-    <%= render "sidebar", active_page: @active_page %>
+  <section class="content">
+    <%= page_links(@active_page) %>
 
-    <section class="content">
-      <article class="form-card">
-        <h2>로그인</h2>
-        <p class="small-note">세션 기반 로그인 유지, 만료 시간 안내, 오류 메시지 영역을 포함한 화면입니다.</p>
-        <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr"></div>
-        <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력"></div>
-        <div class="badge-row"><span class="badge">session auth</span><span class="badge">expires_in: 3600</span><span class="badge">logout 지원</span></div>
-        <div class="btn-row"><button class="btn primary" type="button">로그인</button><button class="btn" type="button">세션 갱신</button><button class="btn" type="button">로그아웃</button></div>
-        <p class="small-note">오류 메시지 예시: "이메일 또는 비밀번호가 올바르지 않습니다."</p>
-      </article>
+    <section class="hero">
+      <div class="eyebrow">로그인</div>
+      <h2>이어 하던 학습을<br>바로 계속하세요.</h2>
+      <p>이메일과 비밀번호로 로그인한 뒤 수강 중인 강의와 진도를 바로 확인할 수 있습니다.</p>
     </section>
+
+    <article class="form-card">
+      <div class="field"><label>이메일</label><input type="email" placeholder="student@speakflow.kr"></div>
+      <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력"></div>
+      <div class="btn-row">
+        <button class="btn primary" type="button" disabled>로그인</button>
+      </div>
+    </article>
   </section>
 </main>

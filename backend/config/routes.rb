@@ -1,4 +1,4 @@
-﻿Rails.application.routes.draw do
+Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   root "pages#dashboard"
@@ -11,6 +11,7 @@
   get "my-courses", to: "pages#my_courses"
   get "lectures/demo", to: "pages#lecture_player", as: :lecture_player
   get "progress", to: "pages#progress"
+  get "api-lab", to: "pages#api_lab", as: :api_lab
 
   namespace :api do
     scope module: :v1 do

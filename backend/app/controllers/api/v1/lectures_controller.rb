@@ -1,4 +1,4 @@
-﻿module Api
+module Api
   module V1
     class LecturesController < BaseController
       before_action :require_login!, only: [:progress]
@@ -35,7 +35,11 @@
       private
 
       def lecture_payload(lecture)
-        watched = current_user.present? ? current_user.progresses.find_by(lecture_id: lecture.id)&.watched : false
+        watched = if current_user.present?
+          current_user.progresses.find_by(lecture_id: lecture.id)&.watched || false
+        else
+          false
+        end
 
         {
           id: lecture.id,

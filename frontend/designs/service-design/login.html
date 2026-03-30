@@ -15,12 +15,12 @@
 <section class="content">
   <article class="form-card">
     <h2>로그인</h2>
-    <p class="small-note">토큰/세션 유지 정책 반영 화면. 액세스 토큰 만료, 리프레시 토큰 재발급 안내 포함.</p>
-    <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr" /></div>
-    <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력" /></div>
-    <div class="badge-row"><span class="badge">access_token</span><span class="badge">token_type: Bearer</span><span class="badge">expires_in: 3600</span></div>
-    <div class="btn-row"><button class="btn primary" type="button">로그인</button><button class="btn" type="button">리프레시 토큰 재발급</button><button class="btn" type="button">로그아웃</button></div>
-    <p class="small-note">잘못된 자격증명 오류 메시지 영역: "이메일 또는 비밀번호가 올바르지 않습니다."</p>
+    <p class="small-note">현재 구현은 쿠키 세션 기반입니다. 응답 필드는 `user`, `token_type`, `expires_in`입니다.</p>
+    <div class="field"><label>이메일</label><input type="email" placeholder="student@speakflow.kr" /></div>
+    <div class="field"><label>비밀번호</label><input type="password" placeholder="password123" /></div>
+    <div class="badge-row"><span class="badge">token_type: Session</span><span class="badge">expires_in: 3600</span></div>
+    <div class="btn-row"><button class="btn primary" type="button">로그인</button><button class="btn" type="button">세션 갱신</button><button class="btn" type="button">로그아웃</button></div>
+    <p class="small-note">오류 응답 예시: Invalid email or password</p>
   </article>
 </section></section></main>
 </body>

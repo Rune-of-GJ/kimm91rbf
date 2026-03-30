@@ -1,48 +1,67 @@
-﻿<% content_for :title, "SpeakFlow | 홈" %>
+<% content_for :title, "SpeakFlow | 홈" %>
+<% featured_stats = @featured_course ? course_progress_stats(@demo_user, @featured_course) : { watched: 0, total: 0, rate: 0 } %>
+<% first_lecture = @featured_course&.lectures&.order(:order_no)&.first %>
 
 <main class="shell">
   <header class="topbar">
-    <h1 class="brand">SPEAKFLOW P1</h1>
-    <span class="tag">Service Preview</span>
+    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
   </header>
 
-  <section class="layout">
-    <%= render "sidebar", active_page: @active_page %>
+  <section class="content">
+    <%= page_links(@active_page) %>
 
-    <section class="content">
-      <article class="hero">
-        <h2>온라인 스피치 학습 플랫폼</h2>
-        <p>P1 문서 범위 기준으로 실제 서비스 화면 구조를 Rails view에 연결했습니다. 디자인은 정적 화면이고, API는 별도 `/api` 경로에서 동작하도록 분리했습니다.</p>
-        <div class="kpi">
-          <div class="item"><b>MAU</b><p>월간 활성 사용자</p></div>
-          <div class="item"><b>전환율</b><p>상세 -> 수강 신청</p></div>
-          <div class="item"><b>완강률</b><p>시작 대비 완료 비율</p></div>
-          <div class="item"><b>만족도</b><p>설문 기반 품질 지표</p></div>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">발표 · 면접 · 전달력 훈련</div>
+          <h2>말하기는 감각보다<br>연습의 힘이 큽니다.</h2>
+          <p>발표 준비부터 면접 답변 구성, 강의 시청과 진도 관리까지 한 흐름으로 이어지는 온라인 스피치 학습 서비스입니다.</p>
+          <div class="hero-actions">
+            <%= link_to "강의 둘러보기", courses_path, class: "link-btn primary" %>
+            <%= link_to "카테고리 보기", categories_path, class: "link-btn" %>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong><%= @categories.size %></strong>카테고리</div>
+            <div class="stat"><strong><%= @courses.size %></strong>강의</div>
+            <div class="stat"><strong><%= @courses.sum { |course| course.lectures.size } %></strong>학습 영상</div>
+          </div>
         </div>
-      </article>
 
-      <div class="grid-3">
-        <article class="card">
-          <h3>인증</h3>
-          <p>이메일/비밀번호 기반 회원가입 및 로그인, 세션 유지 시나리오.</p>
-          <div class="badge-row"><span class="badge">회원가입</span><span class="badge">로그인</span></div>
-        </article>
-        <article class="card">
-          <h3>강의 탐색</h3>
-          <p>카테고리 -> 강의 목록 -> 강의 상세로 이어지는 학습 흐름.</p>
-          <div class="badge-row"><span class="badge">카테고리</span><span class="badge">목록/상세</span></div>
-        </article>
-        <article class="card">
-          <h3>학습 실행</h3>
-          <p>수강 신청 후 영상 시청 및 강의 단위 진도 저장까지 연결.</p>
-          <div class="badge-row"><span class="badge">수강 신청</span><span class="badge">진도 관리</span></div>
-        </article>
+        <aside class="preview-panel">
+          <div class="preview-screen">
+            <% if @featured_course && first_lecture %>
+              <%= link_to "▶", lecture_player_path(course_id: @featured_course.id, lecture_id: first_lecture.id), class: "preview-play play-link", aria: { label: "대표 강의 재생" } %>
+            <% else %>
+              <div class="preview-play">▶</div>
+            <% end %>
+            <div>
+              <h3 class="section-title"><%= @featured_course&.title || "준비 중인 강의" %></h3>
+              <p><%= @featured_course&.description || "곧 새로운 강의가 추가됩니다." %></p>
+            </div>
+            <% if @featured_course %>
+              <div class="floating-card">
+                <strong><%= @featured_course.category.name %></strong>
+                <div class="small-note"><%= @featured_course.instructor_name %> 강사</div>
+                <div class="small-note">진행률 <%= featured_stats[:rate] %>%</div>
+              </div>
+            <% end %>
+          </div>
+        </aside>
       </div>
+    </section>
 
-      <article class="card stack-gap" style="margin-top:12px;">
-        <h3>서비스 흐름 7단계</h3>
-        <p>회원가입/로그인 -> 카테고리 선택 -> 강의 목록 -> 강의 상세 -> 수강 신청 -> 영상 시청 -> 진도 관리</p>
-        <p class="small-note">화면은 Rails에 연결되어 바로 확인 가능하고, 데이터 처리 로직은 `/api` 경로에 별도로 구성되어 있습니다.</p>
+    <section class="grid-3">
+      <article class="card">
+        <h3>가볍게 시작</h3>
+        <p>처음 방문한 사용자가 회원가입이나 로그인으로 바로 진입할 수 있도록 입구를 단순하게 구성했습니다.</p>
+      </article>
+      <article class="card">
+        <h3>바로 탐색</h3>
+        <p>카테고리에서 시작해 원하는 강의를 고르고 상세 정보와 커리큘럼을 확인할 수 있습니다.</p>
+      </article>
+      <article class="card">
+        <h3>꾸준한 학습</h3>
+        <p>수강 중인 강의와 시청 진행 상황을 한 화면에서 확인하며 이어서 학습할 수 있습니다.</p>
       </article>
     </section>
   </section>

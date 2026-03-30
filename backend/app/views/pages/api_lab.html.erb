@@ -1,0 +1,155 @@
+  <% content_for :title, "SpeakFlow | API Lab" %>
+
+<main class="shell">
+  <header class="topbar">
+    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+  </header>
+
+  <section class="content api-lab-shell">
+    <section class="hero api-lab-hero">
+      <div>
+        <div class="eyebrow">백엔드 테스트</div>
+        <h2>API Lab</h2>
+        <p>회원가입, 로그인, 조회, 수강 신청, 진도 저장을 이 페이지에서 바로 테스트할 수 있습니다. 응답은 아래 JSON 패널에 표시됩니다.</p>
+      </div>
+      <div class="badge-row">
+        <span class="badge">기본 강의 ID <%= @lab_course&.id || "없음" %></span>
+        <span class="badge">기본 강의 영상 ID <%= @lab_lecture&.id || "없음" %></span>
+        <span class="badge">기본 카테고리 ID <%= @lab_category&.id || "없음" %></span>
+      </div>
+    </section>
+
+    <section class="api-lab-grid">
+      <article class="card api-panel">
+        <h3>인증</h3>
+        <div class="field"><label>이름</label><input id="signup-name" type="text" value="테스트 사용자"></div>
+        <div class="field"><label>이메일</label><input id="auth-email" type="email" value="student@speakflow.kr"></div>
+        <div class="field"><label>비밀번호</label><input id="auth-password" type="password" value="password123"></div>
+        <div class="btn-row">
+          <button class="btn primary" type="button" data-action="signup">회원가입</button>
+          <button class="btn" type="button" data-action="login">로그인</button>
+          <button class="btn" type="button" data-action="refresh">세션 확인</button>
+          <button class="btn" type="button" data-action="logout">로그아웃</button>
+        </div>
+      </article>
+
+      <article class="card api-panel">
+        <h3>카테고리 / 강의 조회</h3>
+        <div class="field"><label>카테고리 ID</label><input id="category-id" type="number" value="<%= @lab_category&.id || 1 %>"></div>
+        <div class="field"><label>강의 ID</label><input id="course-id" type="number" value="<%= @lab_course&.id || 1 %>"></div>
+        <div class="btn-row">
+          <button class="btn primary" type="button" data-action="categories-index">카테고리 목록</button>
+          <button class="btn" type="button" data-action="categories-show">카테고리 상세</button>
+          <button class="btn" type="button" data-action="courses-index">강의 목록</button>
+          <button class="btn" type="button" data-action="courses-show">강의 상세</button>
+          <button class="btn" type="button" data-action="lectures-index">강의 영상 목록</button>
+        </div>
+      </article>
+
+      <article class="card api-panel">
+        <h3>수강 / 진도</h3>
+        <div class="field"><label>강의 영상 ID</label><input id="lecture-id" type="number" value="<%= @lab_lecture&.id || 1 %>"></div>
+        <div class="field"><label>시청 완료 여부</label><select id="watched-value"><option value="true" selected>true</option><option value="false">false</option></select></div>
+        <div class="btn-row">
+          <button class="btn primary" type="button" data-action="enroll">수강 신청</button>
+          <button class="btn" type="button" data-action="lecture-show">강의 영상 상세</button>
+          <button class="btn" type="button" data-action="progress-save">진도 저장</button>
+          <button class="btn" type="button" data-action="my-courses">내 강의</button>
+          <button class="btn" type="button" data-action="my-progress">내 진도</button>
+        </div>
+      </article>
+    </section>
+
+    <article class="card api-response-card">
+      <div class="section-head">
+        <h3>응답 JSON</h3>
+        <button class="btn" type="button" id="clear-response">지우기</button>
+      </div>
+      <pre id="api-response" class="api-response">버튼을 누르면 응답이 여기에 표시됩니다.</pre>
+    </article>
+  </section>
+</main>
+
+<script>
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+  const responseBox = document.getElementById('api-response');
+
+  const ids = {
+    signupName: document.getElementById('signup-name'),
+    email: document.getElementById('auth-email'),
+    password: document.getElementById('auth-password'),
+    categoryId: document.getElementById('category-id'),
+    courseId: document.getElementById('course-id'),
+    lectureId: document.getElementById('lecture-id'),
+    watched: document.getElementById('watched-value')
+  };
+
+  const showResponse = async (label, response) => {
+    const text = await response.text();
+    let body;
+
+    try {
+      body = text ? JSON.parse(text) : null;
+    } catch {
+      body = text;
+    }
+
+    responseBox.textContent = JSON.stringify({
+      request: label,
+      status: response.status,
+      ok: response.ok,
+      body
+    }, null, 2);
+  };
+
+  const request = (label, url, options = {}) => fetch(url, {
+    credentials: 'same-origin',
+    headers: {
+      'X-CSRF-Token': csrfToken,
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options.headers || {})
+    },
+    ...options
+  }).then((response) => showResponse(label, response));
+
+  const actions = {
+    signup: () => request('POST /api/auth/signup', '/api/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: ids.signupName.value,
+        email: ids.email.value,
+        password: ids.password.value
+      })
+    }),
+    login: () => request('POST /api/auth/login', '/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: ids.email.value,
+        password: ids.password.value
+      })
+    }),
+    refresh: () => request('POST /api/auth/refresh', '/api/auth/refresh', { method: 'POST' }),
+    logout: () => request('POST /api/auth/logout', '/api/auth/logout', { method: 'POST' }),
+    'categories-index': () => request('GET /api/categories', '/api/categories'),
+    'categories-show': () => request(`GET /api/categories/${ids.categoryId.value}`, `/api/categories/${ids.categoryId.value}`),
+    'courses-index': () => request(`GET /api/courses?category_id=${ids.categoryId.value}`, `/api/courses?category_id=${ids.categoryId.value}`),
+    'courses-show': () => request(`GET /api/courses/${ids.courseId.value}`, `/api/courses/${ids.courseId.value}`),
+    'lectures-index': () => request(`GET /api/courses/${ids.courseId.value}/lectures`, `/api/courses/${ids.courseId.value}/lectures`),
+    enroll: () => request(`POST /api/courses/${ids.courseId.value}/enroll`, `/api/courses/${ids.courseId.value}/enroll`, { method: 'POST' }),
+    'lecture-show': () => request(`GET /api/lectures/${ids.lectureId.value}`, `/api/lectures/${ids.lectureId.value}`),
+    'progress-save': () => request(`POST /api/lectures/${ids.lectureId.value}/progress`, `/api/lectures/${ids.lectureId.value}/progress`, {
+      method: 'POST',
+      body: JSON.stringify({ watched: ids.watched.value })
+    }),
+    'my-courses': () => request('GET /api/users/me/courses', '/api/users/me/courses'),
+    'my-progress': () => request('GET /api/users/me/progress', '/api/users/me/progress')
+  };
+
+  document.querySelectorAll('[data-action]').forEach((button) => {
+    button.addEventListener('click', () => actions[button.dataset.action]?.());
+  });
+
+  document.getElementById('clear-response').addEventListener('click', () => {
+    responseBox.textContent = '버튼을 누르면 응답이 여기에 표시됩니다.';
+  });
+</script>

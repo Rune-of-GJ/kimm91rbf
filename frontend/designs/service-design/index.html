@@ -13,7 +13,7 @@
   <main class="shell">
     <header class="topbar">
       <h1 class="brand">SPEAKFLOW P1</h1>
-      <span class="tag">Static UI Design</span>
+      <span class="tag">DB/API 기준 시안</span>
     </header>
     <section class="layout">
       <aside class="sidebar">
@@ -32,38 +32,40 @@
       </aside>
       <section class="content">
         <article class="hero">
-          <h2>온라인 스피치 학습 플랫폼 디자인</h2>
-          <p>P1 문서 범위 기준으로 실제 서비스 화면 구조를 페이지별로 구성했습니다. 아래 KPI와 플로우는 실제 운영 화면에서 바로 사용할 수 있는 형태로 배치했습니다.</p>
+          <h2>P1 서비스 구조</h2>
+          <p>이 시안은 `users`, `categories`, `courses`, `lectures`, `enrollments`, `progresses` 테이블과 현재 API 응답만 기준으로 구성했습니다. KPI, 만족도, 가짜 통계는 제외했습니다.</p>
           <div class="kpi">
-            <div class="item"><b>MAU</b><p>월간 활성 사용자</p></div>
-            <div class="item"><b>전환율</b><p>상세 -> 수강 신청</p></div>
-            <div class="item"><b>완강률</b><p>시작 대비 완료 비율</p></div>
-            <div class="item"><b>만족도</b><p>설문 기반 품질 지표</p></div>
+            <div class="item"><b>Users</b><p>email, name, role, created_at</p></div>
+            <div class="item"><b>Courses</b><p>title, description, instructor_name, category</p></div>
+            <div class="item"><b>Progress</b><p>watched, watched_at, progress_rate</p></div>
           </div>
         </article>
-
         <div class="grid-3">
           <article class="card">
             <h3>인증</h3>
-            <p>이메일/비밀번호 기반 회원가입 및 로그인, 세션/JWT 유지 시나리오.</p>
-            <div class="badge-row"><span class="badge">회원가입</span><span class="badge">로그인</span></div>
+            <p>회원가입과 로그인은 `email`, `password`, `name`만 사용합니다. 로그인 유지 방식은 세션입니다.</p>
+            <div class="badge-row"><span class="badge">POST /api/auth/signup</span><span class="badge">POST /api/auth/login</span></div>
           </article>
           <article class="card">
             <h3>강의 탐색</h3>
-            <p>카테고리 -> 강의 목록 -> 강의 상세로 이어지는 학습 탐색 흐름.</p>
-            <div class="badge-row"><span class="badge">카테고리</span><span class="badge">목록/상세</span></div>
+            <p>카테고리 이름 목록에서 시작해 강의 목록, 강의 상세, 강의 영상 목록으로 이동합니다.</p>
+            <div class="badge-row"><span class="badge">GET /api/categories</span><span class="badge">GET /api/courses</span></div>
           </article>
           <article class="card">
-            <h3>학습 실행</h3>
-            <p>수강 신청 후 영상 시청 및 강의 단위 진도 저장까지 연결.</p>
-            <div class="badge-row"><span class="badge">수강 신청</span><span class="badge">진도 관리</span></div>
+            <h3>학습 진행</h3>
+            <p>수강 신청 후 강의별 시청 여부를 저장하고 코스 단위 진행률을 조회합니다.</p>
+            <div class="badge-row"><span class="badge">POST /api/courses/:id/enroll</span><span class="badge">POST /api/lectures/:id/progress</span></div>
           </article>
         </div>
-
         <article class="card" style="margin-top:12px;">
-          <h3>서비스 흐름 7단계</h3>
-          <p>회원가입/로그인 -> 카테고리 선택 -> 강의 목록 -> 강의 상세 -> 수강 신청 -> 영상 시청 -> 진도 관리</p>
-          <p class="small-note">모든 버튼은 디자인 목업 상태이며 현재 클릭 동작(비즈니스 로직)은 연결하지 않았습니다.</p>
+          <h3>현재 시드 기준 예시 데이터</h3>
+          <ul class="list-clean">
+            <li>카테고리 5개: 발표 스피치, 면접 스피치, 커뮤니케이션, 설득 화법, 보이스 트레이닝</li>
+            <li>코스 1개: 스토리텔링 프레젠테이션</li>
+            <li>강의 3개: 청중 분석과 목표 설정, 메시지 구조화, 오프닝/클로징 설계</li>
+            <li>내 강의/진도 화면은 이 구조를 기준으로 표시</li>
+          </ul>
+          <p class="small-note">모든 버튼은 동작하지 않는 디자인 목업이며, 없는 필드는 화면에 추가하지 않았습니다.</p>
         </article>
       </section>
     </section>

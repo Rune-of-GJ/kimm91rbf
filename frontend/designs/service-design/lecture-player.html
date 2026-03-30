@@ -14,19 +14,28 @@
 </nav></aside>
 <section class="content">
   <article class="hero">
-    <h2>1강. 청중 분석과 목표 설정</h2>
-    <p>YouTube 임베드 또는 새 창 재생을 지원하는 시청 화면 디자인.</p>
-    <div class="badge-row"><span class="badge">코스: 스토리텔링 프레젠테이션</span><span class="badge">러닝타임: 12:20</span><span class="badge">현재 재생: 06:34</span></div>
+    <h2>청중 분석과 목표 설정</h2>
+    <p>현재 화면은 `lecture.title`, `video_url`, `duration`, `watched`만 반영합니다.</p>
+    <div class="badge-row"><span class="badge">course_id: 1</span><span class="badge">order_no: 1</span><span class="badge">watched: false</span></div>
   </article>
   <article class="card" style="margin-top:12px;">
     <h3>영상 플레이어</h3>
-    <div class="video">YOUTUBE PLAYER AREA</div>
-    <div class="btn-row"><button class="btn" type="button">YouTube 새 창 열기</button><button class="btn good" type="button">시청 완료로 표시</button><button class="btn" type="button">다음 강의</button></div>
+    <div class="video">YOUTUBE VIDEO URL</div>
+    <div class="meta">
+      <div><span>video_url</span><span>https://www.youtube.com/watch?v=dQw4w9WgXcQ</span></div>
+      <div><span>duration</span><span>600</span></div>
+    </div>
+    <div class="btn-row"><button class="btn" type="button">YouTube 열기</button><button class="btn good" type="button">시청 완료 저장</button></div>
   </article>
-  <div class="grid-2">
-    <article class="card"><h3>강의 노트</h3><p>핵심 문장을 요약하고 실제 발표 상황에 적용할 문구를 기록하는 영역.</p><div class="field"><textarea placeholder="학습 노트 입력"></textarea></div></article>
-    <article class="card"><h3>다음 강의 큐</h3><table class="table"><tr><th>순서</th><th>강의명</th><th>상태</th></tr><tr><td>2</td><td>메시지 구조화</td><td>대기</td></tr><tr><td>3</td><td>오프닝/클로징 설계</td><td>대기</td></tr><tr><td>4</td><td>실전 피드백 라운드</td><td>대기</td></tr></table></article>
-  </div>
+  <article class="card" style="margin-top:12px;">
+    <h3>같은 코스의 강의 목록</h3>
+    <table class="table">
+      <tr><th>order_no</th><th>title</th><th>watched</th></tr>
+      <tr><td>1</td><td>청중 분석과 목표 설정</td><td>false</td></tr>
+      <tr><td>2</td><td>메시지 구조화</td><td>false</td></tr>
+      <tr><td>3</td><td>오프닝/클로징 설계</td><td>false</td></tr>
+    </table>
+  </article>
 </section></section></main>
 </body>
 </html>

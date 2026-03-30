@@ -1,25 +1,26 @@
-﻿<% content_for :title, "SpeakFlow | 회원가입" %>
+<% content_for :title, "SpeakFlow | 회원가입" %>
 
 <main class="shell">
   <header class="topbar">
-    <h1 class="brand">SPEAKFLOW P1</h1>
-    <span class="tag">회원가입</span>
+    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
   </header>
 
-  <section class="layout">
-    <%= render "sidebar", active_page: @active_page %>
+  <section class="content">
+    <%= page_links(@active_page) %>
 
-    <section class="content">
-      <article class="form-card">
-        <h2>회원가입</h2>
-        <p class="small-note">이메일 중복 검사, 비밀번호 강도 검증, 계정 생성일 기록 UI</p>
-        <div class="field"><label>이름</label><input type="text" placeholder="홍길동"></div>
-        <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr"></div>
-        <div class="field"><label>비밀번호</label><input type="password" placeholder="최소 8자"></div>
-        <div class="field"><label>비밀번호 확인</label><input type="password" placeholder="비밀번호 재입력"></div>
-        <div class="badge-row"><span class="badge">이메일 중복 확인</span><span class="badge">BCrypt 저장 예정</span><span class="badge">created_at 기록</span></div>
-        <div class="btn-row"><button class="btn primary" type="button">회원가입 완료</button><button class="btn" type="button">중복 이메일 확인</button></div>
-      </article>
+    <section class="hero">
+      <div class="eyebrow">회원가입</div>
+      <h2>처음이라면<br>여기서 시작하세요.</h2>
+      <p>간단한 가입 후 바로 강의를 둘러보고 학습을 시작할 수 있습니다.</p>
     </section>
+
+    <article class="form-card">
+      <div class="field"><label>이름</label><input type="text" placeholder="이름 입력"></div>
+      <div class="field"><label>이메일</label><input type="email" placeholder="student@speakflow.kr"></div>
+      <div class="field"><label>비밀번호</label><input type="password" placeholder="최소 8자 이상"></div>
+      <div class="btn-row">
+        <button class="btn primary" type="button" disabled>회원가입</button>
+      </div>
+    </article>
   </section>
 </main>

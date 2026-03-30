@@ -1,4 +1,4 @@
-﻿require "test_helper"
+require "test_helper"
 
 class ApiProgressTest < ActionDispatch::IntegrationTest
   setup do
@@ -45,6 +45,25 @@ class ApiProgressTest < ActionDispatch::IntegrationTest
 
     assert_response :bad_request
     assert_match(/watched/, response.parsed_body["error"])
+  end
+
+  test "lecture endpoints return false for unwatched lectures" do
+    Enrollment.create!(user: @user, course: @course)
+
+    post "/api/auth/login", params: {
+      email: @user.email,
+      password: "password123"
+    }, as: :json
+
+    get "/api/courses/#{@course.id}/lectures", as: :json
+
+    assert_response :success
+    assert_equal false, response.parsed_body.first["watched"]
+
+    get "/api/lectures/#{@lecture.id}", as: :json
+
+    assert_response :success
+    assert_equal false, response.parsed_body["watched"]
   end
 
   test "enrolled user can update progress and see course progress summary" do

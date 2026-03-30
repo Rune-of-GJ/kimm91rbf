@@ -15,13 +15,12 @@
 <section class="content">
   <article class="form-card">
     <h2>회원가입</h2>
-    <p class="small-note">이메일 중복 검사, 비밀번호 강도 검증, 계정 생성일 기록 UI</p>
-    <div class="field"><label>이름</label><input type="text" placeholder="홍길동" /></div>
-    <div class="field"><label>이메일</label><input type="email" placeholder="hello@speakflow.kr" /></div>
+    <p class="small-note">실제 요청 필드는 `name`, `email`, `password`입니다.</p>
+    <div class="field"><label>이름</label><input type="text" placeholder="기본 수강생" /></div>
+    <div class="field"><label>이메일</label><input type="email" placeholder="student@speakflow.kr" /></div>
     <div class="field"><label>비밀번호</label><input type="password" placeholder="최소 8자" /></div>
-    <div class="field"><label>비밀번호 확인</label><input type="password" placeholder="비밀번호 재입력" /></div>
-    <div class="badge-row"><span class="badge">이메일 중복 확인</span><span class="badge">BCrypt 저장 예정</span><span class="badge">created_at 기록</span></div>
-    <div class="btn-row"><button class="btn primary" type="button">회원가입 완료</button><button class="btn" type="button">중복 이메일 확인</button></div>
+    <div class="badge-row"><span class="badge">password_digest 저장</span><span class="badge">role 기본값: student</span><span class="badge">created_at 기록</span></div>
+    <div class="btn-row"><button class="btn primary" type="button">회원가입</button></div>
   </article>
 </section></section></main>
 </body>
