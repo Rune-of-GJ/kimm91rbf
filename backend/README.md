@@ -12,6 +12,27 @@
 - 내 강의 목록 / 내 진도 조회
 - 백엔드 테스트 페이지: `/api-lab`
 
+## 권장 실행
+루트에서 Docker Compose 사용:
+```powershell
+docker compose up --build
+```
+
+## 접속
+- 메인 페이지: `/`
+- 백엔드 테스트 페이지: `/api-lab`
+- 헬스체크: `/up`
+
+## api-lab 검증 순서
+1. 로그인
+2. 카테고리 목록
+3. 강의 목록
+4. 수강 신청
+5. 강의 영상 상세
+6. 진도 저장
+7. 내 강의
+8. 내 진도
+
 ## 주요 엔드포인트
 - `POST /api/auth/signup`
 - `POST /api/auth/login`
@@ -28,35 +49,8 @@
 - `GET /api/users/me/courses`
 - `GET /api/users/me/progress`
 
-## 처음 세팅
-루트에서 실행:
-```powershell
-.\setup_backend.bat
-```
-
-이 스크립트는 아래를 처리합니다.
-- `bundle install`
-- `rails db:prepare`
-- `rails db:seed`
-
-## 서버 실행
-루트에서 실행:
-```powershell
-.\start_backend.bat
-```
-
-접속:
-- 루트 페이지: `/`
-- 백엔드 테스트 페이지: `/api-lab`
-- 헬스체크: `/up`
-
-## DB 설정
-- 기본값: `DB_HOST=127.0.0.1`, `DB_PORT=5432`
-- 필요하면 `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD` 환경변수로 덮어쓸 수 있음. 예시는 `backend/.env.example` 참고
-
-예시:
-```powershell
-$env:DB_PORT='55432'
-.\setup_backend.bat
-.\start_backend.bat
-```
+## Docker 실행 기준
+- Rails app: `web`
+- PostgreSQL: `db`
+- DB 접속 정보는 `docker-compose.yml` 기준으로 고정
+- GitHub Actions가 `docker compose build/up`과 `/api-lab` 접근까지 smoke 검증
