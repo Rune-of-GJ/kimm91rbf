@@ -1,68 +1,166 @@
 <% content_for :title, "SpeakFlow | 홈" %>
-<% featured_stats = @featured_course ? course_progress_stats(@demo_user, @featured_course) : { watched: 0, total: 0, rate: 0 } %>
-<% first_lecture = @featured_course&.lectures&.order(:order_no)&.first %>
 
-<main class="shell">
-  <header class="topbar">
-    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    [hidden] { display: none !important; }
+    body { @apply bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900; }
+  </style>
+</head>
+<body class="text-white">
+  <!-- 헤더 -->
+  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="text-2xl font-black text-blue-400">🎤 SpeakFlow</div>
+        <span class="text-slate-400 text-sm">발표 능력 향상 플랫폼</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <% if current_user %>
+          <div class="text-right text-sm hidden sm:block">
+            <p class="text-blue-300 font-semibold"><%= current_user.name %></p>
+            <p class="text-slate-400 text-xs"><%= current_user.email %></p>
+          </div>
+          <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+        <% else %>
+          <%= link_to "로그인/가입", "#auth-panel", class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+        <% end %>
+      </div>
+    </div>
   </header>
 
-  <section class="content">
-    <%= page_links(@active_page) %>
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <!-- 히어로 -->
+    <% unless current_user %>
+      <section class="mb-12 text-center py-12">
+        <h1 class="text-5xl font-black text-white mb-4">뛰어난 발표자로 거듭나세요</h1>
+        <p class="text-xl text-slate-300 mb-6">전문 강사와 함께하는 스피치, 발표, 소통 능력 향상</p>
+        <%= link_to "무료로 시작하기", "#auth-panel", class: "inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-bold text-lg transition shadow-lg" %>
+      </section>
+    <% end %>
 
-    <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">발표 · 면접 · 전달력 훈련</div>
-          <h2>말하기는 감각보다<br>연습의 힘이 큽니다.</h2>
-          <p>발표 준비부터 면접 답변 구성, 강의 시청과 진도 관리까지 한 흐름으로 이어지는 온라인 스피치 학습 서비스입니다.</p>
-          <div class="hero-actions">
-            <%= link_to "강의 둘러보기", courses_path, class: "link-btn primary" %>
-            <%= link_to "카테고리 보기", categories_path, class: "link-btn" %>
-          </div>
-          <div class="stats">
-            <div class="stat"><strong><%= @categories.size %></strong>카테고리</div>
-            <div class="stat"><strong><%= @courses.size %></strong>강의</div>
-            <div class="stat"><strong><%= @courses.sum { |course| course.lectures.size } %></strong>학습 영상</div>
-          </div>
-        </div>
+    <!-- 탭 (로그인 시) -->
+    <% if current_user %>
+      <div class="flex gap-4 mb-8 border-b border-slate-700">
+        <button onclick="showTab('browse')" class="px-4 py-3 font-semibold border-b-2 text-blue-400 border-blue-400">강의 탐색</button>
+        <button onclick="showTab('my-courses')" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">내 강의</button>
+        <button onclick="showTab('progress')" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">학습 진도</button>
+      </div>
 
-        <aside class="preview-panel">
-          <div class="preview-screen">
-            <% if @featured_course && first_lecture %>
-              <%= link_to "▶", lecture_player_path(course_id: @featured_course.id, lecture_id: first_lecture.id), class: "preview-play play-link", aria: { label: "대표 강의 재생" } %>
-            <% else %>
-              <div class="preview-play">▶</div>
-            <% end %>
-            <div>
-              <h3 class="section-title"><%= @featured_course&.title || "준비 중인 강의" %></h3>
-              <p><%= @featured_course&.description || "곧 새로운 강의가 추가됩니다." %></p>
+      <!-- 강의 탐색 -->
+      <section id="browse">
+      <div class="flex gap-4 mb-6 overflow-x-auto pb-2">
+        <%= link_to "전체", root_path, class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap bg-blue-600 text-white" %>
+        <% @categories.each do |cat| %>
+          <%= link_to cat.name, "/?category=#{cat.id}", class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition" %>
+        <% end %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @courses.each do |course| %>
+          <div class="bg-slate-800 border border-slate-700 hover:border-blue-500 rounded-lg overflow-hidden transition group">
+            <div class="h-40 bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-6xl">🎯</div>
+            <div class="p-6">
+              <h3 class="font-bold text-lg text-white mb-1 group-hover:text-blue-300 transition line-clamp-2"><%= course.title %></h3>
+              <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
+              <p class="text-slate-300 text-sm mb-4 line-clamp-2"><%= course.description %></p>
+              <% if current_user %>
+                <%= button_to "수강신청", enroll_api_v1_course_path(course), method: :post, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+              <% else %>
+                <button onclick="alert('로그인이 필요합니다')" class="w-full px-4 py-2 bg-slate-600 text-white rounded font-semibold">수강신청</button>
+              <% end %>
             </div>
-            <% if @featured_course %>
-              <div class="floating-card">
-                <strong><%= @featured_course.category.name %></strong>
-                <div class="small-note"><%= @featured_course.instructor_name %> 강사</div>
-                <div class="small-note">진행률 <%= featured_stats[:rate] %>%</div>
+          </div>
+        <% end %>
+      </div>
+      </section>
+
+      <!-- 내 강의 -->
+      <section id="my-courses" hidden>
+        <h2 class="text-2xl font-bold text-white mb-6">내 강의</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% current_user.enrolled_courses.each do |course| %>
+            <div class="bg-slate-800 border border-green-500/30 rounded-lg p-6">
+              <h3 class="font-bold text-lg text-white mb-2"><%= course.title %></h3>
+              <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
+              <p class="text-slate-300 text-sm"><%= course.description %></p>
+            </div>
+          <% end %>
+        </div>
+        <% if current_user.enrolled_courses.empty? %>
+          <div class="text-center py-12">
+            <p class="text-slate-400 mb-4">아직 수강하는 강의가 없습니다.</p>
+            <a href="#" onclick="showTab('browse')" class="text-blue-400 hover:text-blue-300">강의 탐색하기</a>
+          </div>
+        <% end %>
+      </section>
+
+      <!-- 진도 -->
+      <section id="progress" hidden>
+        <h2 class="text-2xl font-bold text-white mb-6">학습 진도</h2>
+        <% if current_user.enrolled_courses.any? %>
+          <div class="space-y-6">
+            <% current_user.enrolled_courses.each do |course| %>
+              <% total = course.lectures.count %>
+              <% watched = current_user.progresses.where(lecture_id: course.lecture_ids, watched: true).count %>
+              <% rate = total.zero? ? 0 : ((watched.to_f / total) * 100).round %>
+              <div class="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                <h3 class="font-bold text-lg text-white mb-2"><%= course.title %></h3>
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="flex-1 bg-slate-700 rounded-full h-3 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-full" style="width: <%= rate %>%"></div>
+                  </div>
+                  <span class="text-sm font-semibold text-blue-400"><%= rate %>%</span>
+                </div>
+                <p class="text-xs text-slate-400"><%= watched %> / <%= total %> 강의 수강</p>
               </div>
             <% end %>
           </div>
-        </aside>
-      </div>
-    </section>
+        <% else %>
+          <div class="text-center py-12">
+            <p class="text-slate-400">수강한 강의가 없어 진도 정보가 없습니다.</p>
+          </div>
+        <% end %>
+      </section>
+    <% end %>
 
-    <section class="grid-3">
-      <article class="card">
-        <h3>가볍게 시작</h3>
-        <p>처음 방문한 사용자가 회원가입이나 로그인으로 바로 진입할 수 있도록 입구를 단순하게 구성했습니다.</p>
-      </article>
-      <article class="card">
-        <h3>바로 탐색</h3>
-        <p>카테고리에서 시작해 원하는 강의를 고르고 상세 정보와 커리큘럼을 확인할 수 있습니다.</p>
-      </article>
-      <article class="card">
-        <h3>꾸준한 학습</h3>
-        <p>수강 중인 강의와 시청 진행 상황을 한 화면에서 확인하며 이어서 학습할 수 있습니다.</p>
-      </article>
-    </section>
-  </section>
-</main>
+    <!-- 로그인/가입 패널 (비로그인 시) -->
+    <% unless current_user %>
+      <section id="auth-panel" class="mt-12 bg-slate-800 border border-slate-700 rounded-lg p-8 max-w-md mx-auto">
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 가입하세요</h2>
+        
+        <!-- 로그인 폼 -->
+        <%= form_with url: api_v1_auth_login_path, method: :post, local: true, class: "space-y-4 mb-6" do |f| %>
+          <%= f.email_field :email, placeholder: "이메일", value: "instructor@speakflow.kr", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.password_field :password, placeholder: "비밀번호", value: "password123", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.submit "로그인", class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+        <% end %>
+
+        <div class="divider text-center text-slate-400 my-6">또는</div>
+
+        <!-- 회원가입 폼 -->
+        <%= form_with url: api_v1_auth_signup_path, method: :post, local: true, class: "space-y-4" do |f| %>
+          <%= f.text_field :name, placeholder: "이름", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.email_field :email, placeholder: "이메일", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.password_field :password, placeholder: "비밀번호", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.submit "회원가입", class: "w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold transition" %>
+        <% end %>
+      </section>
+    <% end %>
+  </main>
+
+  <script>
+    function showTab(tab) {
+      document.getElementById('browse').hidden = tab !== 'browse';
+      document.getElementById('my-courses').hidden = tab !== 'my-courses';
+      document.getElementById('progress').hidden = tab !== 'progress';
+    }
+  </script>
+</body>
+</html>
+

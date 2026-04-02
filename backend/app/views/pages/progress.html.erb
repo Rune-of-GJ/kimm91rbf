@@ -1,45 +1,107 @@
-<% content_for :title, "SpeakFlow | 진도 관리" %>
+<% content_for :title, "진도 | SpeakFlow" %>
 
-<main class="shell">
-  <header class="topbar">
-    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>진도 | SpeakFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+  <!-- 헤더 -->
+  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-blue-300"><%= current_user.name %></span>
+        <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+      </div>
+    </div>
   </header>
 
-  <section class="content">
-    <%= page_links(@active_page) %>
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-black text-white mb-8">학습 진도</h1>
 
-    <section class="hero">
-      <div class="eyebrow">진도 확인</div>
-      <h2>코스별 진행 상황을<br>한 번에 확인하세요.</h2>
-      <p>수강 중인 코스의 전체 진행률과 각 강의의 시청 상태를 볼 수 있습니다.</p>
-    </section>
+    <% if current_user.enrolled_courses.any? %>
+      <div class="space-y-6">
+        <% current_user.enrolled_courses.each do |course| %>
+          <% total = course.lectures.count %>
+          <% watched = current_user.progresses.where(lecture_id: course.lecture_ids, watched: true).count %>
+          <% rate = total.zero? ? 0 : ((watched.to_f / total) * 100).round %>
+          
+          <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 hover:border-blue-500 transition">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="font-bold text-xl text-white mb-1"><%= course.title %></h3>
+                <p class="text-sm text-slate-400">👨‍🏫 <%= course.instructor_name %></p>
+              </div>
+              <span class="text-2xl font-black text-blue-400"><%= rate %>%</span>
+            </div>
 
-    <% if @my_courses.any? %>
-      <section class="grid-2">
-        <article class="card">
-          <h3>코스별 진도</h3>
-          <table class="table">
-            <tr><th>강의명</th><th>완료 수</th><th>진행률</th></tr>
-            <% @my_courses.each do |course| %>
-              <% stats = course_progress_stats(@demo_user, course) %>
-              <tr><td><%= course.title %></td><td><%= stats[:watched] %> / <%= stats[:total] %></td><td><%= stats[:rate] %>%</td></tr>
-            <% end %>
-          </table>
-        </article>
+            <!-- 진도 바 -->
+            <div class="mb-4">
+              <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-cyan-500 h-full transition-all duration-500" style="width: <%= rate %>%"></div>
+              </div>
+            </div>
 
-        <article class="card">
-          <h3>강의별 상태</h3>
-          <table class="table">
-            <tr><th>순서</th><th>강의명</th><th>상태</th><th>완료 시각</th></tr>
-            <% @my_courses.first.lectures.each do |lecture| %>
-              <% progress = @demo_user&.progresses&.find_by(lecture: lecture) %>
-              <tr><td><%= lecture.order_no %></td><td><%= lecture.title %></td><td><%= progress&.watched ? "시청 완료" : "미시청" %></td><td><%= display_value(progress&.watched_at) %></td></tr>
-            <% end %>
-          </table>
-        </article>
-      </section>
+            <!-- 강의 목록 -->
+            <div class="mb-4">
+              <div class="text-sm text-slate-400 mb-3">
+                <span class="font-semibold text-white"><%= watched %></span>
+                <span> / </span>
+                <span class="font-semibold text-white"><%= total %></span>
+                <span> 강의 완료</span>
+              </div>
+              
+              <div class="space-y-2 max-h-48 overflow-y-auto">
+                <% course.lectures.order(:order_no).each do |lecture| %>
+                  <% is_watched = current_user.progresses.find_by(lecture_id: lecture.id, watched: true).present? %>
+                  <div class="flex items-center gap-3 p-2 rounded bg-slate-700/50 hover:bg-slate-700 transition">
+                    <div class="text-lg"><%= is_watched ? "✅" : "⭕" %></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-semibold text-white truncate"><%= lecture.title %></p>
+                      <p class="text-xs text-slate-400"><%= lecture.duration_minutes || 0 %>분</p>
+                    </div>
+                    <% if is_watched %>
+                      <span class="text-xs font-semibold text-green-400">완료</span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <%= link_to "강의 계속 보기", course_detail_path(course_id: course.id), class: "inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition no-underline" %>
+          </div>
+        <% end %>
+
+        <!-- 전체 진도 요약 -->
+        <div class="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg p-6 mt-8">
+          <h2 class="text-2xl font-bold text-white mb-4">종합 진도</h2>
+          <% total_lectures = current_user.enrolled_courses.sum { |c| c.lectures.count } %>
+          <% total_watched = current_user.progresses.where(watched: true).count %>
+          <% total_rate = total_lectures.zero? ? 0 : ((total_watched.to_f / total_lectures) * 100).round %>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-slate-100 mb-2">전체 강의: <span class="font-bold text-lg"><%= total_lectures %></span>개</p>
+              <p class="text-slate-100">완료한 강의: <span class="font-bold text-lg"><%= total_watched %></span>개</p>
+            </div>
+            <div class="text-right">
+              <p class="text-5xl font-black text-white"><%= total_rate %>%</p>
+              <p class="text-slate-100">완성도</p>
+            </div>
+          </div>
+        </div>
+      </div>
     <% else %>
-      <article class="empty">표시할 진도 데이터가 없습니다.</article>
+      <div class="text-center py-16 bg-slate-800/50 rounded-lg border border-slate-700">
+        <p class="text-2xl text-slate-400 mb-4">아직 수강하는 강의가 없습니다.</p>
+        <%= link_to "강의 탐색하기", courses_path, class: "inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition no-underline" %>
+      </div>
     <% end %>
-  </section>
-</main>
+  </main>
+</body>
+</html>

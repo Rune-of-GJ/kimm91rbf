@@ -1,56 +1,69 @@
-<% content_for :title, "SpeakFlow | 강의 목록" %>
+<% content_for :title, "강의 | SpeakFlow" %>
 
-<main class="shell">
-  <header class="topbar">
-    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강의 | SpeakFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+  <!-- 헤더 -->
+  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
+      </div>
+      <div class="flex items-center gap-4">
+        <% if current_user %>
+          <span class="text-sm text-blue-300"><%= current_user.name %></span>
+          <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+        <% else %>
+          <%= link_to "로그인", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition no-underline" %>
+        <% end %>
+      </div>
+    </div>
   </header>
 
-  <section class="content">
-    <%= page_links(@active_page) %>
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <h1 class="text-4xl font-black text-white mb-2">강의 목록</h1>
+    <p class="text-slate-300 mb-8"><%= @courses.count %>개의 강의</p>
 
-    <section class="hero">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">강의 탐색</div>
-          <h2><%= @selected_category ? "#{@selected_category.name} 강의" : "지금 들을 수 있는 강의" %></h2>
-          <p><%= @selected_category ? "선택한 카테고리에 등록된 강의만 모아 보여줍니다." : "전체 강의를 한 번에 둘러보고 원하는 과정을 선택할 수 있습니다." %></p>
-        </div>
-        <aside class="preview-panel">
-          <div class="preview-screen">
-            <div class="section-title"><%= @courses.first&.title || "강의 준비 중" %></div>
-            <p><%= @courses.first&.description || "현재 표시할 강의가 없습니다." %></p>
-            <div class="floating-card">
-              <strong><%= @courses.size %>개 강의</strong>
-              <div class="small-note"><%= @selected_category ? @selected_category.name : "전체 카테고리" %></div>
-            </div>
+    <!-- 카테고리 필터 -->
+    <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
+      <%= link_to "전체", courses_path, class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{request.params[:category].blank? ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
+      <% @categories.each do |cat| %>
+        <%= link_to cat.name, courses_path(category: cat.id), class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{request.params[:category].to_i == cat.id ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
+      <% end %>
+    </div>
+
+    <!-- 강의 그리드 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @courses.each do |course| %>
+        <div class="bg-slate-800 border border-slate-700 hover:border-blue-500 rounded-lg overflow-hidden transition group">
+          <div class="h-40 bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-6xl">🎓</div>
+          <div class="p-6">
+            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-blue-300 transition line-clamp-2"><%= course.title %></h3>
+            <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
+            <p class="text-slate-300 text-sm mb-4 line-clamp-2"><%= course.description %></p>
+            <p class="text-xs text-slate-400 mb-4">📚 <%= course.lectures.count %>개 강의</p>
+            <% if current_user %>
+              <%= button_to "수강신청", api_v1_enrollments_path, method: :post, params: { course_id: course.id }, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+            <% else %>
+              <button onclick="alert('로그인이 필요합니다')" class="w-full px-4 py-2 bg-slate-600 text-white rounded font-semibold">수강신청</button>
+            <% end %>
           </div>
-        </aside>
-      </div>
-    </section>
+        </div>
+      <% end %>
+    </div>
 
-    <% if @courses.any? %>
-      <section class="stack-gap">
-        <% @courses.each do |course| %>
-          <article class="card">
-            <div class="section-head">
-              <h3><%= course.title %></h3>
-              <span class="badge"><%= course.category.name %></span>
-            </div>
-            <p><%= course.description %></p>
-            <div class="meta">
-              <div><span>강사</span><span><%= course.instructor_name %></span></div>
-              <div><span>강의 수</span><span><%= course.lectures.size %></span></div>
-              <div><span>수강 상태</span><span><%= @demo_user&.enrollments&.exists?(course_id: course.id) ? "수강 중" : "미수강" %></span></div>
-            </div>
-            <div class="btn-row">
-              <%= link_to "상세 보기", course_detail_path(course_id: course.id), class: "link-btn primary" %>
-              <button class="btn" type="button" disabled>수강 신청</button>
-            </div>
-          </article>
-        <% end %>
-      </section>
-    <% else %>
-      <article class="empty">선택한 카테고리에 등록된 강의가 없습니다.</article>
+    <% if @courses.empty? %>
+      <div class="text-center py-12">
+        <p class="text-slate-400 mb-4">해당 카테고리에 강의가 없습니다.</p>
+        <%= link_to "다른 카테고리 보기", categories_path, class: "text-blue-400 hover:text-blue-300 no-underline" %>
+      </div>
     <% end %>
-  </section>
-</main>
+  </main>
+</body>
+</html>

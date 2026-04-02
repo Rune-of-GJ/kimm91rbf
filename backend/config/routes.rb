@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get "api-lab", to: "pages#api_lab", as: :api_lab
 
   namespace :api do
-    scope module: :v1 do
+    namespace :v1 do
       post "auth/signup", to: "auth#signup"
       post "auth/login", to: "auth#login"
       post "auth/refresh", to: "auth#refresh"
