@@ -1,4 +1,18 @@
 ﻿class User < ApplicationRecord
+  before_validation :strip_auth_fields
+
+  validates :name, presence: true
+  validates :email, presence: true
+  validates :password, presence: true, on: :create
+
+  private
+
+  def strip_auth_fields
+    self.name = name.to_s.strip.presence
+    self.email = email.to_s.strip.presence
+  end
+end
+class User < ApplicationRecord
   has_secure_password
   before_validation :normalize_email
 

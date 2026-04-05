@@ -18,7 +18,9 @@
       <div class="flex items-center gap-4">
         <% if current_user %>
           <span class="text-sm text-blue-300"><%= current_user.name %></span>
-          <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+          <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+            로그아웃
+          </button>
         <% else %>
           <%= link_to "로그인", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition no-underline" %>
         <% end %>
@@ -40,5 +42,22 @@
       <% end %>
     </div>
   </main>
+
+  <script>
+    async function logout() {
+      try {
+        await fetch('/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
+    }
+  </script>
 </body>
 </html>

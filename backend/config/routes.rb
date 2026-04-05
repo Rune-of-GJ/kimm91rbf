@@ -3,15 +3,16 @@ Rails.application.routes.draw do
 
   root "pages#dashboard"
 
-  get "signup", to: "pages#signup"
   get "login", to: "pages#login"
   get "categories", to: "pages#categories"
   get "courses", to: "pages#courses"
-  get "courses/demo", to: "pages#course_detail", as: :course_detail
+  get "courses/:id", to: "pages#course_detail", as: :course_detail
   get "my-courses", to: "pages#my_courses"
-  get "lectures/demo", to: "pages#lecture_player", as: :lecture_player
+  get "lectures/:id", to: "pages#lecture_player", as: :lecture_player
   get "progress", to: "pages#progress"
   get "api-lab", to: "pages#api_lab", as: :api_lab
+
+  post "/courses/:id/enroll", to: "courses#enroll", as: :enroll_course
 
   namespace :api do
     namespace :v1 do

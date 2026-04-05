@@ -1,78 +1,146 @@
-<% content_for :title, "SpeakFlow | 강의 상세" %>
+<% content_for :title, "#{@course.title} | SpeakFlow" %>
 
-<main class="shell">
-  <header class="topbar">
-    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @course.title %> - SpeakFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    [hidden] { display: none !important; }
+    body { @apply bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800; }
+  </style>
+</head>
+<body class="text-white">
+  <!-- 헤더 -->
+  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <%= link_to root_path do %>
+          <div class="flex flex-col items-center">
+            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
+            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-4">
+        <% if current_user %>
+          <button onclick="toggleSidebar()" class="text-white hover:text-blue-300 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        <% else %>
+          <%= link_to "로그인/가입", login_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+        <% end %>
+      </div>
+    </div>
   </header>
 
-  <section class="content">
-    <%= page_links(@active_page) %>
-
-    <% if @featured_course %>
-      <% first_lecture = @curriculum.first %>
-      <section class="hero">
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow"><%= @featured_course.category.name %></div>
-            <h2><%= @featured_course.title %></h2>
-            <p><%= @featured_course.description %></p>
-            <div class="badge-row">
-              <span class="badge"><%= @featured_course.instructor_name %> 강사</span>
-              <span class="badge"><%= @demo_user&.enrollments&.exists?(course_id: @featured_course.id) ? "수강 중" : "수강 전" %></span>
-              <span class="badge">총 <%= @curriculum.size %>강</span>
-            </div>
-            <div class="hero-actions">
-              <button class="btn primary" type="button" disabled>수강 신청</button>
-              <% if first_lecture %>
-                <%= link_to "강의 시청", lecture_player_path(course_id: @featured_course.id, lecture_id: first_lecture.id), class: "link-btn" %>
-              <% end %>
-            </div>
-          </div>
-          <aside class="preview-panel">
-            <div class="preview-screen">
-              <% if first_lecture %>
-                <%= link_to "▶", lecture_player_path(course_id: @featured_course.id, lecture_id: first_lecture.id), class: "preview-play play-link", aria: { label: "강의 재생" } %>
-              <% else %>
-                <div class="preview-play">▶</div>
-              <% end %>
-              <div>
-                <div class="section-title">강의 미리보기</div>
-                <p>첫 강의부터 순서대로 학습할 수 있도록 커리큘럼을 구성했습니다.</p>
-              </div>
-              <div class="floating-card">
-                <strong><%= first_lecture&.title || "강의 준비 중" %></strong>
-                <div class="small-note">첫 번째 학습 영상</div>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="grid-2">
-        <article class="card">
-          <h3>강의 정보</h3>
-          <div class="meta">
-            <div><span>수강 시작일</span><span><%= display_value(@featured_course.start_date) %></span></div>
-            <div><span>수강 종료일</span><span><%= display_value(@featured_course.end_date) %></span></div>
-            <div><span>신청 마감일</span><span><%= display_value(@featured_course.enrollment_deadline) %></span></div>
-            <div><span>최대 수강일</span><span><%= display_value(@featured_course.max_access_days) %></span></div>
-            <div><span>수강 가능 여부</span><span><%= boolean_label(@featured_course.available_on?) %></span></div>
-            <div><span>신청 가능 여부</span><span><%= boolean_label(@featured_course.enrollment_open?) %></span></div>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3>커리큘럼</h3>
-          <table class="table">
-            <tr><th>순서</th><th>강의명</th><th>재생 시간</th></tr>
-            <% @curriculum.each do |lecture| %>
-              <tr><td><%= lecture.order_no %></td><td><%= lecture.title %></td><td><%= duration_label(lecture.duration) %></td></tr>
-            <% end %>
-          </table>
-        </article>
-      </section>
-    <% else %>
-      <article class="empty">표시할 강의가 없습니다.</article>
+  <main class="bg-slate-800 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Flash messages -->
+    <% if notice %>
+      <div class="mb-6 p-4 bg-green-600 text-white rounded-lg">
+        <%= notice %>
+      </div>
     <% end %>
-  </section>
-</main>
+    <% if alert %>
+      <div class="mb-6 p-4 bg-red-600 text-white rounded-lg">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <!-- 강의 정보 -->
+    <div class="mb-8">
+      <div class="flex items-start gap-6">
+        <div class="w-48 h-32 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center text-4xl">🎯</div>
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold text-white mb-2"><%= @course.title %></h1>
+          <p class="text-slate-300 mb-4"><%= @course.description %></p>
+          <div class="flex items-center gap-4 text-sm text-slate-400">
+            <span>👨‍🏫 <%= @course.instructor_name %></span>
+            <span>📚 <%= @lectures.count %>강</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 강의 목록 -->
+    <div class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+      <div class="p-6 border-b border-slate-700">
+        <h2 class="text-xl font-semibold text-white">강의 목록</h2>
+      </div>
+      <div class="divide-y divide-slate-700">
+        <% @lectures.each do |lecture| %>
+          <div class="p-6 hover:bg-slate-700/50 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+                  <%= lecture.order_no %>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-white"><%= lecture.title %></h3>
+                  <p class="text-sm text-slate-400">재생시간: <%= lecture.duration %>분</p>
+                </div>
+              </div>
+              <%= link_to "시청하기", lecture_player_path(lecture), class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <!-- 사용자 사이드바 -->
+  <% if current_user %>
+    <div id="user-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-slate-800 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-white">메뉴</h3>
+          <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="text-center">
+            <p class="text-blue-300 font-semibold"><%= current_user.name %> 님</p>
+            <p class="text-slate-400 text-sm"><%= current_user.email %></p>
+          </div>
+          <div class="border-t border-slate-700 pt-4">
+            <button onclick="logout()" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('user-sidebar');
+      sidebar.classList.toggle('translate-x-full');
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
+    }
+  </script>
+</body>
+</html>

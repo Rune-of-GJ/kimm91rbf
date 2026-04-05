@@ -13,12 +13,19 @@
   <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
+        <%= link_to root_path do %>
+          <div class="flex flex-col items-center">
+            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
+            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+          </div>
+        <% end %>
       </div>
       <div class="flex items-center gap-4">
         <% if current_user %>
           <span class="text-sm text-blue-300"><%= current_user.name %></span>
-          <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+          <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+            로그아웃
+          </button>
         <% else %>
           <%= link_to "로그인", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition no-underline" %>
         <% end %>
@@ -49,7 +56,7 @@
             <p class="text-slate-300 text-sm mb-4 line-clamp-2"><%= course.description %></p>
             <p class="text-xs text-slate-400 mb-4">📚 <%= course.lectures.count %>개 강의</p>
             <% if current_user %>
-              <%= button_to "수강신청", api_v1_enrollments_path, method: :post, params: { course_id: course.id }, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+              <%= button_to "수강신청", enroll_api_v1_course_path(course), method: :post, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
             <% else %>
               <button onclick="alert('로그인이 필요합니다')" class="w-full px-4 py-2 bg-slate-600 text-white rounded font-semibold">수강신청</button>
             <% end %>
@@ -65,5 +72,22 @@
       </div>
     <% end %>
   </main>
+
+  <script>
+    async function logout() {
+      try {
+        await fetch('/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
+    }
+  </script>
 </body>
 </html>

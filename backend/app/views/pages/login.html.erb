@@ -1,25 +1,136 @@
-<% content_for :title, "SpeakFlow | 로그인" %>
+<% content_for :title, "로그인 | SpeakFlow" %>
 
-<main class="shell">
-  <header class="topbar">
-    <h1 class="brand"><%= link_to "SpeakFlow", root_path %></h1>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 | SpeakFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    [hidden] { display: none !important; }
+    body { @apply bg-slate-800; }
+  </style>
+</head>
+<body class="text-white">
+  <!-- 헤더 -->
+  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <%= link_to root_path do %>
+          <div class="flex flex-col items-center">
+            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
+            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+          </div>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-4">
+        <%= link_to "홈으로", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+      </div>
+    </div>
   </header>
 
-  <section class="content">
-    <%= page_links(@active_page) %>
+  <main class="bg-slate-800 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+    <section class="mt-12 bg-slate-800 border border-slate-700 rounded-lg p-8 max-w-md mx-auto">
+      <div id="login-form">
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 로그인하세요</h2>
+        
+        <!-- 로그인 폼 -->
+        <%= form_with url: api_v1_auth_login_path, method: :post, local: false, html: { onsubmit: "return submitLogin(event)" }, class: "space-y-4 mb-6" do |f| %>
+          <%= f.email_field :email, placeholder: "이메일", value: "instructor@speakflow.kr", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.password_field :password, placeholder: "비밀번호", value: "password123", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.submit "로그인", class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+        <% end %>
 
-    <section class="hero">
-      <div class="eyebrow">로그인</div>
-      <h2>이어 하던 학습을<br>바로 계속하세요.</h2>
-      <p>이메일과 비밀번호로 로그인한 뒤 수강 중인 강의와 진도를 바로 확인할 수 있습니다.</p>
-    </section>
-
-    <article class="form-card">
-      <div class="field"><label>이메일</label><input type="email" placeholder="student@speakflow.kr"></div>
-      <div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호 입력"></div>
-      <div class="btn-row">
-        <button class="btn primary" type="button" disabled>로그인</button>
+        <div class="divider text-center text-slate-400 my-6">
+          <button onclick="showSignup()" class="text-blue-400 hover:text-blue-300">또는 가입하기</button>
+        </div>
       </div>
-    </article>
-  </section>
-</main>
+
+      <div id="signup-form" style="display: none;">
+        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 가입하세요</h2>
+        
+        <!-- 회원가입 폼 -->
+        <%= form_with url: api_v1_auth_signup_path, method: :post, local: false, html: { onsubmit: "return submitSignup(event)" }, class: "space-y-4" do |f| %>
+          <%= f.text_field :name, placeholder: "이름", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.email_field :email, placeholder: "이메일", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.password_field :password, placeholder: "비밀번호", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
+          <%= f.submit "회원가입", class: "w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold transition" %>
+        <% end %>
+
+        <div class="divider text-center text-slate-400 my-6">
+          <button onclick="showLogin()" class="text-blue-400 hover:text-blue-300">또는 로그인하기</button>
+        </div>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <script>
+    // 페이지 로드 시 URL 파라미터 확인
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('signup') === 'true') {
+        showSignup();
+      }
+    });
+
+    function showSignup() {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('signup-form').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('signup-form').style.display = 'none';
+      document.getElementById('login-form').style.display = 'block';
+    }
+
+    async function submitLogin(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const response = await fetch('/api/v1/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          const error = await response.json();
+          alert(error.error || '로그인 실패');
+        }
+      } catch (err) {
+        alert('네트워크 오류');
+      }
+      return false;
+    }
+
+    async function submitSignup(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const response = await fetch('/api/v1/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          const error = await response.json();
+          alert(error.errors ? error.errors.join(', ') : '회원가입 실패');
+        }
+      } catch (err) {
+        alert('네트워크 오류');
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

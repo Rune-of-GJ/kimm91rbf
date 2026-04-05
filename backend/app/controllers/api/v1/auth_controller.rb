@@ -1,4 +1,15 @@
-﻿module Api
+﻿class Api::V1::AuthController < Api::V1::BaseController
+  private
+
+  def auth_params
+    permitted = params.permit(:name, :email, :password)
+    permitted[:name] = permitted[:name].to_s.strip if permitted.key?(:name)
+    permitted[:email] = permitted[:email].to_s.strip if permitted.key?(:email)
+    permitted[:password] = permitted[:password].to_s.strip if permitted.key?(:password)
+    permitted
+  end
+end
+module Api
   module V1
     class AuthController < BaseController
       def signup
@@ -6,9 +17,15 @@
 
         if user.save
           session[:user_id] = user.id
-          render json: { user: user_payload(user) }, status: :created
+          respond_to do |format|
+            format.html { redirect_to root_path, notice: "회원가입이 완료되었습니다." }
+            format.json { render json: { user: user_payload(user) }, status: :created }
+          end
         else
-          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+          respond_to do |format|
+            format.html { redirect_to login_path, alert: user.errors.full_messages.join(", ") }
+            format.json { render json: { errors: user.errors.full_messages }, status: :unprocessable_entity }
+          end
         end
       end
 
@@ -19,13 +36,21 @@
 
         if user&.authenticate(password)
           session[:user_id] = user.id
-          render json: {
-            user: user_payload(user),
-            token_type: "Session",
-            expires_in: 3600
-          }, status: :ok
+          respond_to do |format|
+            format.html { redirect_to root_path, notice: "로그인되었습니다." }
+            format.json do
+              render json: {
+                user: user_payload(user),
+                token_type: "Session",
+                expires_in: 3600
+              }, status: :ok
+            end
+          end
         else
-          render json: { error: "Invalid email or password" }, status: :unauthorized
+          respond_to do |format|
+            format.html { redirect_to login_path, alert: "이메일 또는 비밀번호가 잘못되었습니다." }
+            format.json { render json: { error: "Invalid email or password" }, status: :unauthorized }
+          end
         end
       end
 

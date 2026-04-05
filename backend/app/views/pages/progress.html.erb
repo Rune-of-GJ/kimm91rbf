@@ -8,21 +8,34 @@
   <title>진도 | SpeakFlow</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
+<body class="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 text-white">
   <!-- 헤더 -->
   <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
+        <%= link_to root_path, class: "text-2xl font-black text-blue-400 no-underline" do %>
+          <div class="flex flex-col items-center">
+            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
+            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+          </div>
+        <% end %>
       </div>
       <div class="flex items-center gap-4">
-        <span class="text-sm text-blue-300"><%= current_user.name %></span>
-        <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+        <% if current_user %>
+          <button onclick="toggleSidebar()" class="text-white hover:text-blue-300 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        <% else %>
+          <%= link_to "로그인/가입", login_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+        <% end %>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-12">
+  <main class="bg-slate-800 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 py-12">
     <h1 class="text-4xl font-black text-white mb-8">학습 진도</h1>
 
     <% if current_user.enrolled_courses.any? %>
@@ -102,6 +115,56 @@
         <%= link_to "강의 탐색하기", courses_path, class: "inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition no-underline" %>
       </div>
     <% end %>
+    </div>
   </main>
+
+  <!-- 사용자 사이드바 -->
+  <% if current_user %>
+    <div id="user-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-slate-800 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-white">메뉴</h3>
+          <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="text-center">
+            <p class="text-blue-300 font-semibold"><%= current_user.name %> 님</p>
+            <p class="text-slate-400 text-sm"><%= current_user.email %></p>
+          </div>
+          <div class="border-t border-slate-700 pt-4">
+            <button onclick="logout()" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('user-sidebar');
+      sidebar.classList.toggle('translate-x-full');
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
+    }
+  </script>
 </body>
 </html>

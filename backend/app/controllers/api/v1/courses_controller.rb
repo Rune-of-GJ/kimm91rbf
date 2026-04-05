@@ -31,16 +31,25 @@
         enrollment = Enrollment.find_by(user: current_user, course: course)
 
         if enrollment
-          render json: enrollment_payload(enrollment), status: :ok
+          respond_to do |format|
+            format.html { redirect_to root_path, notice: "#{course.title} 강의에 이미 수강 신청되었습니다." }
+            format.json { render json: enrollment_payload(enrollment), status: :ok }
+          end
           return
         end
 
         enrollment = Enrollment.new(user: current_user, course: course)
 
         if enrollment.save
-          render json: enrollment_payload(enrollment), status: :created
+          respond_to do |format|
+            format.html { redirect_to root_path, notice: "#{course.title} 강의 수강 신청이 완료되었습니다." }
+            format.json { render json: enrollment_payload(enrollment), status: :created }
+          end
         else
-          render json: { errors: enrollment.errors.full_messages }, status: :unprocessable_entity
+          respond_to do |format|
+            format.html { redirect_to root_path, alert: "수강 신청에 실패했습니다: #{enrollment.errors.full_messages.join(', ')}" }
+            format.json { render json: { errors: enrollment.errors.full_messages }, status: :unprocessable_entity }
+          end
         end
       end
 

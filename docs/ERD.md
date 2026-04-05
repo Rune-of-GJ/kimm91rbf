@@ -30,14 +30,6 @@
 - thumbnail_url
 - created_at
 - updated_at
-- instructor_id (FK -> Users.id) # 코스 개발자/강사 식별자, `instructor_name` 대신 ID 사용
-- thumbnail_url
-- start_date (optional) # 코스 공개 시작일
-- end_date (optional) # 코스 공개 종료일
-- enrollment_deadline (optional) # 수강신청 마감일
-- max_access_days (optional, int) # 수강 가능 기간(일) - 제한이 있을 경우 사용
-- created_at
-- updated_at
 
 ### Lectures
 

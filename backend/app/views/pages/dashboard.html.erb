@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     [hidden] { display: none !important; }
-    body { @apply bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900; }
+    body { @apply bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800; }
   </style>
 </head>
 <body class="text-white">
@@ -17,47 +17,129 @@
   <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <div class="text-2xl font-black text-blue-400">🎤 SpeakFlow</div>
-        <span class="text-slate-400 text-sm">발표 능력 향상 플랫폼</span>
+        <%= link_to root_path do %>
+          <div class="flex flex-col items-center">
+            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
+            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+          </div>
+        <% end %>
       </div>
       <div class="flex items-center gap-4">
         <% if current_user %>
-          <div class="text-right text-sm hidden sm:block">
-            <p class="text-blue-300 font-semibold"><%= current_user.name %></p>
-            <p class="text-slate-400 text-xs"><%= current_user.email %></p>
-          </div>
-          <%= button_to "로그아웃", api_v1_auth_logout_path, method: :post, class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition" %>
+          <button onclick="toggleSidebar()" class="text-white hover:text-blue-300 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
         <% else %>
-          <%= link_to "로그인/가입", "#auth-panel", class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
+          <%= link_to "로그인/가입", login_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
         <% end %>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-12">
+  <main class="bg-slate-800 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Flash messages -->
+    <% if notice %>
+      <div class="mb-6 p-4 bg-green-600 text-white rounded-lg">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert %>
+      <div class="mb-6 p-4 bg-red-600 text-white rounded-lg">
+        <%= alert %>
+      </div>
+    <% end %>
+
     <!-- 히어로 -->
     <% unless current_user %>
       <section class="mb-12 text-center py-12">
         <h1 class="text-5xl font-black text-white mb-4">뛰어난 발표자로 거듭나세요</h1>
         <p class="text-xl text-slate-300 mb-6">전문 강사와 함께하는 스피치, 발표, 소통 능력 향상</p>
-        <%= link_to "무료로 시작하기", "#auth-panel", class: "inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-bold text-lg transition shadow-lg" %>
+        <%= link_to "무료로 시작하기", login_path, class: "inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-bold text-lg transition shadow-lg" %>
+      </section>
+
+      <!-- 특징 섹션 -->
+      <section class="mb-16" data-controller="hero">
+        <h2 class="text-3xl font-bold text-white text-center mb-12">왜 SpeakFlow를 선택할까요?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="feature-card bg-slate-700 border border-slate-600 rounded-lg p-6 text-center opacity-0 transform translate-y-8 transition-all duration-700">
+            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-2">빠른 학습</h3>
+            <p class="text-slate-300">단기간에 효과적인 발표 기술을 습득하세요</p>
+          </div>
+          <div class="feature-card bg-slate-700 border border-slate-600 rounded-lg p-6 text-center opacity-0 transform translate-y-8 transition-all duration-700" style="transition-delay: 0.2s">
+            <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-2">전문 강사</h3>
+            <p class="text-slate-300">현업 전문가들의 실전 노하우를 배우세요</p>
+          </div>
+          <div class="feature-card bg-slate-700 border border-slate-600 rounded-lg p-6 text-center opacity-0 transform translate-y-8 transition-all duration-700" style="transition-delay: 0.4s">
+            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-2">실전 적용</h3>
+            <p class="text-slate-300">실제 상황에서 바로 적용 가능한 기술</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 통계 섹션 -->
+      <section class="mb-16 stats-section">
+        <div class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-lg p-8 text-center">
+          <h2 class="text-2xl font-bold text-white mb-8">SpeakFlow와 함께하는 사람들</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+              <div class="text-4xl font-black text-blue-400 counter" data-target="50000">50000+</div>
+              <div class="text-slate-300 mt-2">수강생</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-black text-green-400 counter" data-target="1200">120+</div>
+              <div class="text-slate-300 mt-2">강의 수</div>
+            </div>
+            <div class="text-center">
+              <div class="text-4xl font-black text-purple-400 counter" data-target="95">95%</div>
+              <div class="text-slate-300 mt-2">만족도 (%)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA 섹션 -->
+      <section class="text-center py-12">
+        <h2 class="text-3xl font-bold text-white mb-4">지금 바로 시작하세요</h2>
+        <p class="text-xl text-slate-300 mb-8">무료로 등록하고 첫 강의를 체험해보세요</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <%= link_to "무료 회원가입", "/login?signup=true", class: "inline-block px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-lg font-bold text-lg transition shadow-lg" %>
+          <%= link_to "강의 둘러보기", courses_path, class: "inline-block px-8 py-3 border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-lg font-bold text-lg transition" %>
+        </div>
       </section>
     <% end %>
 
     <!-- 탭 (로그인 시) -->
     <% if current_user %>
       <div class="flex gap-4 mb-8 border-b border-slate-700">
-        <button onclick="showTab('browse')" class="px-4 py-3 font-semibold border-b-2 text-blue-400 border-blue-400">강의 탐색</button>
-        <button onclick="showTab('my-courses')" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">내 강의</button>
-        <button onclick="showTab('progress')" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">학습 진도</button>
+        <button onclick="showTab('browse')" id="tab-browse" class="px-4 py-3 font-semibold border-b-2 text-blue-400 border-blue-400">강의 탐색</button>
+        <button onclick="showTab('my-courses')" id="tab-my-courses" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">내 강의</button>
+        <button onclick="showTab('progress')" id="tab-progress" class="px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300">학습 진도</button>
       </div>
 
       <!-- 강의 탐색 -->
       <section id="browse">
       <div class="flex gap-4 mb-6 overflow-x-auto pb-2">
-        <%= link_to "전체", root_path, class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap bg-blue-600 text-white" %>
+        <%= link_to "전체", root_path, class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{params[:category].blank? ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
         <% @categories.each do |cat| %>
-          <%= link_to cat.name, "/?category=#{cat.id}", class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition" %>
+          <%= link_to cat.name, "/?category=#{cat.id}", class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{params[:category] == cat.id.to_s ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
         <% end %>
       </div>
 
@@ -70,7 +152,11 @@
               <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
               <p class="text-slate-300 text-sm mb-4 line-clamp-2"><%= course.description %></p>
               <% if current_user %>
-                <%= button_to "수강신청", enroll_api_v1_course_path(course), method: :post, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+                <% if current_user.enrolled_courses.include?(course) %>
+                  <button disabled class="w-full px-4 py-2 bg-green-600 text-white rounded font-semibold cursor-not-allowed">수강 중</button>
+                <% else %>
+                  <%= button_to "수강신청", enroll_course_path(course), method: :post, data: { turbo: false }, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
+                <% end %>
               <% else %>
                 <button onclick="alert('로그인이 필요합니다')" class="w-full px-4 py-2 bg-slate-600 text-white rounded font-semibold">수강신청</button>
               <% end %>
@@ -85,10 +171,15 @@
         <h2 class="text-2xl font-bold text-white mb-6">내 강의</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <% current_user.enrolled_courses.each do |course| %>
-            <div class="bg-slate-800 border border-green-500/30 rounded-lg p-6">
-              <h3 class="font-bold text-lg text-white mb-2"><%= course.title %></h3>
-              <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
-              <p class="text-slate-300 text-sm"><%= course.description %></p>
+            <div class="bg-slate-800 border border-green-500/30 rounded-lg overflow-hidden hover:border-green-400 transition">
+              <div class="h-32 bg-gradient-to-br from-green-500 to-cyan-600 flex items-center justify-center text-4xl">📚</div>
+              <div class="p-6">
+                <%= link_to course_detail_path(course), class: "block" do %>
+                  <h3 class="font-bold text-lg text-white mb-1 hover:text-green-300 transition"><%= course.title %></h3>
+                <% end %>
+                <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
+                <p class="text-slate-300 text-sm"><%= course.description %></p>
+              </div>
             </div>
           <% end %>
         </div>
@@ -128,37 +219,79 @@
         <% end %>
       </section>
     <% end %>
-
-    <!-- 로그인/가입 패널 (비로그인 시) -->
-    <% unless current_user %>
-      <section id="auth-panel" class="mt-12 bg-slate-800 border border-slate-700 rounded-lg p-8 max-w-md mx-auto">
-        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 가입하세요</h2>
-        
-        <!-- 로그인 폼 -->
-        <%= form_with url: api_v1_auth_login_path, method: :post, local: true, class: "space-y-4 mb-6" do |f| %>
-          <%= f.email_field :email, placeholder: "이메일", value: "instructor@speakflow.kr", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.password_field :password, placeholder: "비밀번호", value: "password123", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.submit "로그인", class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
-        <% end %>
-
-        <div class="divider text-center text-slate-400 my-6">또는</div>
-
-        <!-- 회원가입 폼 -->
-        <%= form_with url: api_v1_auth_signup_path, method: :post, local: true, class: "space-y-4" do |f| %>
-          <%= f.text_field :name, placeholder: "이름", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.email_field :email, placeholder: "이메일", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.password_field :password, placeholder: "비밀번호", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.submit "회원가입", class: "w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold transition" %>
-        <% end %>
-      </section>
-    <% end %>
+    </div>
   </main>
+
+  <!-- 사용자 사이드바 -->
+  <% if current_user %>
+    <div id="user-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-slate-800 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-white">메뉴</h3>
+          <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="text-center">
+            <p class="text-blue-300 font-semibold"><%= current_user.name %> 님</p>
+            <p class="text-slate-400 text-sm"><%= current_user.email %></p>
+          </div>
+          <div class="border-t border-slate-700 pt-4">
+            <button onclick="logout()" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
+              로그아웃
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <script>
     function showTab(tab) {
+      // Hide all sections
       document.getElementById('browse').hidden = tab !== 'browse';
       document.getElementById('my-courses').hidden = tab !== 'my-courses';
       document.getElementById('progress').hidden = tab !== 'progress';
+
+      // Reset all tab classes
+      document.getElementById('tab-browse').className = 'px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300';
+      document.getElementById('tab-my-courses').className = 'px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300';
+      document.getElementById('tab-progress').className = 'px-4 py-3 font-semibold border-b-2 text-slate-400 border-transparent hover:text-slate-300';
+
+      // Set active tab
+      document.getElementById('tab-' + tab).className = 'px-4 py-3 font-semibold border-b-2 text-blue-400 border-blue-400';
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('user-sidebar');
+      sidebar.classList.toggle('translate-x-full');
+    }
+
+    // Initialize tab based on URL parameter
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tab = urlParams.get('tab');
+      if (tab) {
+        showTab(tab);
+      }
+    });
+
+    async function logout() {
+      try {
+        await fetch('/api/v1/auth/logout', {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
     }
   </script>
 </body>
