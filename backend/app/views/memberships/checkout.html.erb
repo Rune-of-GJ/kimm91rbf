@@ -1,0 +1,82 @@
+<% content_for :title, "SpeakFlow | 멤버십 가입" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">멤버십에 가입하기</h1>
+              <p class="section-copy">멤버십에 가입하여 SpeakFlow만의 다양한 혜택을 누리세요.</p>
+            </div>
+          </section>
+
+          <section class="page-section preview-checkout-grid">
+            <article class="surface-card admin-preview-panel membership-card membership-card--checkout">
+              <span class="pill pill--accent">선택한 플랜</span>
+              <div class="membership-card__headline">
+                <strong><%= @selected_plan.name %></strong>
+                <p><%= @selected_plan.tagline %></p>
+              </div>
+
+              <div class="checkout-summary">
+                <div class="commerce-price commerce-price--membership">
+                  <strong><%= number_to_currency(@selected_plan.monthly_price, unit: "₩", precision: 0) %></strong>
+                  <span>다음 결제 예정일 <%= @next_billing_date.strftime("%Y.%m.%d") %></span>
+                </div>
+
+                <div class="checkout-summary__facts">
+                  <div class="checkout-summary__fact">
+                    <span>강의 이용</span>
+                    <strong><%= @selected_plan.name == "Lite" ? "핵심 강의" : "전체 강의" %></strong>
+                  </div>
+                  <div class="checkout-summary__fact">
+                    <span>리허설 제출</span>
+                    <strong><%= @selected_plan.monthly_rehearsal_limit >= 999 ? "무제한" : "월 #{@selected_plan.monthly_rehearsal_limit}회" %></strong>
+                  </div>
+                  <div class="checkout-summary__fact">
+                    <span>포함 첨삭</span>
+                    <strong><%= @selected_plan.monthly_coaching_credits.positive? ? "월 #{@selected_plan.monthly_coaching_credits}회" : "미포함" %></strong>
+                  </div>
+                </div>
+              </div>
+
+              <article class="surface-card checkout-policy">
+                <h3>정책 안내</h3>
+                <p style="margin-top: 14px;">월정액은 언제든지 해지 가능하고, 해지 전까지는 강의 열람과 리허설 제출이 유지됩니다.</p>
+              </article>
+            </article>
+
+            <article class="surface-card admin-preview-panel checkout-payment">
+              <h3>첫 달 결제</h3>
+              <p class="checkout-payment__copy">실제 결제 로직 미적용 상태</p>
+
+              <div class="checkout-payment__rows">
+                <div class="checkout-payment__row">
+                  <span>자동 갱신</span>
+                  <strong>매월 정기 결제</strong>
+                </div>
+                <div class="checkout-payment__row">
+                  <span>포함 기능</span>
+                  <strong>강의 시청 + 리허설 + 플랜 혜택</strong>
+                </div>
+                <div class="checkout-payment__row">
+                  <span>시작 플랜</span>
+                  <strong><%= @selected_plan.name %></strong>
+                </div>
+              </div>
+
+              <div class="button-row checkout-payment__actions">
+                <%= button_to "#{@selected_plan.name} 멤버십 시작", membership_subscribe_path(plan_id: @selected_plan.id), method: :post, class: "button button--primary", form_class: "inline-form" %>
+                <%= link_to "다른 플랜 보기", membership_plans_path, class: "button button--ghost button--small" %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

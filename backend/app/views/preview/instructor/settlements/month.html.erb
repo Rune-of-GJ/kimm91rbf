@@ -1,0 +1,90 @@
+<% content_for :title, "SpeakFlow | 강사 월별 정산 상세" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/instructor/settlements/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Preview instructor</p>
+              <h1 class="section-title"><%= @settlement_month %> 정산 상세</h1>
+              <p class="section-copy">강사가 자신의 월정액 기여도와 첨삭 정산 근거를 강의/상품 단위로 확인하는 시안입니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-table admin-preview-table--settlements">
+              <div class="admin-preview-table__row admin-preview-table__row--head">
+                <span>월</span>
+                <span>월정액 정산</span>
+                <span>첨삭 정산</span>
+                <span>최종 지급액</span>
+                <span>상태</span>
+              </div>
+              <% @month_rows.each do |row| %>
+                <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                  <span><strong><%= row[:month] %></strong></span>
+                  <span><%= number_to_currency(row[:membership], unit: "₩", precision: 0) %></span>
+                  <span><%= number_to_currency(row[:coaching], unit: "₩", precision: 0) %></span>
+                  <span><strong><%= number_to_currency(row[:final], unit: "₩", precision: 0) %></strong></span>
+                  <span><%= row[:status] %></span>
+                </div>
+              <% end %>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <h3>강의별 시청 기여</h3>
+                <div class="admin-preview-table admin-preview-table--settlements">
+                  <div class="admin-preview-table__row admin-preview-table__row--head">
+                    <span>강의</span>
+                    <span>유효 시청 시간</span>
+                    <span>비율</span>
+                    <span>메모</span>
+                    <span></span>
+                  </div>
+                  <% @watch_breakdown.each do |row| %>
+                    <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                      <span><strong><%= row[:course] %></strong></span>
+                      <span><%= number_with_delimiter(row[:minutes]) %>분</span>
+                      <span><%= row[:share] %></span>
+                      <span>월정액 시청 기여 반영</span>
+                      <span></span>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <h3>첨삭 상품별 정산</h3>
+                <div class="admin-preview-table admin-preview-table--settlements">
+                  <div class="admin-preview-table__row admin-preview-table__row--head">
+                    <span>상품</span>
+                    <span>건수</span>
+                    <span>총매출</span>
+                    <span>강사 지급액</span>
+                    <span></span>
+                  </div>
+                  <% @coaching_breakdown.each do |row| %>
+                    <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                      <span><strong><%= row[:product] %></strong></span>
+                      <span><%= row[:count] %>건</span>
+                      <span><%= number_to_currency(row[:gross], unit: "₩", precision: 0) %></span>
+                      <span><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></span>
+                      <span></span>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

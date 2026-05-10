@@ -16,13 +16,22 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=SUIT:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="app-shell" data-controller="shell" data-shell-logout-url-value="<%= api_v1_auth_logout_path %>">
+      <%= render "layouts/site_header" %>
+      <%= render "layouts/flash" %>
+      <%= yield %>
+      <%= render "layouts/site_footer" %>
+      <% if current_user %>
+        <%= render "layouts/user_panel" %>
+      <% end %>
+      <div class="app-overlay" data-shell-target="overlay" data-action="click->shell#closeAll"></div>
+    </div>
   </body>
 </html>

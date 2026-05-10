@@ -1,0 +1,20 @@
+<% flash_items = [] %>
+<% flash_items << { type: "notice", message: notice } if notice.present? %>
+<% flash_items << { type: "alert", message: alert } if alert.present? %>
+
+<% if flash_items.any? %>
+  <div class="flash-toast-stack" aria-live="polite" aria-atomic="true">
+    <% flash_items.each do |item| %>
+      <div
+        class="flash-toast flash-toast--<%= item[:type] %>"
+        data-controller="flash"
+        data-flash-duration-value="1500"
+        role="status">
+        <div class="flash-toast__body">
+          <strong><%= item[:message] %></strong>
+        </div>
+        <div class="flash-toast__progress" data-flash-target="progress"></div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

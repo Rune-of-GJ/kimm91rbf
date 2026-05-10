@@ -1,0 +1,67 @@
+<% content_for :title, "SpeakFlow | 내 첨삭 요청 현황" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "coaching/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">내 첨삭 요청 현황</h1>
+              <p class="section-copy">지금까지 보낸 요청과 어떤 크레딧을 사용했는지 한눈에 확인할 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <% if @feedback_requests.any? %>
+              <div class="course-grid">
+                <% @feedback_requests.each do |request| %>
+                  <article class="course-card">
+                    <div class="course-card__top">
+                      <div>
+                        <span class="pill <%= 'pill--accent' if request.completed? %>"><%= request.status.humanize %></span>
+                        <h3 style="margin-top: 14px;"><%= request.title %></h3>
+                      </div>
+                      <span class="orb-ripple" aria-hidden="true">
+                        <span class="orb-ripple__ring orb-ripple__ring--a"></span>
+                        <span class="orb-ripple__ring orb-ripple__ring--b"></span>
+                        <span class="orb-ripple__ring orb-ripple__ring--c"></span>
+                        <span class="orb-ripple__core"></span>
+                      </span>
+                    </div>
+
+                    <p><%= request.note.presence || "강사가 확인하기 쉽도록 핵심 포인트를 남긴 요청입니다." %></p>
+
+                    <div class="meta-list">
+                      <div class="meta-item"><span>사용 크레딧</span><strong><%= request.credit_label %></strong></div>
+                      <div class="meta-item"><span>대상 강의</span><strong><%= request.course&.title || "미지정" %></strong></div>
+                      <div class="meta-item"><span>요청일</span><strong><%= display_date(request.created_at.to_date) %></strong></div>
+                    </div>
+
+                    <div class="button-row" style="margin-top: 18px;">
+                      <%= link_to "상세 보기", coaching_request_detail_path(request), class: "button button--secondary button--small" %>
+                    </div>
+                  </article>
+                <% end %>
+              </div>
+
+              <div class="button-row" style="margin-top: 24px;">
+                <%= link_to "추가 첨삭 요청", new_coaching_request_path, class: "button button--primary button--small" %>
+              </div>
+            <% else %>
+              <article class="surface-card">
+                <h3>아직 첨삭 요청이 없습니다.</h3>
+                <p style="margin-top: 14px;">첨삭권이 있다면 음성과 메모를 남겨 바로 요청을 시작할 수 있습니다.</p>
+                <div class="button-row" style="margin-top: 18px;">
+                  <%= link_to "첨삭 요청하기", new_coaching_request_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+            <% end %>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

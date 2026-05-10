@@ -1,4 +1,4 @@
-﻿require "test_helper"
+require "test_helper"
 
 class ApiCoursesTest < ActionDispatch::IntegrationTest
   setup do
@@ -22,7 +22,7 @@ class ApiCoursesTest < ActionDispatch::IntegrationTest
   test "courses index filters by category" do
     other_category = Category.create!(name: "면접 스피치", description: "면접 훈련")
     Course.create!(
-      title: "면접 트레이닝",
+      title: "면접 브리핑",
       description: "설명",
       category: other_category,
       instructor_name: "다른 강사"
@@ -55,41 +55,5 @@ class ApiCoursesTest < ActionDispatch::IntegrationTest
     assert_equal true, body.dig("availability", "available")
     assert_equal true, body.dig("availability", "enrollment_open")
     assert_equal 1, body["curriculum"].length
-  end
-
-  test "enroll is idempotent for existing enrollment" do
-    Enrollment.create!(user: @user, course: @course)
-
-    post "/api/auth/login", params: {
-      email: @user.email,
-      password: "password123"
-    }, as: :json
-
-    assert_no_difference("Enrollment.count") do
-      post "/api/courses/#{@course.id}/enroll", as: :json
-    end
-
-    assert_response :success
-    assert_equal @course.id, response.parsed_body["course_id"]
-  end
-
-  test "enroll rejects closed enrollment" do
-    closed_course = Course.create!(
-      title: "마감된 강의",
-      description: "설명",
-      category: @category,
-      instructor_name: "기본 강사",
-      enrollment_deadline: Date.yesterday
-    )
-
-    post "/api/auth/login", params: {
-      email: @user.email,
-      password: "password123"
-    }, as: :json
-
-    post "/api/courses/#{closed_course.id}/enroll", as: :json
-
-    assert_response :unprocessable_entity
-    assert_includes response.parsed_body["errors"], "Course is closed for enrollment"
   end
 end

@@ -1,4 +1,4 @@
-﻿module Api
+module Api
   module V1
     class BaseController < ApplicationController
       skip_forgery_protection
@@ -14,7 +14,7 @@
       end
 
       def enrolled_in_course?(course)
-        current_user&.enrollments&.exists?(course_id: course.id)
+        current_user&.can_access_course?(course)
       end
 
       def render_not_found(exception)

@@ -1,0 +1,49 @@
+<aside class="side-panel" data-shell-target="panel" aria-label="사용자 메뉴">
+  <div class="side-panel__header">
+    <div>
+      <p class="eyebrow">My ripple</p>
+      <h2><%= current_user.name %></h2>
+    </div>
+
+    <button
+      type="button"
+      class="icon-button"
+      aria-label="사용자 메뉴 닫기"
+      data-action="shell#closePanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M6 6L18 18"></path>
+        <path d="M18 6L6 18"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="side-panel__body">
+    <div class="side-panel__profile">
+      <span class="side-panel__orb" aria-hidden="true"></span>
+      <div>
+        <strong><%= current_user.email %></strong>
+        <span><%= current_user.role.to_s.humanize %></span>
+      </div>
+    </div>
+
+    <nav class="side-panel__links" aria-label="사용자 빠른 이동">
+      <%= link_to "대시보드", root_path %>
+      <%= link_to "내 강의", my_courses_path %>
+      <%= link_to "진도 보기", progress_path %>
+      <%= link_to "리허설", rehearsals_path %>
+      <%= link_to "멤버십", membership_account_path %>
+      <%= link_to "첨삭", coaching_products_path %>
+      <%= link_to "내 요청 현황", coaching_requests_path %>
+      <% if current_user.instructor? %>
+        <%= link_to "강사 페이지", instructor_root_path %>
+      <% end %>
+      <% if current_user.admin? %>
+        <%= link_to "관리자 페이지", admin_root_path %>
+      <% end %>
+    </nav>
+
+    <button type="button" class="button button--secondary button--block" data-action="shell#logout">
+      로그아웃
+    </button>
+  </div>
+</aside>

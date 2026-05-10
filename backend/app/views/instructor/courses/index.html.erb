@@ -1,0 +1,126 @@
+<% content_for :title, "SpeakFlow | 강사 강의 관리" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor</p>
+              <h1 class="section-title">내 강의 관리</h1>
+              <p class="section-copy">등록된 강의를 확인하고 강의 정보 수정, 삭제, 강의편 추가까지 한 곳에서 관리합니다.</p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_counts[:courses] %></span>
+                <span class="stat-card__label">등록 강의</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_counts[:upcoming] %></span>
+                <span class="stat-card__label">예정 강의</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_courses.sum { |course| course.lectures.size } %></span>
+                <span class="stat-card__label">전체 강의편</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_courses.sum { |course| course.enrollments.size } %></span>
+                <span class="stat-card__label">전체 수강생</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="split-between" style="margin-bottom: 26px;">
+              <div class="section-heading" style="margin-bottom: 0;">
+                <h2 class="section-title" style="font-size: 34px;">강의 목록</h2>
+                <p class="section-copy">강의별 일정과 강의편 현황을 보면서 바로 손볼 수 있습니다.</p>
+              </div>
+              <%= link_to "새 강의 등록", new_instructor_course_path, class: "button button--primary" %>
+            </div>
+
+            <% if @instructor_courses.any? %>
+              <div class="course-grid">
+                <% @instructor_courses.each do |course| %>
+                  <article class="surface-card admin-preview-panel">
+                    <div class="admin-preview-thumbnail admin-preview-thumbnail--compact">
+                      <% if course.thumbnail_url.present? %>
+                        <img src="<%= course.thumbnail_url %>" alt="<%= course.title %> 썸네일">
+                      <% else %>
+                        <div class="admin-preview-thumbnail__mock">
+                          <span>Thumbnail</span>
+                          <strong><%= course.title %></strong>
+                          <p>썸네일이 아직 등록되지 않았습니다.</p>
+                        </div>
+                      <% end %>
+                    </div>
+
+                    <span class="pill"><%= course.category.name %></span>
+                    <h3><%= course.title %></h3>
+                    <p><%= truncate(course.description, length: 110) %></p>
+
+                    <div class="meta-list">
+                      <div class="meta-item">
+                        <span>수강신청 마감</span>
+                        <strong><%= display_date(course.enrollment_deadline) %></strong>
+                      </div>
+                      <div class="meta-item">
+                        <span>운영 기간</span>
+                        <strong><%= "#{display_date(course.start_date)} - #{display_date(course.end_date)}" %></strong>
+                      </div>
+                      <div class="meta-item">
+                        <span>강의편</span>
+                        <strong><%= course.lectures.size %>개</strong>
+                      </div>
+                      <div class="meta-item">
+                        <span>수강생</span>
+                        <strong><%= course.enrollments.size %>명</strong>
+                      </div>
+                    </div>
+
+                    <div class="button-row">
+                      <%= link_to "강의 수정", edit_instructor_course_path(course), class: "button button--secondary button--small" %>
+                      <%= link_to "강의편 추가", new_instructor_course_lecture_path(course), class: "button button--primary button--small" %>
+                      <%= button_to "강의 삭제", instructor_course_path(course), method: :delete, class: "button button--secondary button--small", form: { data: { turbo_confirm: "정말 이 강의를 삭제할까요?" } } %>
+                    </div>
+
+                    <% if course.lectures.any? %>
+                      <div class="admin-preview-list">
+                        <% course.lectures.order(:order_no).each do |lecture| %>
+                          <div class="admin-preview-list__item">
+                            <div>
+                              <strong><%= lecture.order_no %>. <%= lecture.title %></strong>
+                              <span><%= duration_label(lecture.duration) %></span>
+                            </div>
+                            <%= link_to "강의편 수정", edit_instructor_course_lecture_path(course, lecture), class: "button button--secondary button--small" %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% else %>
+                      <div class="admin-preview-note">
+                        <strong>아직 강의편이 없습니다.</strong>
+                        <p>첫 강의편을 추가해 수강생이 바로 학습을 시작할 수 있게 준비해보세요.</p>
+                      </div>
+                    <% end %>
+                  </article>
+                <% end %>
+              </div>
+            <% else %>
+              <article class="surface-card admin-preview-note">
+                <strong>아직 등록된 강의가 없습니다.</strong>
+                <p>첫 강의를 만들고 강의편을 연결하면 강사 운영 흐름이 완성됩니다.</p>
+                <div class="button-row" style="margin-top: 18px;">
+                  <%= link_to "첫 강의 등록", new_instructor_course_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+            <% end %>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

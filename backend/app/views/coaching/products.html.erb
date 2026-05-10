@@ -1,0 +1,71 @@
+<% content_for :title, "SpeakFlow | 첨삭 상품" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "coaching/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">첨삭 상품</h1>
+              <p class="section-copy">기본 강의 시청은 멤버십으로, 1:1 강사 피드백은 필요한 만큼 상품으로 확장해서 사용할 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">현재 멤버십</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>활성 플랜</span><strong><%= @active_subscription&.membership_plan&.name || "없음" %></strong></div>
+                  <div class="meta-item"><span>첨삭 잔액</span><strong><%= @coaching_balance %>회</strong></div>
+                  <div class="meta-item"><span>다음 갱신</span><strong><%= @active_subscription ? display_date(@active_subscription.current_period_end.to_date) : "미정" %></strong></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="pricing-grid">
+              <% @coaching_products.each do |product| %>
+                <article class="surface-card admin-preview-panel membership-card">
+                  <span class="pill"><%= product.credits_amount %>크레딧</span>
+                  <h3><%= product.name %></h3>
+                  <p><%= product.tagline %></p>
+
+                  <% if product.slug == "single-feedback" %>
+                    <div class="admin-preview-note" style="margin: 0 0 18px;">
+                      <strong>단일 피드백</strong>
+                      <p>하나의 녹음 파일이나 한 번의 발표 흐름을 빠르게 확인받고 싶을 때 적합합니다.</p>
+                    </div>
+                  <% elsif product.slug == "triple-feedback-pack" %>
+                    <div class="admin-preview-note" style="margin: 0 0 18px;">
+                      <strong>반복 점검용 패키지</strong>
+                      <p>초안, 수정본, 최종본처럼 여러 번 나눠 피드백을 받아야 할 때 가장 효율적인 구성입니다.</p>
+                    </div>
+                  <% elsif product.slug == "interview-intensive" %>
+                    <div class="admin-preview-note" style="margin: 0 0 18px;">
+                      <strong>면접 특화 구성</strong>
+                      <p>자기소개 1회와 꼬리질문 대응 1회를 나눠 점검할 수 있도록 2회 크레딧으로 묶었습니다.</p>
+                    </div>
+                  <% end %>
+
+                  <div class="commerce-price">
+                    <strong><%= number_to_currency(product.price, unit: "₩", precision: 0) %></strong>
+                    <span class="commerce-price__note">크레딧 <%= product.credits_amount %>회 지급</span>
+                  </div>
+
+                  <div class="button-row">
+                    <%= button_to "#{product.name} 구매", coaching_purchase_path(product_id: product.id), method: :post, class: "button button--primary button--small", form_class: "inline-form" %>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,21 @@
+<% content_for :title, "SpeakFlow | Admin Access Denied" %>
+
+<main class="page">
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <article class="surface-card" style="max-width: 760px; margin: 0 auto;">
+          <p class="eyebrow">Access denied</p>
+          <h1 class="section-title">관리자 페이지에 접근할 수 없습니다.</h1>
+          <p class="section-copy">
+            비로그인 사용자, 강사, 수강생은 관리자 페이지에 들어올 수 없습니다. 관리자 계정으로 로그인한 뒤 다시 시도해 주세요.
+          </p>
+          <div class="button-row" style="margin-top: 22px;">
+            <%= link_to "메인으로 돌아가기", root_path, class: "button button--secondary" %>
+            <%= link_to "로그인", login_path, class: "button button--primary" %>
+          </div>
+        </article>
+      </section>
+    </div>
+  </section>
+</main>

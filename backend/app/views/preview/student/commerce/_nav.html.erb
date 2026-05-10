@@ -1,0 +1,25 @@
+<aside class="admin-preview-nav">
+  <div class="admin-preview-nav__brand">
+    <p class="eyebrow">Preview student</p>
+    <h2>유료 강의 흐름</h2>
+    <p>가격, 장바구니, 결제, 구매 완료까지 학생 관점의 구매 경험을 테스트하는 영역입니다.</p>
+  </div>
+
+  <nav class="admin-preview-nav__links" aria-label="학생 결제 흐름 메뉴">
+    <%= link_to "유료 강의 상세", preview_student_paid_course_path, class: "admin-preview-link #{current_page?(preview_student_paid_course_path) ? 'is-active' : ''}" %>
+    <%= link_to "장바구니", preview_student_cart_path, class: "admin-preview-link #{current_page?(preview_student_cart_path) ? 'is-active' : ''}" %>
+    <%= link_to "결제", preview_student_checkout_path, class: "admin-preview-link #{current_page?(preview_student_checkout_path) ? 'is-active' : ''}" %>
+    <%= link_to "주문 완료", preview_student_order_complete_path, class: "admin-preview-link #{current_page?(preview_student_order_complete_path) ? 'is-active' : ''}" %>
+  </nav>
+
+  <div class="admin-preview-nav__meta">
+    <div class="admin-preview-mini">
+      <span>샘플 유료 강의</span>
+      <strong><%= @priced_courses.size %></strong>
+    </div>
+    <div class="admin-preview-mini">
+      <span>기준 가격대</span>
+      <strong><%= number_to_currency(@priced_courses.first[:price], unit: "₩", precision: 0) %></strong>
+    </div>
+  </div>
+</aside>

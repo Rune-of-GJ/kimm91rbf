@@ -1,0 +1,57 @@
+<header class="site-header">
+  <div class="container site-header__row">
+    <%= link_to root_path, class: "brand", aria: { label: "SpeakFlow 홈" } do %>
+      <span class="brand__mark">
+        <%= image_tag "ripple-logo.png", alt: "SpeakFlow ripple logo" %>
+      </span>
+      <span class="brand__text">SpeakFlow</span>
+    <% end %>
+
+    <button
+      type="button"
+      class="site-nav-toggle"
+      aria-label="메뉴 열기"
+      data-action="shell#toggleNav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M4 7H20"></path>
+        <path d="M4 12H20"></path>
+        <path d="M4 17H20"></path>
+      </svg>
+    </button>
+
+    <nav class="site-nav" aria-label="주요 메뉴" data-shell-target="nav">
+      <%= app_nav_link "홈", root_path, :dashboard %>
+      <%= app_nav_link "카테고리", categories_path, :categories %>
+      <%= app_nav_link "강의", courses_path, :courses %>
+      <% if current_user %>
+        <%= app_nav_link "멤버십", membership_account_path, :membership %>
+        <%= app_nav_link "첨삭", coaching_products_path, :coaching %>
+        <%= app_nav_link "내 학습", my_courses_path, :my_courses %>
+        <%= app_nav_link "진도", progress_path, :progress %>
+      <% end %>
+    </nav>
+
+    <div class="site-header__actions">
+      <% if current_user %>
+        <div class="user-chip">
+          <strong><%= current_user.name %></strong>
+          <span><%= current_user.role.to_s.humanize %></span>
+        </div>
+
+        <button
+          type="button"
+          class="icon-button"
+          aria-label="사용자 메뉴 열기"
+          data-action="shell#togglePanel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20C5.8 16.8 8.4 15 12 15C15.6 15 18.2 16.8 19 20"></path>
+          </svg>
+        </button>
+      <% else %>
+        <%= link_to "로그인", login_path, class: "button button--secondary button--small" %>
+        <%= link_to "시작하기", login_path(signup: true), class: "button button--primary button--small" %>
+      <% end %>
+    </div>
+  </div>
+</header>

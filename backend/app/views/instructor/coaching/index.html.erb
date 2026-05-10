@@ -1,0 +1,71 @@
+<% content_for :title, "SpeakFlow | Instructor Coaching Queue" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor coaching</p>
+              <h1 class="section-title">첨삭 대기열</h1>
+              <p class="section-copy">학생이 보낸 음성 첨삭 요청을 확인하고, Coach 포함 요청인지 별도 구매 요청인지 구분해서 처리할 수 있습니다.</p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @coaching_counts[:queued] %></span>
+                <span class="stat-card__label">대기 요청</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @coaching_counts[:reviewing] %></span>
+                <span class="stat-card__label">검토 중</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @coaching_counts[:completed] %></span>
+                <span class="stat-card__label">완료 요청</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @feedback_requests.count %></span>
+                <span class="stat-card__label">전체 요청</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <% if @feedback_requests.any? %>
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">첨삭 요청 목록</span>
+                <div class="commerce-list">
+                  <% @feedback_requests.each do |request| %>
+                    <div class="commerce-line">
+                      <div>
+                        <strong><%= request.user.name %> · <%= request.title %></strong>
+                        <span>
+                          <%= display_date(request.created_at.to_date) %> ·
+                          <%= request.credit_label %> ·
+                          <%= request.status.humanize %>
+                          <% if request.course.present? %>
+                            · <%= request.course.title %>
+                          <% end %>
+                        </span>
+                      </div>
+                      <%= link_to(request.completed? ? "결과 보기" : "검토 시작", instructor_coaching_request_path(request), class: "button button--secondary button--small") %>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+            <% else %>
+              <article class="surface-card admin-preview-note">
+                <strong>아직 들어온 첨삭 요청이 없습니다.</strong>
+                <p>학생이 첨삭권을 사용해 요청을 보내면 이 대기열에 쌓이게 됩니다.</p>
+              </article>
+            <% end %>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

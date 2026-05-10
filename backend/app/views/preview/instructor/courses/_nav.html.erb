@@ -1,0 +1,23 @@
+<aside class="admin-preview-nav">
+  <div class="admin-preview-nav__brand">
+    <p class="eyebrow">Preview instructor</p>
+    <h2>강사 테스트</h2>
+    <p>강사 전용 강의등록 시안 영역입니다.</p>
+  </div>
+
+  <nav class="admin-preview-nav__links" aria-label="강사 미리보기 메뉴">
+    <%= link_to "강의등록", preview_instructor_course_new_path, class: "admin-preview-link #{current_page?(preview_instructor_course_new_path) ? 'is-active' : ''}" %>
+    <%= link_to "관리자 허브", preview_admin_dashboard_path, class: "admin-preview-link" %>
+  </nav>
+
+  <div class="admin-preview-nav__meta">
+    <div class="admin-preview-mini">
+      <span>담당 강의</span>
+      <strong><%= @preview_instructor_counts[:courses] %></strong>
+    </div>
+    <div class="admin-preview-mini">
+      <span>카테고리</span>
+      <strong><%= @preview_instructor_counts[:categories] %></strong>
+    </div>
+  </div>
+</aside>

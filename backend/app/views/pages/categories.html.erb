@@ -1,63 +1,62 @@
-<% content_for :title, "카테고리 | SpeakFlow" %>
+<% content_for :title, "SpeakFlow | 카테고리" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>카테고리 | SpeakFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
-  <!-- 헤더 -->
-  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
+<main class="page">
+  <section class="hero-shell">
+    <div class="hero-shell__ambient" aria-hidden="true"></div>
+
+    <div class="container hero-shell__grid">
+      <div class="hero-shell__copy">
+        <p class="eyebrow">Category map</p>
+        <h1 class="hero-shell__title">어떤 상황이어도<br>SpeakFlow면 됩니다.</h1>
+        <p class="hero-shell__body">
+          목소리, 바디랭귀지, 표현력 부족 등 고민은 이제 그만!
+        </p>
       </div>
-      <div class="flex items-center gap-4">
-        <% if current_user %>
-          <span class="text-sm text-blue-300"><%= current_user.name %></span>
-          <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
-            로그아웃
-          </button>
-        <% else %>
-          <%= link_to "로그인", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition no-underline" %>
-        <% end %>
-      </div>
-    </div>
-  </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-black text-white mb-8">강의 카테고리</h1>
+      <aside class="hero-focus">
+        <div class="hero-focus__glow" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--a" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--b" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% @categories.each do |category| %>
-        <div class="bg-slate-800 border border-slate-700 hover:border-blue-500 rounded-lg p-6 transition group cursor-pointer">
-          <div class="text-5xl mb-4">📚</div>
-          <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-blue-300"><%= category.name %></h2>
-          <p class="text-slate-300 mb-4"><%= category.courses.count %>개의 강의</p>
-          <%= link_to "강의 보기", courses_path(category: category.id), class: "inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition no-underline" %>
+        <div class="hero-focus__content">
+          <span class="pill pill--accent">Category count</span>
+          <strong><%= @categories.count %>개의 카테고리가 준비되어 있습니다.</strong>
+          <p>발표, 면접, 전달력 향상처럼 맥락이 다른 만큼 시작점도 분명해야 합니다.</p>
         </div>
-      <% end %>
+      </aside>
     </div>
-  </main>
+  </section>
 
-  <script>
-    async function logout() {
-      try {
-        await fetch('/api/v1/auth/logout', {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
-        });
-        window.location.href = '/';
-      } catch (error) {
-        console.error('Logout error:', error);
-        window.location.href = '/';
-      }
-    }
-  </script>
-</body>
-</html>
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <div class="category-grid">
+          <% @categories.each do |category| %>
+            <article class="category-card">
+              <div class="category-card__top">
+                <div>
+                  <span class="pill"><%= category.courses.count %>개 코스</span>
+                  <h3 style="margin-top: 14px;"><%= category.name %></h3>
+                </div>
+
+                <span class="micro-ripple" aria-hidden="true">
+                  <span class="micro-ripple__ring micro-ripple__ring--a"></span>
+                  <span class="micro-ripple__ring micro-ripple__ring--b"></span>
+                  <span class="micro-ripple__ring micro-ripple__ring--c"></span>
+                  <span class="micro-ripple__core"></span>
+                </span>
+              </div>
+
+              <p><%= category.description.presence || "목적이 비슷한 학습 과정을 하나의 흐름으로 모아 둔 카테고리입니다." %></p>
+
+              <div class="button-row" style="margin-top: 18px;">
+                <%= link_to "강의 보기", courses_path(category: category.id), class: "button button--secondary button--small" %>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>

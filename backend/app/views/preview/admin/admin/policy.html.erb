@@ -1,0 +1,86 @@
+<% content_for :title, "SpeakFlow | Preview Admin Policy" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/admin/admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">관리자 전용 접근 제한 테스트</h1>
+              <p class="section-copy">
+                비로그인, 강사, 수강생은 모두 차단하고 관리자만 접속 가능한 구조로 정리한 프리뷰입니다.
+              </p>
+            </div>
+
+            <div class="chip-row">
+              <%= link_to "비로그인", preview_admin_policy_path(as: "guest"), class: "category-filter #{@policy_role == 'guest' ? 'is-active' : ''}" %>
+              <%= link_to "수강생", preview_admin_policy_path(as: "student"), class: "category-filter #{@policy_role == 'student' ? 'is-active' : ''}" %>
+              <%= link_to "강사", preview_admin_policy_path(as: "instructor"), class: "category-filter #{@policy_role == 'instructor' ? 'is-active' : ''}" %>
+              <%= link_to "관리자", preview_admin_policy_path(as: "admin"), class: "category-filter #{@policy_role == 'admin' ? 'is-active' : ''}" %>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">현재 시뮬레이션</span>
+                  <h3 style="margin-top: 14px;"><%= @policy_state[:label] %></h3>
+                </div>
+                <span class="status-pill <%= @policy_state[:allowed] ? 'status-pill--accent' : '' %>">
+                  <%= @policy_state[:allowed] ? "페이지 접속 가능" : "페이지 접속 불가" %>
+                </span>
+              </div>
+              <p><%= @policy_state[:message] %></p>
+            </article>
+          </section>
+
+          <% if @policy_state[:allowed] %>
+            <section class="page-section">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">관리자</span>
+                <h3>관리자만 관리자 페이지에 접속합니다.</h3>
+                <p>로그인 세션 확인 후 <code>current_user.admin?</code>를 통과하면 관리자 화면을 그대로 렌더링합니다.</p>
+              </article>
+            </section>
+          <% else %>
+            <section class="page-section">
+              <div class="admin-preview-grid">
+                <% @blocked_responses.each do |response| %>
+                  <article class="surface-card admin-preview-panel">
+                    <span class="pill"><%= response[:title] %></span>
+                    <h3><%= response[:title] %></h3>
+                    <p><%= response[:body] %></p>
+                  </article>
+                <% end %>
+              </div>
+            </section>
+          <% end %>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <span class="pill">현재 정리된 정책</span>
+              <div class="admin-preview-checks">
+                <div class="admin-preview-check">
+                  <strong>비로그인: 관리자 페이지 접속 불가</strong>
+                  <p>처리 방식 후보는 `에러 페이지 이동` 또는 `alert 후 되돌리기`입니다.</p>
+                </div>
+                <div class="admin-preview-check">
+                  <strong>강사/수강생: 관리자 페이지 접속 불가</strong>
+                  <p>비로그인과 동일한 차단 정책으로 묶고, 관리자만 예외적으로 통과시킵니다.</p>
+                </div>
+                <div class="admin-preview-check">
+                  <strong>관리자: 관리자 페이지 접속 가능</strong>
+                  <p>관리자 계정만 진입을 허용하고, 실제 반영 시에는 관리자 컨트롤러 전체에 공통 권한 검사를 걸어야 합니다.</p>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

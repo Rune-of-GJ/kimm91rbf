@@ -1,0 +1,66 @@
+<% content_for :title, "SpeakFlow | Instructor Settlements" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor settlement</p>
+              <h1 class="section-title">내 정산 요약</h1>
+              <p class="section-copy"><%= @instructor_settlement[:month_label] %> 기준 월정액 기여도와 첨삭 지급액을 함께 확인합니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_settlement[:membership][:watch_minutes] %>분</span>
+                <span class="stat-card__label">유효 시청 시간</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= number_to_percentage(@instructor_settlement[:membership][:share] * 100, precision: 1) %></span>
+                <span class="stat-card__label">월정액 기여도</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @instructor_settlement[:coaching][:completed_requests] %>건</span>
+                <span class="stat-card__label">완료 첨삭 건수</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= number_to_currency(@instructor_settlement[:final_payout], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__label">예상 지급액</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">월정액 정산</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>유효 시청 시간</span><strong><%= @instructor_settlement[:membership][:watch_minutes] %>분</strong></div>
+                  <div class="meta-item"><span>기여도</span><strong><%= number_to_percentage(@instructor_settlement[:membership][:share] * 100, precision: 1) %></strong></div>
+                  <div class="meta-item"><span>상태</span><strong><%= @instructor_settlement[:membership][:eligible] ? "지급 가능" : "이월" %></strong></div>
+                  <div class="meta-item"><span>지급액</span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "₩", precision: 0) %></strong></div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">첨삭 정산</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>완료 건수</span><strong><%= @instructor_settlement[:coaching][:completed_requests] %>건</strong></div>
+                  <div class="meta-item"><span>총매출</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>플랫폼 수수료</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>지급액</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "₩", precision: 0) %></strong></div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

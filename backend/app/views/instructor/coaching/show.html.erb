@@ -1,0 +1,60 @@
+<% content_for :title, "SpeakFlow | Instructor Feedback Review" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor coaching</p>
+              <h1 class="section-title">첨삭 검토</h1>
+              <p class="section-copy">녹음을 듣고 시간 구간별 코멘트와 총평을 남긴 뒤 완료 처리할 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">검토 대상</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>학생</span><strong><%= @feedback_request.user.name %></strong></div>
+                  <div class="meta-item"><span>요청 제목</span><strong><%= @feedback_request.title %></strong></div>
+                  <div class="meta-item"><span>요청 출처</span><strong><%= @feedback_request.credit_label %></strong></div>
+                  <div class="meta-item"><span>음성 파일</span><strong><%= @feedback_request.audio_reference %></strong></div>
+                  <div class="meta-item"><span>대상 강의</span><strong><%= @feedback_request.course&.title || "미지정" %></strong></div>
+                </div>
+                <% if @feedback_request.note.present? %>
+                  <div class="admin-preview-note">
+                    <strong>학생 메모</strong>
+                    <p><%= @feedback_request.note %></p>
+                  </div>
+                <% end %>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill"><%= @feedback_request.completed? ? "저장된 피드백" : "피드백 작성" %></span>
+                <%= form_with model: @feedback_request, url: instructor_coaching_request_path(@feedback_request), method: :patch, class: "auth-form" do |form| %>
+                  <label class="field field--full">
+                    <span>타임코드 코멘트</span>
+                    <%= form.text_area :response_timecodes, rows: 8, placeholder: "예: 00:12 - 첫 문장을 조금 더 또렷하게 끊어 주세요." %>
+                  </label>
+                  <label class="field field--full">
+                    <span>총평</span>
+                    <%= form.text_area :response_summary, rows: 6, placeholder: "전반적인 총평과 다음 연습 포인트를 남겨주세요." %>
+                  </label>
+                  <div class="button-row">
+                    <%= form.submit "첨삭 완료 처리", class: "button button--primary button--small" %>
+                    <%= link_to "대기열로 돌아가기", instructor_coaching_queue_path, class: "button button--secondary button--small" %>
+                  </div>
+                <% end %>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

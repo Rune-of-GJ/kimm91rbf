@@ -1,0 +1,52 @@
+<% content_for :title, "SpeakFlow | New Lecture" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor</p>
+              <h1 class="section-title">강의편 추가</h1>
+              <p class="section-copy"><%= @course.title %>에 새 강의편을 추가합니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">새 강의편</span>
+                <%= render "form", submit_label: "강의편 추가" %>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">현재 강의편</span>
+                <% if @course.lectures.any? %>
+                  <div class="admin-preview-list">
+                    <% @course.lectures.order(:order_no).each do |lecture| %>
+                      <div class="admin-preview-list__item">
+                        <div>
+                          <strong><%= lecture.order_no %>. <%= lecture.title %></strong>
+                          <span><%= duration_label(lecture.duration) %></span>
+                        </div>
+                        <%= link_to "수정", edit_instructor_course_lecture_path(@course, lecture), class: "button button--secondary button--small" %>
+                      </div>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <div class="admin-preview-note">
+                    <strong>아직 강의편이 없습니다.</strong>
+                    <p>첫 강부터 하나씩 추가해서 코스 구조를 완성하세요.</p>
+                  </div>
+                <% end %>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

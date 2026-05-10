@@ -1,0 +1,110 @@
+<% content_for :title, "SpeakFlow | 내 멤버십" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">내 멤버십</h1>
+              <p class="section-copy">현재 멤버십 상태와 첨삭 크레딧, 최근 요청 상태를 한 번에 확인하세요.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <% if @active_subscription %>
+              <div class="detail-grid">
+                <article class="surface-card admin-preview-panel">
+                  <span class="pill pill--accent">활성 구독</span>
+                  <h3><%= @active_subscription.membership_plan.name %></h3>
+                  <p><%= @active_subscription.membership_plan.tagline %></p>
+                  <div class="meta-list" style="margin-top: 18px;">
+                    <div class="meta-item"><span>시작일</span><strong><%= display_date(@active_subscription.started_at.to_date) %></strong></div>
+                    <div class="meta-item"><span>다음 갱신</span><strong><%= display_date(@active_subscription.current_period_end.to_date) %></strong></div>
+                    <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "₩", precision: 0) %></strong></div>
+                  </div>
+                  <div class="button-row membership-account-actions" style="margin-top: 18px;">
+                    <%= link_to "플랜 변경", membership_plans_path, class: "button button--secondary button--small" %>
+                    <%= button_to "멤버십 해지", membership_cancel_path, method: :patch, class: "button button--ghost button--small", form_class: "inline-form" %>
+                  </div>
+                </article>
+
+                <article class="surface-card admin-preview-panel">
+                  <span class="pill">첨삭 크레딧</span>
+                  <h3><%= current_user.coaching_credits_balance %>회 사용 가능</h3>
+                  <p>월정액에 포함된거랑 따로 산거 분리해서 표시하도록 수정.</p>
+                  <div class="button-row membership-account-actions" style="margin-top: 18px;">
+                    <%= link_to "첨삭권 보러가기", coaching_products_path, class: "button button--secondary button--small" %>
+                    <%= link_to "첨삭 요청하기", new_coaching_request_path, class: "button button--primary button--small" %>
+                  </div>
+                </article>
+              </div>
+            <% else %>
+              <article class="surface-card admin-preview-panel">
+                <h3>아직 활성 멤버십이 없습니다.</h3>
+                <p style="margin-top: 14px;">멤버십을 시작하여 SpeakFlow의 모든 기능을 바로 이용하세요.</p>
+                <div class="button-row" style="margin-top: 18px;">
+                  <%= link_to "멤버십 시작하기", membership_plans_path, class: "button button--primary" %>
+                </div>
+              </article>
+            <% end %>
+          </section>
+
+          <section class="page-section">
+            <div class="section-heading">
+              <h2 class="section-title">멤버십 기록</h2>
+              <p class="section-copy">최근에 시작하거나 변경한 멤버십을 확인할 수 있습니다.</p>
+            </div>
+
+            <% if @recent_subscriptions.any? %>
+              <div class="course-grid">
+                <% @recent_subscriptions.each do |subscription| %>
+                  <article class="course-card">
+                    <span class="pill <%= 'pill--accent' if subscription.active_now? %>"><%= subscription.status.humanize %></span>
+                    <h3 style="margin-top: 14px;"><%= subscription.membership_plan.name %></h3>
+                    <p><%= subscription.membership_plan.tagline %></p>
+                    <div class="meta-list">
+                      <div class="meta-item"><span>시작일</span><strong><%= display_date(subscription.started_at.to_date) %></strong></div>
+                      <div class="meta-item"><span>종료일</span><strong><%= display_date(subscription.current_period_end.to_date) %></strong></div>
+                    </div>
+                  </article>
+                <% end %>
+              </div>
+            <% end %>
+          </section>
+
+          <section class="page-section">
+            <div class="section-heading">
+              <h2 class="section-title">최근 첨삭 요청</h2>
+              <p class="section-copy">최근 보낸 요청 상태까지 함께 이어서 확인할 수 있습니다.</p>
+            </div>
+
+            <% if @recent_feedback_requests.any? %>
+              <div class="course-grid">
+                <% @recent_feedback_requests.each do |request| %>
+                  <article class="course-card">
+                    <span class="pill"><%= request.status.humanize %></span>
+                    <h3 style="margin-top: 14px;"><%= request.title %></h3>
+                    <p><%= request.credit_label %></p>
+                    <div class="meta-list">
+                      <div class="meta-item"><span>요청일</span><strong><%= display_date(request.created_at.to_date) %></strong></div>
+                      <div class="meta-item"><span>대상 강의</span><strong><%= request.course&.title || "미지정" %></strong></div>
+                    </div>
+                  </article>
+                <% end %>
+              </div>
+            <% else %>
+              <article class="surface-card">
+                <h3>아직 첨삭 요청이 없습니다.</h3>
+                <p style="margin-top: 14px;">첨삭권이 있다면 바로 음성과 메모를 올려 요청을 시작할 수 있습니다.</p>
+              </article>
+            <% end %>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

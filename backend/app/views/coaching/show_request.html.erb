@@ -1,0 +1,66 @@
+<% content_for :title, "SpeakFlow | 첨삭 요청 상세" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "coaching/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">첨삭 요청 상세</h1>
+              <p class="section-copy">보낸 요청 내용과 강사 피드백을 한 화면에서 확인할 수 있습니다.</p>
+            </div>
+
+            <div class="button-row">
+              <%= link_to "내 요청 현황으로", coaching_requests_path, class: "button button--secondary button--small" %>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill <%= 'pill--accent' if @feedback_request.completed? %>"><%= @feedback_request.status.humanize %></span>
+                <h3 style="margin-top: 18px;"><%= @feedback_request.title %></h3>
+                <p><%= @feedback_request.note.presence || "남긴 메모가 없습니다." %></p>
+
+                <div class="meta-list" style="margin-top: 18px;">
+                  <div class="meta-item"><span>대상 강의</span><strong><%= @feedback_request.course&.title || "미지정" %></strong></div>
+                  <div class="meta-item"><span>대상 강의편</span><strong><%= @feedback_request.lecture&.title || "미지정" %></strong></div>
+                  <div class="meta-item"><span>사용 크레딧</span><strong><%= @feedback_request.credit_label %></strong></div>
+                  <div class="meta-item"><span>첨삭 강사</span><strong><%= @feedback_request.instructor&.name || "배정 전" %></strong></div>
+                  <div class="meta-item"><span>요청일</span><strong><%= display_date(@feedback_request.created_at.to_date) %></strong></div>
+                  <div class="meta-item"><span>음성 경로</span><strong><%= @feedback_request.audio_reference.presence || "없음" %></strong></div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">강사 피드백</span>
+
+                <% if @feedback_request.response_summary.present? %>
+                  <div class="admin-preview-note">
+                    <strong>총평</strong>
+                    <p><%= @feedback_request.response_summary %></p>
+                  </div>
+
+                  <% if @feedback_request.response_timecodes.present? %>
+                    <div class="admin-preview-note" style="margin-top: 18px;">
+                      <strong>타임코드 메모</strong>
+                      <p style="white-space: pre-line;"><%= @feedback_request.response_timecodes %></p>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <div class="admin-preview-note">
+                    <strong>아직 피드백이 등록되지 않았습니다.</strong>
+                    <p>강사가 확인을 시작하면 이 영역에 총평과 타임코드 메모가 표시됩니다.</p>
+                  </div>
+                <% end %>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

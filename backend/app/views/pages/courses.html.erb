@@ -1,93 +1,101 @@
-<% content_for :title, "강의 | SpeakFlow" %>
+<% content_for :title, "SpeakFlow | Courses" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>강의 | SpeakFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
-  <!-- 헤더 -->
-  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <%= link_to root_path do %>
-          <div class="flex flex-col items-center">
-            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
-            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
-          </div>
-        <% end %>
+<% selected_label = @selected_category&.name || "전체 강의" %>
+<% enrolled_ids = current_user ? current_user.enrolled_courses.ids : [] %>
+
+<main class="page">
+  <section class="hero-shell">
+    <div class="hero-shell__ambient" aria-hidden="true"></div>
+
+    <div class="container hero-shell__grid">
+      <div class="hero-shell__copy">
+        <p class="eyebrow">Course library</p>
+        <h1 class="hero-shell__title"><%= selected_label %>에서<br>나에게 맞는 강의는?</h1>
+        <p class="hero-shell__body">
+          카테고리별로 강의를 탐색해 보세요.
+        </p>
+
+        <div class="button-row">
+          <%= link_to "카테고리 보기", categories_path, class: "button button--secondary" %>
+          <% if current_user %>
+            <%= link_to "내 강의 보기", my_courses_path, class: "button button--primary" %>
+          <% else %>
+            <%= link_to "로그인", login_path, class: "button button--primary" %>
+          <% end %>
+        </div>
       </div>
-      <div class="flex items-center gap-4">
-        <% if current_user %>
-          <span class="text-sm text-blue-300"><%= current_user.name %></span>
-          <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
-            로그아웃
-          </button>
-        <% else %>
-          <%= link_to "로그인", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition no-underline" %>
-        <% end %>
-      </div>
+
+      <aside class="hero-focus">
+        <div class="hero-focus__glow" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--a" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--b" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
+
+        <div class="hero-focus__content">
+          <span class="pill pill--accent">Browse cue</span>
+          <strong><%= @courses.count %>개의 강의가 현재 목록에 있습니다.</strong>
+          <p>카테고리와 커리큘럼을 먼저 비교하고 내 학습 흐름에 맞는 강의를 골라볼 수 있습니다.</p>
+        </div>
+      </aside>
     </div>
-  </header>
+  </section>
 
-  <main class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-black text-white mb-2">강의 목록</h1>
-    <p class="text-slate-300 mb-8"><%= @courses.count %>개의 강의</p>
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <div class="chip-row" style="margin-bottom: 22px;">
+          <%= link_to "전체", courses_path, class: "category-filter #{params[:category].blank? ? 'is-active' : ''}" %>
+          <% @categories.each do |category| %>
+            <%= link_to category.name, courses_path(category: category.id), class: "category-filter #{params[:category].to_s == category.id.to_s ? 'is-active' : ''}" %>
+          <% end %>
+        </div>
 
-    <!-- 카테고리 필터 -->
-    <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
-      <%= link_to "전체", courses_path, class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{request.params[:category].blank? ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
-      <% @categories.each do |cat| %>
-        <%= link_to cat.name, courses_path(category: cat.id), class: "px-4 py-2 rounded-full font-semibold whitespace-nowrap #{request.params[:category].to_i == cat.id ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'} transition" %>
-      <% end %>
-    </div>
+        <% if @courses.any? %>
+          <div class="course-grid">
+            <% @courses.each do |course| %>
+              <article class="course-card">
+                <div class="course-card__top">
+                  <div>
+                    <span class="pill"><%= course.category.name %></span>
+                    <h3 style="margin-top: 14px;"><%= course.title %></h3>
+                  </div>
 
-    <!-- 강의 그리드 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% @courses.each do |course| %>
-        <div class="bg-slate-800 border border-slate-700 hover:border-blue-500 rounded-lg overflow-hidden transition group">
-          <div class="h-40 bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-6xl">🎓</div>
-          <div class="p-6">
-            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-blue-300 transition line-clamp-2"><%= course.title %></h3>
-            <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
-            <p class="text-slate-300 text-sm mb-4 line-clamp-2"><%= course.description %></p>
-            <p class="text-xs text-slate-400 mb-4">📚 <%= course.lectures.count %>개 강의</p>
-            <% if current_user %>
-              <%= button_to "수강신청", enroll_api_v1_course_path(course), method: :post, class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
-            <% else %>
-              <button onclick="alert('로그인이 필요합니다')" class="w-full px-4 py-2 bg-slate-600 text-white rounded font-semibold">수강신청</button>
+                  <span class="micro-ripple" aria-hidden="true">
+                    <span class="micro-ripple__ring micro-ripple__ring--a"></span>
+                    <span class="micro-ripple__ring micro-ripple__ring--b"></span>
+                    <span class="micro-ripple__ring micro-ripple__ring--c"></span>
+                    <span class="micro-ripple__core"></span>
+                  </span>
+                </div>
+
+                <p><%= truncate(course.description, length: 140) %></p>
+
+                <div class="meta-list">
+                  <div class="meta-item"><span>강사</span><strong><%= course.instructor_name %></strong></div>
+                  <div class="meta-item"><span>강의 수</span><strong><%= course.lectures.count %>개</strong></div>
+                  <div class="meta-item"><span>개강일</span><strong><%= display_date(course.start_date) %></strong></div>
+                </div>
+
+                <div class="button-row">
+                  <%= link_to "상세 보기", course_detail_path(course), class: "button button--secondary button--small" %>
+                  <% if enrolled_ids.include?(course.id) %>
+                    <span class="pill pill--accent">수강 중</span>
+                  <% elsif current_user %>
+                    <%= link_to "수강하기", course_detail_path(course), class: "button button--primary button--small" %>
+                  <% else %>
+                    <%= link_to "로그인", login_path, class: "button button--primary button--small" %>
+                  <% end %>
+                </div>
+              </article>
             <% end %>
           </div>
-        </div>
-      <% end %>
+        <% else %>
+          <article class="surface-card">
+            <h3>해당 카테고리에는 아직 공개된 강의가 없습니다.</h3>
+            <p style="margin-top: 14px;">다른 카테고리에서 새 강의를 찾아보세요.</p>
+          </article>
+        <% end %>
+      </section>
     </div>
-
-    <% if @courses.empty? %>
-      <div class="text-center py-12">
-        <p class="text-slate-400 mb-4">해당 카테고리에 강의가 없습니다.</p>
-        <%= link_to "다른 카테고리 보기", categories_path, class: "text-blue-400 hover:text-blue-300 no-underline" %>
-      </div>
-    <% end %>
-  </main>
-
-  <script>
-    async function logout() {
-      try {
-        await fetch('/api/v1/auth/logout', {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
-        });
-        window.location.href = '/';
-      } catch (error) {
-        console.error('Logout error:', error);
-        window.location.href = '/';
-      }
-    }
-  </script>
-</body>
-</html>
+  </section>
+</main>

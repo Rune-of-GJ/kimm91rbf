@@ -1,0 +1,11 @@
+<aside class="admin-preview-nav">
+  <div>
+    <p class="eyebrow">Membership</p>
+    <h2>월정액</h2>
+  </div>
+
+  <nav class="admin-preview-links" aria-label="멤버십 메뉴">
+    <%= link_to "요금제 비교", membership_plans_path, class: "admin-preview-link #{'is-active' if current_page?(membership_plans_path)}" %>
+    <%= link_to "내 멤버십", membership_account_path, class: "admin-preview-link #{'is-active' if current_page?(membership_account_path)}" %>
+  </nav>
+</aside>

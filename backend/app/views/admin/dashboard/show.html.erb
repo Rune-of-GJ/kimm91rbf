@@ -1,0 +1,74 @@
+<% content_for :title, "SpeakFlow | Admin Dashboard" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Admin</p>
+              <h1 class="section-title">관리자 대시보드</h1>
+              <p class="section-copy">전체 사용자, 강사, 수강생, 강의 현황을 한 번에 확인할 수 있습니다.</p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @admin_counts[:users] %></span>
+                <span class="stat-card__label">전체 사용자</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @admin_counts[:instructors] %></span>
+                <span class="stat-card__label">강사</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @admin_counts[:students] %></span>
+                <span class="stat-card__label">수강생</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @admin_counts[:courses] %></span>
+                <span class="stat-card__label">강의</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card">
+                <span class="pill">최근 사용자</span>
+                <div class="admin-preview-list" style="margin-top: 18px;">
+                  <% @recent_users.each do |user| %>
+                    <div class="admin-preview-list__item">
+                      <div>
+                        <strong><%= user.name %></strong>
+                        <span><%= user.email %></span>
+                      </div>
+                      <span class="status-pill"><%= user.role %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+
+              <article class="surface-card">
+                <span class="pill">최근 강의</span>
+                <div class="admin-preview-list" style="margin-top: 18px;">
+                  <% @recent_courses.each do |course| %>
+                    <div class="admin-preview-list__item">
+                      <div>
+                        <strong><%= course.title %></strong>
+                        <span><%= course.category.name %> · <%= course.instructor_name %></span>
+                      </div>
+                      <span class="status-pill"><%= course.lectures.count %>강</span>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

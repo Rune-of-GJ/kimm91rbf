@@ -19,7 +19,7 @@ class ApiProgressTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "progress update requires enrollment" do
+  test "progress update requires course access" do
     post "/api/auth/login", params: {
       email: @user.email,
       password: "password123"
@@ -97,5 +97,39 @@ class ApiProgressTest < ActionDispatch::IntegrationTest
     assert_equal @course.id, progress_body["course_id"]
     assert_equal 1, progress_body["lectures"].length
     assert_equal true, progress_body["lectures"].first["watched"]
+  end
+
+  test "membership user can update progress without enrollment" do
+    plan = MembershipPlan.create!(
+      name: "Pro",
+      slug: "pro-test",
+      tagline: "Membership access",
+      monthly_price: 39_000,
+      monthly_rehearsal_limit: 12,
+      monthly_coaching_credits: 0,
+      included_coaching_unit_price: 18_000,
+      featured: false,
+      position: 99,
+      active: true
+    )
+
+    @user.subscriptions.create!(
+      membership_plan: plan,
+      status: :active,
+      started_at: Time.current,
+      current_period_end: 1.month.from_now
+    )
+
+    post "/api/auth/login", params: {
+      email: @user.email,
+      password: "password123"
+    }, as: :json
+
+    post "/api/lectures/#{@lecture.id}/progress", params: {
+      watched: true
+    }, as: :json
+
+    assert_response :success
+    assert_equal true, response.parsed_body["watched"]
   end
 end

@@ -1,0 +1,42 @@
+<% content_for :title, "SpeakFlow | 리허설 상세" %>
+
+<main class="page">
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <div class="section-heading">
+          <h1 class="section-title">리허설 상세</h1>
+          <p class="section-copy">제출한 리허설 메모와 연결된 강의 정보를 자세히 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="button-row">
+          <%= link_to "리허설 목록으로", rehearsals_path, class: "button button--secondary button--small" %>
+        </div>
+      </section>
+
+      <section class="page-section">
+        <div class="detail-grid">
+          <article class="surface-card admin-preview-panel">
+            <span class="pill pill--accent">제출 기록</span>
+            <h3 style="margin-top: 18px;"><%= @rehearsal_submission.course&.title || "강의 미지정" %></h3>
+            <p><%= @rehearsal_submission.lecture ? "#{@rehearsal_submission.lecture.order_no}. #{@rehearsal_submission.lecture.title}" : "강의편 미지정" %></p>
+
+            <div class="meta-list" style="margin-top: 18px;">
+              <div class="meta-item"><span>제출일</span><strong><%= @rehearsal_submission.submitted_at.strftime("%Y.%m.%d %H:%M") %></strong></div>
+              <div class="meta-item"><span>플랜</span><strong><%= @rehearsal_submission.subscription&.membership_plan&.name || "미지정" %></strong></div>
+              <div class="meta-item"><span>제출 방식</span><strong><%= @rehearsal_submission.source_label %></strong></div>
+            </div>
+          </article>
+
+          <article class="surface-card admin-preview-panel">
+            <span class="pill">남긴 메모</span>
+            <div class="admin-preview-note" style="margin-top: 18px;">
+              <strong>리허설 기록</strong>
+              <p style="white-space: pre-line;"><%= @rehearsal_submission.note.presence || "남긴 메모가 없습니다." %></p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>

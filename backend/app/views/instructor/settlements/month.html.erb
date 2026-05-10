@@ -1,0 +1,47 @@
+<% content_for :title, "SpeakFlow | Instructor Monthly Settlement" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor settlement</p>
+              <h1 class="section-title"><%= @instructor_settlement[:month_label] %> 정산 상세</h1>
+              <p class="section-copy">월정액 시청 기여도와 첨삭 완료 건수를 기준으로 계산된 상세 내역입니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-table admin-preview-table--settlements">
+              <div class="admin-preview-table__row admin-preview-table__row--head">
+                <span>구분</span>
+                <span>근거</span>
+                <span>총액</span>
+                <span>공제</span>
+                <span>지급액</span>
+              </div>
+              <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                <span><strong>월정액</strong></span>
+                <span><%= @instructor_settlement[:membership][:watch_minutes] %>분 / <%= number_to_percentage(@instructor_settlement[:membership][:share] * 100, precision: 1) %></span>
+                <span><%= @instructor_settlement[:membership][:eligible] ? "기준 충족" : "이월 기준" %></span>
+                <span><%= number_to_currency(@instructor_settlement[:membership][:hold_amount], unit: "₩", precision: 0) %></span>
+                <span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "₩", precision: 0) %></strong></span>
+              </div>
+              <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                <span><strong>첨삭</strong></span>
+                <span><%= @instructor_settlement[:coaching][:completed_requests] %>건 완료</span>
+                <span><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "₩", precision: 0) %></span>
+                <span><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "₩", precision: 0) %></span>
+                <span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "₩", precision: 0) %></strong></span>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

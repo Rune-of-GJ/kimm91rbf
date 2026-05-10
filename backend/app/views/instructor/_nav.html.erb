@@ -1,0 +1,35 @@
+<aside class="admin-preview-nav">
+  <div class="admin-preview-nav__brand">
+    <p class="eyebrow">Instructor</p>
+    <h2>강사 스튜디오</h2>
+    <p>강의 등록, 강의편 관리, 첨삭 처리, 정산 확인까지 이어지는 강사 전용 작업 공간입니다.</p>
+  </div>
+
+  <nav class="admin-preview-nav__links" aria-label="강사 메뉴">
+    <%= link_to "내 강의", instructor_root_path, class: "admin-preview-link #{current_page?(instructor_root_path) || current_page?(instructor_courses_path) ? 'is-active' : ''}" %>
+    <%= link_to "강의 등록", new_instructor_course_path, class: "admin-preview-link #{current_page?(new_instructor_course_path) ? 'is-active' : ''}" %>
+    <%= link_to "첨삭 대기열", instructor_coaching_queue_path, class: "admin-preview-link #{request.path.start_with?('/instructor/coaching') ? 'is-active' : ''}" %>
+    <%= link_to "내 정산", instructor_settlements_path, class: "admin-preview-link #{current_page?(instructor_settlements_path) || current_page?(instructor_settlement_month_path) ? 'is-active' : ''}" %>
+  </nav>
+
+  <div class="admin-preview-nav__meta">
+    <div class="admin-preview-mini">
+      <span>내 강의</span>
+      <strong><%= @instructor_counts[:courses] %></strong>
+    </div>
+    <div class="admin-preview-mini">
+      <span>카테고리</span>
+      <strong><%= @instructor_counts[:categories] %></strong>
+    </div>
+    <div class="admin-preview-mini">
+      <span>예정 강의</span>
+      <strong><%= @instructor_counts[:upcoming] %></strong>
+    </div>
+    <% if defined?(@coaching_counts) && @coaching_counts.present? %>
+      <div class="admin-preview-mini">
+        <span>첨삭 대기</span>
+        <strong><%= @coaching_counts[:queued] %></strong>
+      </div>
+    <% end %>
+  </div>
+</aside>

@@ -1,0 +1,143 @@
+<% content_for :title, "SpeakFlow | Preview Admin Users" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/admin/admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">사용자 관리 테스트 페이지</h1>
+              <p class="section-copy">
+                전체 계정을 기준으로 역할 분포를 확인하고, 검색과 역할 필터를 통해 관리 흐름을 검토하는 시안입니다.
+              </p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @user_role_counts["all"] %></span>
+                <span class="stat-card__label">전체 사용자</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @user_role_counts["instructor"] %></span>
+                <span class="stat-card__label">강사</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @user_role_counts["student"] %></span>
+                <span class="stat-card__label">수강생</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @user_role_counts["admin"] %></span>
+                <span class="stat-card__label">관리자</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-user-layout">
+              <article class="surface-card admin-preview-panel">
+                <div class="split-between">
+                  <div>
+                    <span class="pill pill--accent">User controls</span>
+                    <h3 style="margin-top: 14px;">역할 필터와 검색</h3>
+                  </div>
+                  <span class="status-pill">Preview only</span>
+                </div>
+
+                <form action="<%= preview_admin_users_path %>" method="get" class="admin-preview-search">
+                  <label class="field">
+                    <span>이름 또는 이메일 검색</span>
+                    <input type="text" name="q" value="<%= @preview_query %>" placeholder="예: 김강사, student@speakflow.kr">
+                  </label>
+                  <div class="button-row">
+                    <button type="submit" class="button button--primary button--small">검색</button>
+                    <%= link_to "초기화", preview_admin_users_path, class: "button button--secondary button--small" %>
+                  </div>
+                </form>
+
+                <div class="chip-row">
+                  <% [["all", "전체"], ["instructor", "강사"], ["student", "수강생"], ["admin", "관리자"]].each do |value, label| %>
+                    <%= link_to "#{label} #{@user_role_counts[value]}", preview_admin_users_path(role: value, q: @preview_query.presence), class: "category-filter #{@preview_role == value ? 'is-active' : ''}" %>
+                  <% end %>
+                </div>
+
+                <div class="admin-preview-note">
+                  <strong>현재 결과</strong>
+                  <p><%= @filtered_users.size %>명의 계정이 표시됩니다. 실제 삭제와 권한 변경은 아직 연결하지 않았습니다.</p>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">운영 메모</span>
+                <div class="admin-preview-checks">
+                  <div class="admin-preview-check">
+                    <strong>버튼은 아직 비활성 상태입니다.</strong>
+                    <p>이번 단계는 레이아웃과 정보 우선순위를 검토하는 프리뷰라서 실제 삭제와 권한 변경은 막아두었습니다.</p>
+                  </div>
+                  <div class="admin-preview-check">
+                    <strong>목록은 최근 일부가 아니라 전체 계정을 기준으로 보여줍니다.</strong>
+                    <p>이제 숫자 카드와 표가 같은 데이터 범위를 바라보도록 맞췄습니다.</p>
+                  </div>
+                  <div class="admin-preview-check">
+                    <strong>역할별 후속 화면 분리도 고려할 수 있습니다.</strong>
+                    <p>강사 계정 관리와 수강생 계정 관리를 탭이나 별도 페이지로 더 쪼갤 수 있습니다.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">User table</span>
+                  <h3 style="margin-top: 14px;">사용자 전체 목록</h3>
+                </div>
+                <div class="button-row">
+                  <button type="button" class="button button--secondary button--small" disabled>역할 변경</button>
+                  <button type="button" class="button button--ghost button--small" disabled>선택 삭제</button>
+                </div>
+              </div>
+
+              <div class="admin-preview-table admin-preview-table--users">
+                <div class="admin-preview-table__row admin-preview-table__row--head">
+                  <span>이름</span>
+                  <span>이메일</span>
+                  <span>역할</span>
+                  <span>활동 정보</span>
+                  <span>가입일</span>
+                  <span>액션</span>
+                </div>
+
+                <% @filtered_users.each do |user| %>
+                  <div class="admin-preview-table__row">
+                    <span><strong><%= user.name %></strong></span>
+                    <span><%= user.email %></span>
+                    <span><span class="status-pill"><%= user.role %></span></span>
+                    <span>
+                      <% if user.instructor? %>
+                        담당 강의 <%= user.instructed_courses.size %>개
+                      <% elsif user.student? %>
+                        수강 강의 <%= user.enrollments.size %>개
+                      <% else %>
+                        시스템 관리
+                      <% end %>
+                    </span>
+                    <span><%= user.created_at.strftime("%Y.%m.%d") %></span>
+                    <span class="admin-preview-actions">
+                      <button type="button" class="button button--secondary button--small" disabled>권한</button>
+                      <button type="button" class="button button--ghost button--small" disabled>삭제</button>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

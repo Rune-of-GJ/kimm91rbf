@@ -1,0 +1,70 @@
+<% content_for :title, "SpeakFlow | Preview Membership Plans" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/student/memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">요금제 비교 테스트 페이지</h1>
+              <p class="section-copy">
+                학생이 월정액을 납득하려면, 강의 수가 아니라 훈련량과 피드백 차이를 명확하게 보여줘야 합니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="pricing-grid">
+              <% @membership_plans.each do |plan| %>
+                <article class="surface-card admin-preview-panel membership-card <%= 'membership-card--featured' if plan[:id] == @selected_plan[:id] %>">
+                  <span class="pill <%= 'pill--accent' if plan[:id] == @selected_plan[:id] %>"><%= plan[:badge] %></span>
+                  <h3><%= plan[:name] %></h3>
+                  <p><%= plan[:pitch] %></p>
+                  <div class="commerce-price">
+                    <strong><%= number_to_currency(plan[:price], unit: "₩", precision: 0) %></strong>
+                    <span>매월 자동 갱신</span>
+                  </div>
+                  <div class="admin-preview-checks">
+                    <% plan[:highlights].each do |highlight| %>
+                      <div class="admin-preview-check">
+                        <strong><%= highlight %></strong>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="button-row">
+                    <%= link_to "이 플랜 선택", preview_student_membership_checkout_path(plan: plan[:id]), class: "button #{plan[:id] == @selected_plan[:id] ? 'button--primary' : 'button--secondary'} button--small" %>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <span class="pill">기능 비교</span>
+              <div class="admin-preview-table membership-compare">
+                <div class="admin-preview-table__row admin-preview-table__row--head">
+                  <span>항목</span>
+                  <span>Lite</span>
+                  <span>Pro</span>
+                  <span>Coach</span>
+                </div>
+                <% @membership_compare.each do |row| %>
+                  <div class="admin-preview-table__row membership-compare__row">
+                    <span><strong><%= row[:feature] %></strong></span>
+                    <% row[:values].each do |value| %>
+                      <span><%= value %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

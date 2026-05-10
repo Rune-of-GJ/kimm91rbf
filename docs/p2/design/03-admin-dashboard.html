@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakFlow Design Example — Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./speakflow-stage.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container site-header__row">
+        <a class="logo" href="./01-student-home.html">SpeakFlow</a>
+
+        <nav class="nav" aria-label="Admin navigation">
+          <a href="./01-student-home.html">Home</a>
+          <a href="./02-instructor-dashboard.html">Instructor</a>
+          <a class="is-active" href="./03-admin-dashboard.html">Admin</a>
+          <a href="#">Users</a>
+          <a href="#">Policies</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="icon-button" aria-label="Search">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="M16 16L21 21"></path>
+            </svg>
+          </button>
+          <button class="icon-button" aria-label="Profile">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 20C5.8 16.8 8.4 15 12 15C15.6 15 18.2 16.8 19 20"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="padding-bottom: 80px;">
+      <div class="dashboard-layout">
+        <aside class="sidebar">
+          <h2 class="sidebar__title">Admin panel</h2>
+          <p class="sidebar__copy">
+            The admin view stays inside the same system but uses denser information blocks.
+          </p>
+
+          <nav class="sidebar__nav" aria-label="Admin side navigation">
+            <a class="is-active" href="#">Overview</a>
+            <a href="#">Users</a>
+            <a href="#">Courses</a>
+            <a href="#">Categories</a>
+            <a href="#">Logs</a>
+          </nav>
+        </aside>
+
+        <section class="content-stack">
+          <article class="hero-card">
+            <span class="pill pill--accent">Admin dashboard</span>
+            <h1>Control the platform with one
+shared design language</h1>
+            <p>
+              This example reuses the same background, accent, type style, border radius,
+              shadow depth, and icon treatment from the public page so the entire product
+              feels system-driven rather than separately themed.
+            </p>
+          </article>
+
+          <section class="summary-strip">
+            <article class="summary-card">
+              <strong>128</strong>
+              <span>Total registered users</span>
+            </article>
+            <article class="summary-card">
+              <strong>34</strong>
+              <span>Total courses on platform</span>
+            </article>
+            <article class="summary-card">
+              <strong>09</strong>
+              <span>Draft courses waiting review</span>
+            </article>
+            <article class="summary-card">
+              <strong>482</strong>
+              <span>Monthly enrollment volume</span>
+            </article>
+          </section>
+
+          <section class="card-grid card-grid--2">
+            <article class="card">
+              <span class="pill">Policy status</span>
+              <h3>Current operational checks</h3>
+              <ul class="feature-list">
+                <li>Instructor upgrade requests pending: 2</li>
+                <li>Course metadata review needed: 5</li>
+                <li>Category cleanup proposals: 1</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <span class="pill pill--accent">Primary focus</span>
+              <h3>Use accent only for priority control</h3>
+              <p>
+                The lime accent is kept for the one item the admin should notice first,
+                instead of being spread across multiple status styles.
+              </p>
+            </article>
+          </section>
+
+          <section class="table-card">
+            <div class="table-card__head">
+              <div>
+                <h2>Recent platform actions</h2>
+                <p>Neutral table styling with one consistent action treatment.</p>
+              </div>
+              <a class="button button--primary" href="#">Open Admin Actions</a>
+            </div>
+
+            <table class="simple-table">
+              <thead>
+                <tr>
+                  <th>Target</th>
+                  <th>Change</th>
+                  <th>Manager</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="table-title">Interview Speaking Intensive</span>
+                    <span class="table-meta">Course entity</span>
+                  </td>
+                  <td>Draft to published</td>
+                  <td>admin.kim</td>
+                  <td>09:14</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="table-title">kim@speakflow.dev</span>
+                    <span class="table-meta">User account</span>
+                  </td>
+                  <td>Role changed to instructor</td>
+                  <td>admin.park</td>
+                  <td>08:52</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="table-title">Voice Training</span>
+                    <span class="table-meta">Category relation</span>
+                  </td>
+                  <td>Metadata and grouping updated</td>
+                  <td>admin.kim</td>
+                  <td>Yesterday</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

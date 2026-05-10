@@ -3,7 +3,7 @@ setlocal
 
 set "ROOT=%~dp0"
 set "BACKEND=%ROOT%backend"
-set "RAILS_PORT=3000"
+set "RAILS_PORT=3002"
 
 if "%DB_HOST%"=="" set "DB_HOST=127.0.0.1"
 if "%DB_PORT%"=="" set "DB_PORT=5432"

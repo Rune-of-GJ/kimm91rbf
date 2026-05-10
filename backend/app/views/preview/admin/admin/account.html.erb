@@ -1,0 +1,81 @@
+<% content_for :title, "SpeakFlow | Preview Admin Account" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/admin/admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">관리자 계정 생성 방식 테스트</h1>
+              <p class="section-copy">
+                첫 관리자 계정을 어떻게 만들고, 이후에는 어떤 식으로 관리자 계정을 추가할지 정하는 시안입니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">첫 관리자</span>
+                <h3>시스템 초기 관리자 생성</h3>
+                <p>초기 배포 단계에서는 시드 또는 콘솔 명령으로 첫 관리자 계정을 만드는 방식이 가장 안전합니다.</p>
+                <div class="admin-preview-note">
+                  <strong>추천</strong>
+                  <p>초기 1회는 개발자 또는 운영자가 직접 관리자 계정을 만들고, 이후부터 관리자 화면에서 승격합니다.</p>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">이후 관리자 추가</span>
+                <h3>기존 사용자 승격</h3>
+                <p>이미 가입한 강사나 수강생 계정을 관리자가 선택하고 역할을 변경하는 방식입니다.</p>
+                <div class="admin-preview-list">
+                  <% @promotable_users.each do |user| %>
+                    <div class="admin-preview-list__item">
+                      <div>
+                        <strong><%= user.name %></strong>
+                        <span><%= user.email %> · <%= user.role %></span>
+                      </div>
+                      <button type="button" class="button button--secondary button--small" disabled>관리자 승격</button>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <span class="pill">관리자 생성 폼 시안</span>
+              <div class="admin-preview-form-grid">
+                <label class="field">
+                  <span>이름</span>
+                  <input type="text" value="운영 관리자" readonly>
+                </label>
+                <label class="field">
+                  <span>이메일</span>
+                  <input type="email" value="admin@speakflow.kr" readonly>
+                </label>
+                <label class="field">
+                  <span>임시 비밀번호</span>
+                  <input type="text" value="temporary-admin-password" readonly>
+                </label>
+                <label class="field field--full">
+                  <span>생성 방식 메모</span>
+                  <textarea readonly>실제 반영 시에는 일반 회원가입 폼과 분리하고, 관리자만 접근 가능한 생성 화면 또는 운영용 콘솔 명령 중 하나를 선택합니다.</textarea>
+                </label>
+              </div>
+              <div class="button-row">
+                <button type="button" class="button button--primary button--small" disabled>관리자 생성</button>
+                <button type="button" class="button button--secondary button--small" disabled>기존 계정 승격</button>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

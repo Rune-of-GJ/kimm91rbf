@@ -1,0 +1,140 @@
+<% content_for :title, "SpeakFlow | 리허설" %>
+
+<main class="page">
+  <section class="hero-shell">
+    <div class="hero-shell__ambient" aria-hidden="true"></div>
+
+    <div class="container hero-shell__grid">
+      <div class="hero-shell__copy">
+        <p class="eyebrow">Rehearsal</p>
+        <h1 class="hero-shell__title">이번 주 리허설을<br>바로 제출하세요.</h1>
+        <p class="hero-shell__body">스스로 기록을 남기고 변화를 체감할 수 있습니다.</p>
+
+        <div class="button-row">
+          <%= link_to "내 강의 보기", my_courses_path, class: "button button--secondary" %>
+          <%= link_to "내 첨삭 요청", coaching_requests_path, class: "button button--primary" %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-card__value"><%= @current_plan&.name || "-" %></span>
+            <span class="stat-card__label">활성 플랜</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__value"><%= @rehearsal_usage %></span>
+            <span class="stat-card__label">이번 달 제출</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__value"><%= @remaining_rehearsal_count.nil? ? "무제한" : @remaining_rehearsal_count %></span>
+            <span class="stat-card__label">남은 리허설</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-card__value"><%= @recent_rehearsals.count %></span>
+            <span class="stat-card__label">최근 기록</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section">
+        <div class="detail-grid">
+          <article class="surface-card admin-preview-panel">
+            <span class="pill pill--accent">리허설 제출</span>
+
+            <% if @active_subscription.blank? %>
+              <div class="admin-preview-note">
+                <strong>활성 멤버십이 필요합니다.</strong>
+                <p>리허설은 구독 플랜에서 관리되는 훈련 기능입니다. 먼저 멤버십을 시작해야 제출할 수 있습니다.</p>
+                <div class="button-row" style="margin-top: 18px;">
+                  <%= link_to "요금제 비교 보기", membership_plans_path, class: "button button--primary button--small" %>
+                </div>
+              </div>
+            <% elsif @available_courses.empty? %>
+              <div class="admin-preview-note">
+                <strong>선택 가능한 강의가 없습니다.</strong>
+                <p>강의 시청 흐름과 연결된 뒤에 리허설을 제출할 수 있습니다.</p>
+              </div>
+            <% elsif @remaining_rehearsal_count == 0 %>
+              <div class="admin-preview-note">
+                <strong>이번 달 리허설 시도를 모두 사용했습니다.</strong>
+                <p>다음 결제 주기를 기다리거나 상위 플랜으로 변경해 리허설 횟수를 늘릴 수 있습니다.</p>
+                <div class="button-row" style="margin-top: 18px;">
+                  <%= link_to "플랜 변경하기", membership_plans_path, class: "button button--secondary button--small" %>
+                </div>
+              </div>
+            <% else %>
+              <%= form_with model: @rehearsal_submission,
+                url: rehearsal_submissions_path,
+                class: "admin-preview-panel coaching-request-form",
+                multipart: true,
+                data: { controller: "coaching-request" } do |form| %>
+                <div class="admin-preview-form-grid">
+                  <label class="field">
+                    <span>대상 강의</span>
+                    <%= form.collection_select :course_id, @available_courses, :id, :title, { prompt: "강의를 선택하세요" }, { data: { action: "change->coaching-request#filterLectures", coaching_request_target: "courseSelect" } } %>
+                  </label>
+
+                  <label class="field">
+                    <span>대상 강의편</span>
+                    <%= form.select :lecture_id, options_for_select([["강의편을 선택하세요", ""]] + @available_lectures.map { |lecture| ["#{lecture.course.title} · #{lecture.order_no}. #{lecture.title}", lecture.id, { "data-course-id": lecture.course_id }] }), {}, { disabled: true, data: { coaching_request_target: "lectureSelect" } } %>
+                  </label>
+
+                  <label class="field">
+                    <span>음성 파일 업로드</span>
+                    <%= form.file_field :audio_file, accept: "audio/*", class: "file-upload-input" %>
+                  </label>
+
+                  <label class="field">
+                    <span>리허설 링크 또는 메모용 파일명</span>
+                    <%= form.text_field :audio_reference, placeholder: "예: intro-rehearsal-01.m4a 또는 링크" %>
+                  </label>
+
+                  <label class="field field--full">
+                    <span>리허설 메모</span>
+                    <%= form.text_area :note, placeholder: "연습 포인트, 녹음 링크, 스스로 체크하고 싶은 문장을 남겨주세요." %>
+                  </label>
+                </div>
+
+                <div class="button-row">
+                  <%= form.submit "리허설 제출", class: "button button--primary button--small" %>
+                  <%= link_to "멤버십 확인", membership_account_path, class: "button button--secondary button--small" %>
+                </div>
+              <% end %>
+            <% end %>
+          </article>
+
+          <article class="surface-card admin-preview-panel">
+            <span class="pill">최근 제출 내역</span>
+
+            <% if @recent_rehearsals.any? %>
+              <div class="admin-preview-list">
+                <% @recent_rehearsals.each do |submission| %>
+                  <div class="admin-preview-list__item">
+                    <div>
+                      <strong><%= submission.course&.title || "강의 미지정" %></strong>
+                      <span><%= submission.lecture ? "#{submission.lecture.order_no}. #{submission.lecture.title}" : "강의편 미지정" %></span>
+                    </div>
+                    <div class="admin-preview-actions">
+                      <span><%= submission.submitted_at.strftime("%m.%d %H:%M") %></span>
+                      <%= link_to "상세 보기", rehearsal_detail_path(submission), class: "button button--secondary button--small" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="admin-preview-note">
+                <strong>아직 제출한 리허설이 없습니다.</strong>
+                <p>첫 리허설을 올리면 여기에서 최근 기록과 흐름을 확인할 수 있습니다.</p>
+              </div>
+            <% end %>
+          </article>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>

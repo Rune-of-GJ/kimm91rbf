@@ -1,0 +1,54 @@
+<% content_for :title, "SpeakFlow | Preview Cart" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/student/commerce/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">장바구니 테스트 페이지</h1>
+              <p class="section-copy">
+                SpeakFlow가 일반 쇼핑몰처럼 갈지, 아니면 1~2개 강의만 가볍게 담는 구조로 갈지 확인하기 위한 시안입니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">담긴 강의</span>
+                <div class="commerce-list">
+                  <% @cart_items.each do |item| %>
+                    <div class="commerce-line">
+                      <div>
+                        <strong><%= item[:course].title %></strong>
+                        <span><%= item[:ownership] %> · <%= item[:support] %></span>
+                      </div>
+                      <strong><%= number_to_currency(item[:price], unit: "₩", precision: 0) %></strong>
+                    </div>
+                  <% end %>
+                </div>
+              </article>
+
+              <article class="summary-panel admin-preview-panel">
+                <span class="pill">결제 요약</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>상품 금액</span><strong><%= number_to_currency(@cart_subtotal, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>번들 할인</span><strong>-<%= number_to_currency(@cart_discount, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>총 결제 예정</span><strong><%= number_to_currency(@cart_total, unit: "₩", precision: 0) %></strong></div>
+                </div>
+                <div class="button-row">
+                  <%= link_to "결제하러 가기", preview_student_checkout_path, class: "button button--primary button--small" %>
+                  <%= link_to "강의 더 보기", preview_student_paid_course_path, class: "button button--secondary button--small" %>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

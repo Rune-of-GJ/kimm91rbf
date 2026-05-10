@@ -1,0 +1,25 @@
+<% content_for :title, "SpeakFlow | Instructor Access Denied" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <article class="surface-card admin-preview-panel" style="max-width: 760px; margin: 0 auto;">
+          <span class="pill">Access denied</span>
+          <h1 class="section-title" style="font-size: 40px;">강사 계정만 접근할 수 있습니다.</h1>
+          <p class="section-copy">
+            현재 계정으로는 강의 등록과 강사 전용 관리 화면에 들어올 수 없습니다.
+          </p>
+          <div class="button-row">
+            <%= link_to "메인으로 이동", root_path, class: "button button--primary" %>
+            <% if current_user %>
+              <%= link_to "내 학습 화면", my_courses_path, class: "button button--secondary" %>
+            <% else %>
+              <%= link_to "로그인", login_path, class: "button button--secondary" %>
+            <% end %>
+          </div>
+        </article>
+      </section>
+    </div>
+  </section>
+</main>

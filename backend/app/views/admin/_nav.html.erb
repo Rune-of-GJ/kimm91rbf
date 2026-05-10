@@ -1,0 +1,28 @@
+<aside class="admin-preview-nav">
+  <div class="admin-preview-nav__brand">
+    <p class="eyebrow">Admin</p>
+    <h2>관리자 스튜디오</h2>
+    <p>실제 운영 기준으로 사용자, 강의, 카테고리, 정산을 관리하는 관리자 영역입니다.</p>
+  </div>
+
+  <nav class="admin-preview-nav__links" aria-label="관리자 메뉴">
+    <%= link_to "대시보드", admin_dashboard_path, class: "admin-preview-link #{current_page?(admin_dashboard_path) || current_page?(admin_root_path) ? 'is-active' : ''}" %>
+    <%= link_to "사용자 관리", admin_users_path, class: "admin-preview-link #{current_page?(admin_users_path) ? 'is-active' : ''}" %>
+    <%= link_to "강의 관리", admin_courses_path, class: "admin-preview-link #{current_page?(admin_courses_path) ? 'is-active' : ''}" %>
+    <%= link_to "카테고리 관리", admin_categories_path, class: "admin-preview-link #{current_page?(admin_categories_path) ? 'is-active' : ''}" %>
+    <%= link_to "월정액 정산", admin_settlement_membership_path, class: "admin-preview-link #{current_page?(admin_settlement_membership_path) ? 'is-active' : ''}" %>
+    <%= link_to "첨삭 정산", admin_settlement_coaching_path, class: "admin-preview-link #{current_page?(admin_settlement_coaching_path) ? 'is-active' : ''}" %>
+    <%= link_to "강사별 정산", admin_settlement_instructors_path, class: "admin-preview-link #{current_page?(admin_settlement_instructors_path) ? 'is-active' : ''}" %>
+  </nav>
+
+  <div class="admin-preview-nav__meta">
+    <div class="admin-preview-mini">
+      <span>현재 관리자</span>
+      <strong><%= current_user.name %></strong>
+    </div>
+    <div class="admin-preview-mini">
+      <span>역할</span>
+      <strong><%= current_user.role %></strong>
+    </div>
+  </div>
+</aside>

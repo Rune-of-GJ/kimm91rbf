@@ -1,0 +1,49 @@
+<% content_for :title, "SpeakFlow | Admin Setup" %>
+
+<main class="page">
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <article class="surface-card" style="max-width: 760px; margin: 0 auto;">
+          <p class="eyebrow">Initial setup</p>
+          <h1 class="section-title">첫 관리자 계정 생성</h1>
+          <p class="section-copy">
+            아직 관리자 계정이 없어서 초기 설정 화면으로 들어왔습니다. 첫 관리자 계정을 만들면 바로 관리자 대시보드로 이동합니다.
+          </p>
+
+          <%= form_with model: @admin_user, url: admin_setup_path, method: :post, local: true do |form| %>
+            <% if @admin_user.errors.any? %>
+              <div class="flash-stack" style="margin: 18px 0;">
+                <div class="flash-banner flash-banner--alert">
+                  <%= @admin_user.errors.full_messages.join(", ") %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="admin-preview-form-grid" style="margin-top: 18px;">
+              <label class="field">
+                <span>이름</span>
+                <%= form.text_field :name, required: true, autocomplete: "name" %>
+              </label>
+
+              <label class="field">
+                <span>이메일</span>
+                <%= form.email_field :email, required: true, autocomplete: "email" %>
+              </label>
+
+              <label class="field field--full">
+                <span>비밀번호</span>
+                <%= form.password_field :password, required: true, minlength: 8, autocomplete: "new-password" %>
+              </label>
+            </div>
+
+            <div class="button-row" style="margin-top: 22px;">
+              <%= form.submit "첫 관리자 생성", class: "button button--primary" %>
+              <%= link_to "메인으로 돌아가기", root_path, class: "button button--secondary" %>
+            </div>
+          <% end %>
+        </article>
+      </section>
+    </div>
+  </section>
+</main>

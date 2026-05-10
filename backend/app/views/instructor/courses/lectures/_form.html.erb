@@ -1,0 +1,28 @@
+<%= form_with model: [:instructor, @course, @lecture], class: "admin-preview-panel" do |form| %>
+  <div class="admin-preview-form-grid">
+    <label class="field">
+      <span>강의편 제목</span>
+      <%= form.text_field :title, placeholder: "예: 1강. 첫인사와 도입부" %>
+    </label>
+
+    <label class="field">
+      <span>순서</span>
+      <%= form.number_field :order_no, min: 1 %>
+    </label>
+
+    <label class="field field--full">
+      <span>영상 URL</span>
+      <%= form.url_field :video_url, placeholder: "https://www.youtube.com/watch?v=..." %>
+    </label>
+
+    <label class="field">
+      <span>예상 길이(분)</span>
+      <%= form.number_field :duration, min: 1, placeholder: "예: 12" %>
+    </label>
+  </div>
+
+  <div class="button-row">
+    <%= form.submit submit_label, class: "button button--primary button--small" %>
+    <%= link_to "내 강의로 돌아가기", instructor_courses_path, class: "button button--secondary button--small" %>
+  </div>
+<% end %>

@@ -128,7 +128,7 @@ courses_data.each do |course_data|
   course_data[:lectures].each_with_index do |lecture_data, idx|
     Lecture.find_or_create_by!(course: course, order_no: idx + 1) do |lecture|
       lecture.title = lecture_data[:title]
-      lecture.video_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      lecture.video_url = "https://www.youtube.com/watch?v=GJDNkVDGM_s"
       lecture.duration = lecture_data[:duration]
     end
   end

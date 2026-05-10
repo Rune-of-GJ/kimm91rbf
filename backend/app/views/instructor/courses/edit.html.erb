@@ -1,0 +1,27 @@
+<% content_for :title, "SpeakFlow | 강의 수정" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "instructor/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Instructor</p>
+              <h1 class="section-title">강의 수정</h1>
+              <p class="section-copy">기존 강의의 일정, 설명, 썸네일을 현재 운영 상황에 맞게 고칠 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <%= render "form", course: @course, categories: @categories, submit_label: "강의 수정" %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

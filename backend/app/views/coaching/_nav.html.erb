@@ -1,0 +1,11 @@
+<aside class="admin-preview-nav">
+  <div>
+    <p class="eyebrow">Coaching</p>
+    <h2>1:1 첨삭</h2>
+  </div>
+
+  <nav class="admin-preview-links" aria-label="첨삭 메뉴">
+    <%= link_to "첨삭 상품", coaching_products_path, class: "admin-preview-link #{'is-active' if current_page?(coaching_products_path)}" %>
+    <%= link_to "내 요청 현황", coaching_requests_path, class: "admin-preview-link #{'is-active' if current_page?(coaching_requests_path) || current_page?(new_coaching_request_path)}" %>
+  </nav>
+</aside>

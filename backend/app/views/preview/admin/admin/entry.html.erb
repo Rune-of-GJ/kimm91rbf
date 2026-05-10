@@ -1,0 +1,68 @@
+<% content_for :title, "SpeakFlow | Preview Admin Entry" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/admin/admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">관리자 페이지 진입 방법 테스트</h1>
+              <p class="section-copy">
+                관리자가 관리자 페이지로 들어오는 경로를 명확히 만들기 위한 시안입니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">권장 경로</span>
+                <h3>로그인 후 사용자 메뉴에서 관리자 바로가기</h3>
+                <p>일반 사용자와 같은 로그인 시스템을 쓰되, 관리자 역할일 때만 사용자 메뉴에 관리자 항목이 보이는 방식입니다.</p>
+                <div class="admin-preview-flow">
+                  <div class="admin-preview-step">로그인</div>
+                  <div class="admin-preview-step">역할 확인</div>
+                  <div class="admin-preview-step">관리자 메뉴 노출</div>
+                  <div class="admin-preview-step">관리자 대시보드 진입</div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">보조 경로</span>
+                <h3>직접 URL 진입 후 권한 검사</h3>
+                <p><code>/admin</code> 같은 고정 경로로 들어오더라도, 관리자 계정이 아니면 로그인 또는 접근 거부 화면으로 보내는 방식입니다.</p>
+                <div class="button-row">
+                  <button type="button" class="button button--secondary button--small" disabled>/admin 진입</button>
+                  <button type="button" class="button button--ghost button--small" disabled>권한 확인</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <span class="pill">추천안</span>
+              <div class="admin-preview-checks">
+                <div class="admin-preview-check">
+                  <strong>관리자 메뉴는 관리자에게만 보여주기</strong>
+                  <p>일반 사용자 헤더와 섞이더라도 역할 체크 후에만 노출하면 가장 자연스럽습니다.</p>
+                </div>
+                <div class="admin-preview-check">
+                  <strong>직접 URL 접근도 허용하되 반드시 서버에서 재검사하기</strong>
+                  <p>UI를 숨기는 것만으로는 부족하므로 관리자 페이지 라우트에서도 역할 검사를 해야 합니다.</p>
+                </div>
+                <div class="admin-preview-check">
+                  <strong>관리자 홈 첫 진입 주소는 하나로 고정하기</strong>
+                  <p>추후 실제 반영 시에는 <code>/admin/dashboard</code> 같은 명확한 시작점이 필요합니다.</p>
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,105 @@
+<% content_for :title, "SpeakFlow | Admin Courses" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Admin</p>
+              <h1 class="section-title">강의 관리</h1>
+              <p class="section-copy">전체 강의를 기준으로 카테고리, 강사, 강의 수를 확인하고 필요한 강의를 정리할 수 있습니다.</p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @course_counts[:total] %></span>
+                <span class="stat-card__label">전체 강의</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @course_counts[:categories] %></span>
+                <span class="stat-card__label">카테고리</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @course_counts[:instructors] %></span>
+                <span class="stat-card__label">강사 계정</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @course_counts[:lectures] %></span>
+                <span class="stat-card__label">전체 강의편</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">Search & filter</span>
+                  <h3 style="margin-top: 14px;">강의 검색과 필터</h3>
+                </div>
+              </div>
+
+              <form action="<%= admin_courses_path %>" method="get" class="admin-preview-search">
+                <label class="field">
+                  <span>강의명 또는 강사명 검색</span>
+                  <input type="text" name="q" value="<%= @query %>" placeholder="예: 면접, 김강사">
+                </label>
+                <label class="field">
+                  <span>카테고리</span>
+                  <select name="category_id">
+                    <option value="">전체 카테고리</option>
+                    <% @categories.each do |category| %>
+                      <option value="<%= category.id %>" <%= "selected" if @category_filter.to_s == category.id.to_s %>><%= category.name %></option>
+                    <% end %>
+                  </select>
+                </label>
+                <div class="button-row">
+                  <button type="submit" class="button button--primary button--small">검색</button>
+                  <%= link_to "초기화", admin_courses_path, class: "button button--secondary button--small" %>
+                </div>
+              </form>
+            </article>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">Course table</span>
+                  <h3 style="margin-top: 14px;">강의 전체 목록</h3>
+                </div>
+              </div>
+
+              <div class="admin-preview-table">
+                <div class="admin-preview-table__row admin-preview-table__row--head">
+                  <span>강의명</span>
+                  <span>카테고리</span>
+                  <span>강사</span>
+                  <span>강의편 수</span>
+                  <span>액션</span>
+                </div>
+
+                <% @courses.each do |course| %>
+                  <div class="admin-preview-table__row">
+                    <span><strong><%= course.title %></strong></span>
+                    <span><%= course.category.name %></span>
+                    <span><%= course.instructor_name %></span>
+                    <span><%= course.lectures.size %>개</span>
+                    <span class="admin-preview-actions">
+                      <%= link_to "상세 보기", course_detail_path(course), class: "button button--secondary button--small" %>
+                      <%= button_to "삭제", admin_course_path(course, category_id: @category_filter, q: @query.presence), method: :delete, class: "button button--ghost button--small", form: { data: { turbo_confirm: "#{course.title} 강의를 삭제할까요?" } } %>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,52 @@
+<% content_for :title, "SpeakFlow | Preview Membership Account" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/student/memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">내 멤버십 테스트 페이지</h1>
+              <p class="section-copy">
+                월정액 가입 이후 학생이 가장 자주 확인할 정보는 현재 플랜, 다음 결제일, 남은 혜택입니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">현재 구독 상태</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>플랜</span><strong><%= @active_subscription[:plan_name] %></strong></div>
+                  <div class="meta-item"><span>상태</span><strong><%= @active_subscription[:status] %></strong></div>
+                  <div class="meta-item"><span>가입일</span><strong><%= @active_subscription[:started_on].strftime("%Y.%m.%d") %></strong></div>
+                  <div class="meta-item"><span>다음 결제일</span><strong><%= @active_subscription[:renews_on].strftime("%Y.%m.%d") %></strong></div>
+                  <div class="meta-item"><span>월 결제액</span><strong><%= number_to_currency(@active_subscription[:monthly_price], unit: "₩", precision: 0) %></strong></div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">이 플랜으로 할 수 있는 것</span>
+                <div class="admin-preview-checks">
+                  <% @selected_plan[:highlights].each do |highlight| %>
+                    <div class="admin-preview-check">
+                      <strong><%= highlight %></strong>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="button-row">
+                  <button type="button" class="button button--secondary button--small" disabled>플랜 변경</button>
+                  <button type="button" class="button button--ghost button--small" disabled>자동 갱신 해지</button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

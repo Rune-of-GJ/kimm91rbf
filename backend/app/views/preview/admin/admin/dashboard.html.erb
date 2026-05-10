@@ -1,0 +1,81 @@
+<% content_for :title, "SpeakFlow | Preview Admin Dashboard" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/admin/admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">관리자 시스템 프리뷰 허브</h1>
+              <p class="section-copy">
+                지금 단계에서는 관리자 기능을 실제 반영하지 않고, 진입 경로와 권한 구조부터 테스트 페이지 단위로 확인합니다.
+              </p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @preview_counts[:users] %></span>
+                <span class="stat-card__label">전체 사용자</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @preview_counts[:instructors] %></span>
+                <span class="stat-card__label">강사 계정</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @preview_counts[:students] %></span>
+                <span class="stat-card__label">수강생 계정</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @preview_counts[:admins] %></span>
+                <span class="stat-card__label">관리자 계정</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">1. 진입 방법</span>
+                <h3>관리자가 어디서 관리자 페이지에 들어오는지 먼저 정합니다.</h3>
+                <p>로그인 후 헤더 사용자 메뉴, 전용 관리자 링크, 직접 URL 진입 중 무엇이 주 경로가 될지 테스트합니다.</p>
+                <div class="button-row">
+                  <%= link_to "진입 페이지 보기", preview_admin_entry_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">2. 관리자 계정 생성</span>
+                <h3>첫 관리자 생성 방식과 이후 승격 방식을 분리해서 봅니다.</h3>
+                <p>관리자 직접 생성, 기존 계정 승격, 초대 기반 생성 중 어떤 흐름이 맞는지 확인합니다.</p>
+                <div class="button-row">
+                  <%= link_to "계정 생성 페이지 보기", preview_admin_account_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">3. 접근 제한</span>
+                <h3>관리자 외에는 관리자 화면에 못 들어오도록 차단 흐름을 설계합니다.</h3>
+                <p>비로그인, 수강생, 강사, 관리자 계정별로 각각 어떤 응답과 메시지가 나와야 하는지 미리 봅니다.</p>
+                <div class="button-row">
+                  <%= link_to "접근 제한 페이지 보기", preview_admin_policy_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">4. 강사 강의등록</span>
+                <h3>썸네일 포함 강의등록 폼을 강사 전용 페이지로 분리해 봅니다.</h3>
+                <p>카테고리, 설명, 일정, 썸네일 영역을 실제 등록 화면처럼 먼저 테스트합니다.</p>
+                <div class="button-row">
+                  <%= link_to "강의등록 페이지 보기", preview_instructor_course_new_path, class: "button button--primary button--small" %>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

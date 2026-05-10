@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakFlow Design Example — Voice Ripple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./speakflow-voice.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container site-header__row">
+        <a class="brand" href="./06-student-home-voice-ripple.html" aria-label="SpeakFlow home">
+          <span class="brand__mark">
+            <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+          </span>
+          <span class="brand__text">SpeakFlow</span>
+        </a>
+
+        <nav class="nav" aria-label="Global">
+          <a class="is-active" href="./06-student-home-voice-ripple.html">Home</a>
+          <a href="#">Programs</a>
+          <a href="#">Sessions</a>
+          <a href="#">Coaches</a>
+          <a href="#">Support</a>
+        </nav>
+
+        <div class="header-actions" aria-label="Quick actions">
+          <button class="icon-button" aria-label="Search">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="M16 16L21 21"></path>
+            </svg>
+          </button>
+          <button class="icon-button" aria-label="Profile">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 20C5.8 16.8 8.4 15 12 15C15.6 15 18.2 16.8 19 20"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero__ambient" aria-hidden="true">
+        <div class="voice-haze"></div>
+        <div class="voice-ring voice-ring--hero-0"></div>
+        <div class="voice-ring voice-ring--hero-1"></div>
+        <div class="voice-ring voice-ring--hero-2"></div>
+        <div class="voice-ring voice-ring--hero-3"></div>
+      </div>
+
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow reveal">Personalized Speaking Platform</p>
+          <h1 class="headline reveal reveal--delay-1">Let your voice
+move outward
+with shape and depth</h1>
+          <p class="description reveal reveal--delay-2">
+            This version shifts the metaphor from generic ripples to vocal propagation.
+            The visual language is based on a source point, directional pressure, soft acoustic spread,
+            and the quieter resonance that remains after speech leaves the body.
+          </p>
+
+          <div class="voice-source reveal reveal--delay-2">
+            <span class="voice-source__dot" aria-hidden="true"></span>
+            <span>Voice starts from one point, then gains space, distance, and afterglow.</span>
+          </div>
+
+          <div class="cta-group reveal reveal--delay-3">
+            <a class="button button--primary" href="#">Get Started Free</a>
+            <a class="button button--secondary" href="#">Learn More</a>
+          </div>
+        </div>
+
+        <div class="hero__media reveal reveal--delay-2">
+          <img
+            src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1400&q=80"
+            alt="Person speaking into a microphone on stage"
+          >
+          <div class="hero__overlay"></div>
+
+          <div class="voice-waveform" aria-hidden="true">
+            <svg viewBox="0 0 1200 160" preserveAspectRatio="none">
+              <path
+                d="M0 84 C80 84 90 58 142 58 C188 58 204 106 256 106 C316 106 322 34 388 34 C454 34 456 126 540 126 C624 126 618 56 694 56 C764 56 760 92 828 92 C902 92 900 42 980 42 C1056 42 1082 104 1200 104"
+                fill="none"
+                stroke="rgba(255,255,255,0.42)"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+
+          <div class="voice-radiation" aria-hidden="true">
+            <span class="voice-radiation__line"></span>
+            <span class="voice-radiation__line"></span>
+            <span class="voice-radiation__line"></span>
+            <span class="voice-radiation__line"></span>
+          </div>
+
+          <div class="hero-note">
+            <div>
+              <strong>Voice-driven center point</strong>
+              <span>The media side no longer feels like a generic ripple. It behaves more like sound leaving a human source and fading into space.</span>
+            </div>
+
+            <svg class="hero-note__meter" viewBox="0 0 120 52" aria-hidden="true">
+              <path d="M2 26 C16 26 16 6 30 6 C44 6 44 46 58 46 C72 46 72 12 88 12 C102 12 102 28 118 28" fill="none" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="container surface__inner">
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>From ripple to vocal propagation</h2>
+            <p>
+              The page still follows your center-to-ring logic, but the shapes now lean into acoustics:
+              horizontal spread, stretched ellipses, waveform traces, and quieter resonance layers.
+            </p>
+          </div>
+
+          <div class="card-grid card-grid--3">
+            <article class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 4V14"></path>
+                  <rect x="8" y="2" width="8" height="12" rx="4"></rect>
+                  <path d="M6 11C6 15 8.6 18 12 18C15.4 18 18 15 18 11"></path>
+                </svg>
+              </div>
+              <h3>Source is vocal, not abstract</h3>
+              <p>
+                The center point reads like a speaking origin, which makes the spread feel closer to voice than water.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M3 12C7 8 9 8 12 8C15 8 17 8 21 12"></path>
+                  <path d="M3 16C8 12 9 12 12 12C15 12 16 12 21 16"></path>
+                </svg>
+              </div>
+              <h3>Spread moves forward</h3>
+              <p>
+                Circles become stretched rings so the expansion feels directional, as if sound is travelling through air.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2 12C5 12 5 6 8 6C11 6 11 18 14 18C17 18 17 9 20 9C22 9 22 12 24 12"></path>
+                </svg>
+              </div>
+              <h3>Afterglow keeps the scene calm</h3>
+              <p>
+                The farthest layers carry less density and contrast, so the feeling is lingering resonance rather than noisy motion.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>One source can organize an entire section</h2>
+            <p>
+              This block treats the green pulse on the left as the speaker. Cards nearby are the first response, and the darker panel becomes the quieter explanation after the sound spreads.
+            </p>
+          </div>
+
+          <div class="voice-board">
+            <div class="voice-board__source" aria-hidden="true"></div>
+
+            <div class="voice-board__grid">
+              <div class="voice-blocks">
+                <div class="voice-blocks__row">
+                  <article class="mini-card">
+                    <strong>Breath cue</strong>
+                    <span>The first ring is always the body preparing the sound.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Opening phrase</strong>
+                    <span>The voice hits the room through a short, memorable first line.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Response read</strong>
+                    <span>Listeners react, and the next layer captures that feedback.</span>
+                  </article>
+                </div>
+
+                <div class="voice-blocks__row">
+                  <article class="mini-card">
+                    <strong>Timing shift</strong>
+                    <span>Pauses widen the perceived space of the voice.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Confidence arc</strong>
+                    <span>Delivery strength expands gradually instead of all at once.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Recorded trace</strong>
+                    <span>The final layer becomes a memory of the sound, not the sound itself.</span>
+                  </article>
+                </div>
+              </div>
+
+              <aside class="voice-summary">
+                <span class="pill pill--accent">Vocal center → outer rings</span>
+                <h3>The section now feels emitted, not decorated.</h3>
+                <p>
+                  That difference matters. The old version said “waves exist.” This version says “a voice happened here, and the interface is showing its spread.”
+                </p>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Stats can echo the same voice system</h2>
+            <p>
+              These cards do not become circular. They stay readable and grid-based, but the top-left echo shapes now resemble sound pressure rather than generic rings.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <strong>18K</strong>
+              <span>Completed speaking sessions</span>
+            </article>
+            <article class="stat-card">
+              <strong>4.9</strong>
+              <span>Average coach feedback score</span>
+            </article>
+            <article class="stat-card">
+              <strong>87%</strong>
+              <span>Return rate to the next voice routine</span>
+            </article>
+            <article class="stat-card">
+              <strong>220m</strong>
+              <span>Replay time from reviewed speaking clips</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Programs need a voice mark, not a full logo stamp</h2>
+            <p>
+              Real logos stay in brand positions. Repeated cards use a smaller sound signature so the page stays focused.
+            </p>
+          </div>
+
+          <div class="program-grid">
+            <article class="program-card">
+              <div class="voice-mark" aria-hidden="true">
+                <span class="voice-mark__dot"></span>
+                <span class="voice-mark__wave voice-mark__wave--1"></span>
+                <span class="voice-mark__wave voice-mark__wave--2"></span>
+                <span class="voice-mark__wave voice-mark__wave--3"></span>
+                <span class="voice-mark__glow"></span>
+              </div>
+              <span class="pill">Program 01</span>
+              <h3>Interview preparation flow</h3>
+              <p>
+                Spoken answers are treated as pressure moving through a room, not just static content blocks.
+              </p>
+            </article>
+
+            <article class="program-card">
+              <div class="voice-mark" aria-hidden="true">
+                <span class="voice-mark__dot"></span>
+                <span class="voice-mark__wave voice-mark__wave--1"></span>
+                <span class="voice-mark__wave voice-mark__wave--2"></span>
+                <span class="voice-mark__wave voice-mark__wave--3"></span>
+                <span class="voice-mark__glow"></span>
+              </div>
+              <span class="pill pill--accent">Program 02</span>
+              <h3>Presentation confidence track</h3>
+              <p>
+                Each session aims to make the vocal field broader, calmer, and more controlled.
+              </p>
+            </article>
+
+            <article class="program-card">
+              <div class="voice-mark" aria-hidden="true">
+                <span class="voice-mark__dot"></span>
+                <span class="voice-mark__wave voice-mark__wave--1"></span>
+                <span class="voice-mark__wave voice-mark__wave--2"></span>
+                <span class="voice-mark__wave voice-mark__wave--3"></span>
+                <span class="voice-mark__glow"></span>
+              </div>
+              <span class="pill">Program 03</span>
+              <h3>Voice and delivery reset</h3>
+              <p>
+                The visual cue stays soft, but it now reads like resonance leaving a source instead of circles placed on a card.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="resonance-band">
+            <div class="resonance-band__grid">
+              <div class="resonance-band__logo">
+                <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+              </div>
+
+              <div>
+                <span class="pill pill--accent">Logo as resonance memory</span>
+                <h3>The logo can stay in brand positions while the page speaks with softer acoustic cues.</h3>
+                <p>
+                  This keeps the identity strong without pasting the full mark into every component. The page feels more like a voice moving through space, and less like a pattern of repeated emblems.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Reviews sit in the resonance layer</h2>
+            <p>
+              The green point in the corner suggests the original source, while the quotes themselves feel like the remaining echo after the voice has travelled outward.
+            </p>
+          </div>
+
+          <div class="review-grid">
+            <article class="review-card">
+              <span class="pill">User review</span>
+              <blockquote>
+                “This version finally feels like speech. The shapes move sideways and outward like a voice filling a room.”
+              </blockquote>
+              <footer>Minji Park · Interview coaching track</footer>
+            </article>
+
+            <article class="review-card">
+              <span class="pill pill--accent">Coach review</span>
+              <blockquote>
+                “The stretched rings and waveform hints are what make it feel vocal instead of just decorative.”
+              </blockquote>
+              <footer>Jiyoon Kim · Lead speaking coach</footer>
+            </article>
+
+            <article class="review-card">
+              <span class="pill">Team note</span>
+              <blockquote>
+                “The emotion changed from ‘ripple’ to ‘voice resonance,’ and that makes SpeakFlow feel much more specific.”
+              </blockquote>
+              <footer>Product review · Internal design note</footer>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>The final CTA should feel like one more clear emission</h2>
+            <p>
+              The section stays strong and focused, but the right side now feels like a voice field opening outward rather than a generic hero echo.
+            </p>
+          </div>
+
+          <div class="cta-banner">
+            <div class="cta-banner__grid">
+              <div>
+                <span class="pill pill--accent">Voice-focused system</span>
+                <h2>If we keep this direction, the next screens should sound the same.</h2>
+                <p>
+                  The student page now has a clearer vocal metaphor. The natural next step is to rebuild instructor and admin views so their cards, dashboards, and feedback modules follow the same acoustic logic.
+                </p>
+
+                <div class="cta-group" style="margin-top: 24px;">
+                  <a class="button button--primary" href="#">Move to dashboard variants</a>
+                  <a class="button button--secondary" href="#">Compare previous pages</a>
+                </div>
+              </div>
+
+              <img class="cta-banner__logo" src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div class="site-footer__brand">
+          <a class="brand" href="./06-student-home-voice-ripple.html" aria-label="SpeakFlow home">
+            <span class="brand__mark">
+              <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+            </span>
+            <span class="brand__text">SpeakFlow</span>
+          </a>
+          <p>
+            This version keeps the same system colors and soft rounded grammar, but changes the feeling from “waves on a page” to “a voice spreading through space.”
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Programs</a>
+          <a href="#">Coaches</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const revealTargets = document.querySelectorAll(".reveal");
+
+    if (!reducedMotion.matches && "IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      revealTargets.forEach((target) => observer.observe(target));
+    } else {
+      revealTargets.forEach((target) => target.classList.add("is-visible"));
+    }
+
+    document.querySelectorAll(".button").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        if (reducedMotion.matches) return;
+
+        const rect = button.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        const maxSide = Math.max(rect.width, rect.height) * 1.8;
+
+        ripple.className = "button__ripple";
+        ripple.style.width = `${maxSide}px`;
+        ripple.style.height = `${maxSide}px`;
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+
+        button.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+      });
+    });
+  </script>
+</body>
+</html>

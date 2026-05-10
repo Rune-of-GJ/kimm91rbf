@@ -1,85 +1,105 @@
-<% content_for :title, "내 강의 | SpeakFlow" %>
+<% content_for :title, "SpeakFlow | 내 강의" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>내 강의 | SpeakFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white">
-  <!-- 헤더 -->
-  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <%= link_to "🎤 SpeakFlow", root_path, class: "text-2xl font-black text-blue-400 no-underline" %>
-      </div>
-      <div class="flex items-center gap-4">
-        <span class="text-sm text-blue-300"><%= current_user.name %></span>
-        <button onclick="logout()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
-          로그아웃
-        </button>
-      </div>
-    </div>
-  </header>
+<main class="page">
+  <% if current_user %>
+    <% enrolled_courses = current_user.learning_courses %>
 
-  <main class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-black text-white mb-8">내 강의</h1>
+    <section class="hero-shell">
+      <div class="hero-shell__ambient" aria-hidden="true"></div>
 
-    <% if current_user.enrolled_courses.any? %>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <% current_user.enrolled_courses.each do |course| %>
-          <div class="bg-slate-800 border border-green-500/30 hover:border-green-500 rounded-lg overflow-hidden transition group">
-            <div class="h-40 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-6xl">✅</div>
-            <div class="p-6">
-              <h3 class="font-bold text-lg text-white mb-1 group-hover:text-green-300 transition"><%= course.title %></h3>
-              <p class="text-sm text-slate-400 mb-2">👨‍🏫 <%= course.instructor_name %></p>
-              <p class="text-slate-300 text-sm mb-4"><%= course.description %></p>
-              
-              <!-- 진도 바 -->
-              <% total = course.lectures.count %>
-              <% watched = current_user.progresses.where(lecture_id: course.lecture_ids, watched: true).count %>
-              <% rate = total.zero? ? 0 : ((watched.to_f / total) * 100).round %>
-              <div class="mb-3">
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs text-slate-400">진도:</span>
-                  <span class="text-xs font-semibold text-green-400"><%= rate %>%</span>
-                </div>
-                <div class="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
-                  <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-full" style="width: <%= rate %>%"></div>
-                </div>
-              </div>
+      <div class="container hero-shell__grid">
+        <div class="hero-shell__copy">
+          <p class="eyebrow">My courses</p>
+          <h1 class="hero-shell__title">지금 학습 중인 강의</h1>
+          <p class="hero-shell__body">내가 수강 중인 강의를 확인하고 관리할 수 있습니다.</p>
 
-              <%= link_to "강의 시작", course_detail_path(course_id: course.id), class: "w-full inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold text-center transition no-underline" %>
-            </div>
+          <div class="button-row">
+            <%= link_to "새 강의 탐색", courses_path, class: "button button--secondary" %>
+            <%= link_to "진도 보기", progress_path, class: "button button--primary" %>
           </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="text-center py-16 bg-slate-800/50 rounded-lg border border-slate-700">
-        <p class="text-2xl text-slate-400 mb-4">아직 수강하는 강의가 없습니다.</p>
-        <%= link_to "강의 탐색하기", courses_path, class: "inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition no-underline" %>
-      </div>
-    <% end %>
-  </main>
+        </div>
 
-  <script>
-    async function logout() {
-      try {
-        await fetch('/api/v1/auth/logout', {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
-        });
-        window.location.href = '/';
-      } catch (error) {
-        console.error('Logout error:', error);
-        window.location.href = '/';
-      }
-    }
-  </script>
-</body>
-</html>
+        <aside class="hero-focus">
+          <div class="hero-focus__glow" aria-hidden="true"></div>
+          <div class="hero-focus__ring hero-focus__ring--a" aria-hidden="true"></div>
+          <div class="hero-focus__ring hero-focus__ring--b" aria-hidden="true"></div>
+          <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
+
+          <div class="hero-focus__content">
+            <span class="pill pill--accent">Active learning</span>
+            <strong><%= enrolled_courses.count %>개의 과정이 현재 진행 중입니다.</strong>
+            <p>과정별 진도와 복습 루틴을 하나의 시스템 안에서 이어 갈 수 있습니다.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="container surface__inner">
+        <section class="page-section">
+          <% if enrolled_courses.any? %>
+            <div class="course-grid">
+              <% enrolled_courses.each do |course| %>
+                <% stats = course_progress_stats(current_user, course) %>
+                <article class="course-card">
+                  <div class="course-card__top">
+                    <div>
+                      <span class="pill pill--accent"><%= course.category.name %></span>
+                      <h3 style="margin-top: 14px;"><%= course.title %></h3>
+                    </div>
+
+                    <span class="orb-ripple" aria-hidden="true">
+                      <span class="orb-ripple__ring orb-ripple__ring--a"></span>
+                      <span class="orb-ripple__ring orb-ripple__ring--b"></span>
+                      <span class="orb-ripple__ring orb-ripple__ring--c"></span>
+                      <span class="orb-ripple__core"></span>
+                    </span>
+                  </div>
+
+                  <p><%= truncate(course.description, length: 140) %></p>
+
+                  <div>
+                    <div class="split-between" style="margin-bottom: 8px;">
+                      <span class="meta-copy">진도</span>
+                      <strong><%= stats[:rate] %>%</strong>
+                    </div>
+                    <div class="progress-track"><span style="width: <%= stats[:rate] %>%;"></span></div>
+                  </div>
+
+                  <div class="meta-list">
+                    <div class="meta-item"><span>완료 강의</span><strong><%= stats[:watched] %> / <%= stats[:total] %></strong></div>
+                    <div class="meta-item"><span>강사</span><strong><%= course.instructor_name %></strong></div>
+                  </div>
+
+                  <div class="button-row">
+                    <%= link_to "과정 열기", course_detail_path(course), class: "button button--primary button--small" %>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          <% else %>
+            <article class="surface-card">
+              <h3>아직 등록된 강의가 없습니다.</h3>
+              <p style="margin-top: 14px;">멤버십을 시작하거나 강의를 등록하면 이 영역이 당신의 중심 학습 보드가 됩니다.</p>
+              <div class="button-row" style="margin-top: 18px;">
+                <%= link_to "멤버십 보기", membership_path, class: "button button--primary button--small" %>
+              </div>
+            </article>
+          <% end %>
+        </section>
+      </div>
+    </section>
+  <% else %>
+    <section class="hero-shell">
+      <div class="container">
+        <article class="surface-card">
+          <h3>내 강의는 로그인 후 사용할 수 있어요.</h3>
+          <p style="margin-top: 14px;">학습 흐름을 저장하고 이어 보려면 먼저 계정이 필요합니다.</p>
+          <div class="button-row" style="margin-top: 18px;">
+            <%= link_to "로그인", login_path, class: "button button--primary button--small" %>
+          </div>
+        </article>
+      </div>
+    </section>
+  <% end %>
 </main>

@@ -1,0 +1,140 @@
+<% content_for :title, "SpeakFlow | Admin Categories" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "admin/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Admin</p>
+              <h1 class="section-title">카테고리 관리</h1>
+              <p class="section-copy">강의 분류 구조를 정리하고, 실제 사용 중인 카테고리와 비어 있는 카테고리를 함께 관리합니다.</p>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @category_counts[:total] %></span>
+                <span class="stat-card__label">전체 카테고리</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @category_counts[:used] %></span>
+                <span class="stat-card__label">사용 중</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @category_counts[:empty] %></span>
+                <span class="stat-card__label">빈 카테고리</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @category_counts[:courses] %></span>
+                <span class="stat-card__label">전체 강의</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="admin-preview-user-layout">
+              <article class="surface-card admin-preview-panel">
+                <div class="split-between">
+                  <div>
+                    <span class="pill pill--accent">New category</span>
+                    <h3 style="margin-top: 14px;">카테고리 추가</h3>
+                  </div>
+                </div>
+
+                <% if @new_category.errors.any? %>
+                  <div class="admin-preview-note">
+                    <strong>새 카테고리를 저장하지 못했습니다.</strong>
+                    <p><%= @new_category.errors.full_messages.join(", ") %></p>
+                  </div>
+                <% end %>
+
+                <%= form_with model: @new_category, url: admin_categories_path(q: @query.presence), local: true, class: "admin-preview-search" do |form| %>
+                  <label class="field">
+                    <span>카테고리명</span>
+                    <%= form.text_field :name, placeholder: "예: 보이스 트레이닝" %>
+                  </label>
+                  <label class="field">
+                    <span>설명</span>
+                    <%= form.text_area :description, rows: 4, placeholder: "카테고리 성격을 짧게 적어주세요." %>
+                  </label>
+                  <div class="button-row">
+                    <%= form.submit "추가", class: "button button--primary button--small" %>
+                  </div>
+                <% end %>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <div class="split-between">
+                  <div>
+                    <span class="pill">Search</span>
+                    <h3 style="margin-top: 14px;">카테고리 검색</h3>
+                  </div>
+                </div>
+
+                <form action="<%= admin_categories_path %>" method="get" class="admin-preview-search">
+                  <label class="field">
+                    <span>이름 또는 설명 검색</span>
+                    <input type="text" name="q" value="<%= @query %>" placeholder="예: 발표, 면접">
+                  </label>
+                  <div class="button-row">
+                    <button type="submit" class="button button--primary button--small">검색</button>
+                    <%= link_to "초기화", admin_categories_path, class: "button button--secondary button--small" %>
+                  </div>
+                </form>
+
+                <div class="admin-preview-note">
+                  <strong>운영 메모</strong>
+                  <p>강의가 연결된 카테고리는 바로 삭제되지 않도록 막아두었습니다. 강의 정리 후 삭제하는 흐름입니다.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">Category table</span>
+                  <h3 style="margin-top: 14px;">카테고리 목록</h3>
+                </div>
+              </div>
+
+              <div class="admin-preview-table">
+                <div class="admin-preview-table__row admin-preview-table__row--head">
+                  <span>카테고리명</span>
+                  <span>설명</span>
+                  <span>연결 강의</span>
+                  <span>수정</span>
+                  <span>삭제</span>
+                </div>
+
+                <% @categories.each do |category| %>
+                  <div class="admin-preview-table__row">
+                    <span><strong><%= category.name %></strong></span>
+                    <span><%= category.description.presence || "설명 없음" %></span>
+                    <span><%= category.courses.size %>개</span>
+                    <span>
+                      <%= form_with model: category, url: admin_category_path(category, q: @query.presence), method: :patch, local: true, class: "admin-inline-form" do |form| %>
+                        <div class="admin-preview-search">
+                          <%= form.text_field :name, value: category.name, placeholder: "카테고리명" %>
+                          <%= form.text_area :description, value: category.description, rows: 3, placeholder: "설명" %>
+                          <%= form.submit "저장", class: "button button--secondary button--small" %>
+                        </div>
+                      <% end %>
+                    </span>
+                    <span class="admin-preview-actions">
+                      <%= button_to "삭제", admin_category_path(category, q: @query.presence), method: :delete, class: "button button--ghost button--small", form: { data: { turbo_confirm: "#{category.name} 카테고리를 삭제할까요?" } } %>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

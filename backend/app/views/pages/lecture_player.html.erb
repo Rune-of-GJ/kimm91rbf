@@ -1,341 +1,135 @@
 <% content_for :title, "#{@lecture.title} | SpeakFlow" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="csrf-token" content="<%= form_authenticity_token %>">
-  <title><%= @lecture.title %> - SpeakFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    [hidden] { display: none !important; }
-    body { @apply bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800; }
-  </style>
-</head>
-<body class="text-white">
-  <!-- 헤더 -->
-  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <%= link_to root_path do %>
-          <div class="flex flex-col items-center">
-            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
-            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
-          </div>
-        <% end %>
-      </div>
-      <div class="flex items-center gap-4">
-        <% if current_user %>
-          <button onclick="toggleSidebar()" class="text-white hover:text-blue-300 transition">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        <% else %>
-          <%= link_to "로그인/가입", login_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
-        <% end %>
-      </div>
-    </div>
-  </header>
+<% embed_url = youtube_embed_url(@lecture.video_url) %>
 
-  <main class="bg-slate-800 min-h-screen">
-    <div class="max-w-7xl mx-auto px-6 py-12">
-    <!-- Flash messages -->
-    <% if notice %>
-      <div class="mb-6 p-4 bg-green-600 text-white rounded-lg">
-        <%= notice %>
-      </div>
-    <% end %>
-    <% if alert %>
-      <div class="mb-6 p-4 bg-red-600 text-white rounded-lg">
-        <%= alert %>
-      </div>
-    <% end %>
+<main class="page"
+  data-controller="lecture-player"
+  data-lecture-player-lecture-id-value="<%= @lecture.id %>"
+  data-lecture-player-progress-url-value="<%= current_user ? progress_api_v1_lecture_path(@lecture) : '' %>">
 
-    <!-- 강의 정보 -->
-    <div class="mb-8 flex items-start justify-between">
-      <div class="flex-1">
-        <div class="flex items-center gap-4 mb-4">
-          <%= link_to "← 강의 목록으로 돌아가기", course_detail_path(@course), class: "text-blue-400 hover:text-blue-300" %>
-        </div>
-        <h1 class="text-3xl font-bold text-white mb-2"><%= @lecture.order_no %>강: <%= @lecture.title %></h1>
-        <p class="text-slate-300 mb-4"><%= @course.title %></p>
-        <div class="flex items-center gap-4 text-sm text-slate-400">
-          <span>👨‍🏫 <%= @course.instructor_name %></span>
-          <span>⏱️ <%= @lecture.duration %>분</span>
-        </div>
-      </div>
-      <div class="ml-4">
-        <button onclick="markAsWatched()" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition whitespace-nowrap">
-          시청 완료 ✓
-        </button>
-      </div>
-    </div>
+  <section class="hero-shell">
+    <div class="hero-shell__ambient" aria-hidden="true"></div>
 
-    <!-- 비디오 플레이어 -->
-    <div class="mb-8">
-      <% if @lecture.video_url.present? %>
-        <%# YouTube 임베드 %>
-        <% youtube_id = @lecture.video_url.split('v=').last.split('&').first %>
-        <div class="aspect-video bg-black rounded-lg overflow-hidden">
-          <iframe
-            src="https://www.youtube.com/embed/<%= youtube_id %>"
-            class="w-full h-full"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      <% else %>
-        <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center">
-          <div class="text-center">
-            <div class="text-6xl mb-4">🎥</div>
-            <p class="text-slate-400">영상 준비 중입니다.</p>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <div class="container hero-shell__grid">
+      <div class="hero-shell__copy">
+        <p class="eyebrow">Lecture player</p>
+        <h1 class="hero-shell__title"><%= @lecture.order_no %>. <%= @lecture.title %></h1>
+        <p class="hero-shell__body">
+          <%= @course.title %> 안에서 현재 듣고 있는 강의입니다. 시청, 메모, 녹음, 복기가 하나의 흐름으로 이어집니다.
+        </p>
 
-    <!-- 내용 메모 -->
-    <div class="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
-      <h2 class="text-xl font-semibold text-white mb-4">📝 내용 메모</h2>
-      <textarea id="lecture-notes" class="w-full h-32 bg-slate-700 border border-slate-600 rounded p-3 text-white placeholder-slate-400 resize-vertical" placeholder="강의 내용을 메모하세요..."></textarea>
-      <div class="mt-4 flex gap-2">
-        <button onclick="saveNotes()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition">
-          저장
-        </button>
-        <button onclick="clearNotes()" class="px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded font-medium transition">
-          지우기
-        </button>
-      </div>
-    </div>
-
-    <!-- 스피킹 연습용 녹음 -->
-    <div class="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
-      <h2 class="text-xl font-semibold text-white mb-4">🎤 스피킹 연습</h2>
-      <p class="text-slate-300 mb-4">강의를 들으며 연습한 내용을 녹음해보세요.</p>
-      <div class="flex gap-4 mb-4">
-        <button id="record-btn" onclick="startRecording()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
-          🎤 녹음 시작
-        </button>
-        <button id="stop-btn" onclick="stopRecording()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded font-medium transition" disabled>
-          ⏹️ 녹음 중지
-        </button>
-        <button id="play-btn" onclick="playRecording()" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-medium transition" disabled>
-          ▶️ 재생
-        </button>
-        <button id="download-btn" onclick="downloadRecording()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" disabled>
-          💾 다운로드
-        </button>
-      </div>
-      <div id="recording-status" class="text-sm text-slate-400"></div>
-      <audio id="audio-playback" controls class="mt-4 w-full" style="display: none;"></audio>
-    </div>
-
-    <!-- 강의 목록 -->
-    <div class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
-      <div class="p-6 border-b border-slate-700">
-        <h2 class="text-xl font-semibold text-white">강의 목록</h2>
-      </div>
-      <div class="divide-y divide-slate-700">
-        <% @course.lectures.order(:order_no).each do |lecture| %>
-          <div id="lecture-<%= lecture.id %>" class="p-6 hover:bg-slate-700/50 transition <%= 'bg-green-800/50' if current_user&.progresses&.find_by(lecture: lecture)&.watched %>">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-4">
-                <div id="lecture-number-<%= lecture.id %>" class="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold <%= current_user&.progresses&.find_by(lecture: lecture)&.watched ? 'bg-green-600' : 'bg-blue-600' %>">
-                  <%= lecture.order_no %>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-white"><%= lecture.title %></h3>
-                  <p class="text-sm text-slate-400">재생시간: <%= lecture.duration %>분</p>
-                </div>
-              </div>
-              <% if lecture.id == @lecture.id %>
-                <span class="px-3 py-1 bg-blue-600 text-white rounded text-sm">현재 시청 중</span>
-              <% else %>
-                <%= link_to "시청하기", lecture_player_path(lecture), class: "px-4 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded font-medium transition" %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    </div>
-  </main>
-
-  <!-- 사용자 사이드바 -->
-  <% if current_user %>
-    <div id="user-sidebar" class="fixed inset-y-0 right-0 z-50 w-64 bg-slate-800 border-l border-slate-700 transform translate-x-full transition-transform duration-300 ease-in-out">
-      <div class="p-6">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold text-white">메뉴</h3>
-          <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
-        <div class="space-y-4">
-          <div class="text-center">
-            <p class="text-blue-300 font-semibold"><%= current_user.name %> 님</p>
-            <p class="text-slate-400 text-sm"><%= current_user.email %></p>
-          </div>
-          <div class="border-t border-slate-700 pt-4">
-            <button onclick="logout()" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded font-medium transition">
-              로그아웃
+        <div class="button-row">
+          <%= link_to "과정으로 돌아가기", course_detail_path(@course), class: "button button--secondary" %>
+          <% if current_user %>
+            <button type="button" class="button button--primary" data-lecture-player-target="watchButton" data-action="lecture-player#markWatched">
+              시청 완료 표시
             </button>
-          </div>
+          <% else %>
+            <%= link_to "로그인 후 진도 저장", login_path, class: "button button--primary" %>
+          <% end %>
         </div>
       </div>
+
+      <aside class="hero-focus">
+        <div class="hero-focus__glow" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--a" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--b" aria-hidden="true"></div>
+        <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
+
+        <div class="hero-focus__content">
+          <span class="pill pill--accent">Playback cue</span>
+          <strong>현재 강의는 <%= duration_label(@lecture.duration) %> 분량입니다.</strong>
+          <p>핵심 시청 화면은 가운데 두고, 메모와 녹음은 그 바깥 레이어로 배치했습니다.</p>
+        </div>
+      </aside>
     </div>
-  <% end %>
+  </section>
 
-  <script>
-    let mediaRecorder;
-    let audioChunks = [];
-    let audioBlob;
-    let audioUrl;
+  <section class="surface">
+    <div class="container surface__inner">
+      <section class="page-section">
+        <div class="lesson-layout">
+          <div style="display: grid; gap: 18px;">
+            <article class="surface-card">
+              <div class="video-frame">
+                <% if embed_url.present? %>
+                  <iframe
+                    src="<%= embed_url %>"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                <% else %>
+                  <div class="video-fallback">아직 영상이 연결되지 않았습니다.</div>
+                <% end %>
+              </div>
+            </article>
 
-    // 페이지 로드 시 메모 불러오기
-    document.addEventListener('DOMContentLoaded', function() {
-      loadNotes();
-    });
+            <article class="surface-card">
+              <h3>학습 메모</h3>
+              <p style="margin-top: 12px;">중심 메시지, 말의 속도, 강조 포인트를 바로 기록해 두세요.</p>
+              <div class="field" style="margin-top: 16px;">
+                <textarea data-lecture-player-target="notes" placeholder="강의 메모를 적어 보세요."></textarea>
+              </div>
+              <div class="button-row" style="margin-top: 14px;">
+                <button type="button" class="button button--primary button--small" data-action="lecture-player#saveNotes">메모 저장</button>
+                <button type="button" class="button button--secondary button--small" data-action="lecture-player#clearNotes">메모 비우기</button>
+              </div>
+              <div data-lecture-player-target="status" class="status-banner" hidden></div>
+            </article>
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById('user-sidebar');
-      sidebar.classList.toggle('translate-x-full');
-    }
+            <article class="surface-card">
+              <h3>말하기 녹음 연습</h3>
+              <p style="margin-top: 12px;">강의 내용을 자기 말로 다시 말해 보면서 전달력을 복기할 수 있습니다.</p>
+              <div class="recording-actions" style="margin-top: 16px;">
+                <button type="button" class="button button--primary button--small" data-lecture-player-target="recordButton" data-action="lecture-player#startRecording">녹음 시작</button>
+                <button type="button" class="button button--secondary button--small" data-lecture-player-target="stopButton" data-action="lecture-player#stopRecording" disabled>녹음 중지</button>
+                <button type="button" class="button button--secondary button--small" data-lecture-player-target="playButton" data-action="lecture-player#playRecording" disabled>재생</button>
+                <button type="button" class="button button--secondary button--small" data-lecture-player-target="downloadButton" data-action="lecture-player#downloadRecording" disabled>다운로드</button>
+              </div>
+              <audio class="audio-player" data-lecture-player-target="audio" controls hidden></audio>
+            </article>
+          </div>
 
-    // 메모 기능
-    function saveNotes() {
-      const notes = document.getElementById('lecture-notes').value;
-      localStorage.setItem('lecture-<%= @lecture.id %>-notes', notes);
-      alert('메모가 저장되었습니다!');
-    }
+          <div style="display: grid; gap: 18px;">
+            <article class="summary-panel">
+              <span class="pill">Course context</span>
+              <h3 style="margin-top: 14px;"><%= @course.title %></h3>
+              <p style="margin-top: 14px;">강사 <%= @course.instructor_name %> · 전체 강의 <%= @course.lectures.count %>개</p>
+            </article>
 
-    function clearNotes() {
-      if (confirm('메모를 지우시겠습니까?')) {
-        document.getElementById('lecture-notes').value = '';
-        localStorage.removeItem('lecture-<%= @lecture.id %>-notes');
-      }
-    }
+            <article class="surface-card">
+              <div class="section-heading" style="margin-bottom: 18px;">
+                <h2 class="section-title" style="font-size: 28px;">전체 강의 흐름</h2>
+                <p class="section-copy">현재 강의는 강조하고, 완료한 강의는 라임 포인트로 남깁니다.</p>
+              </div>
 
-    function loadNotes() {
-      const notes = localStorage.getItem('lecture-<%= @lecture.id %>-notes');
-      if (notes) {
-        document.getElementById('lecture-notes').value = notes;
-      }
-    }
+              <div class="lecture-list">
+                <% @course.lectures.order(:order_no).each do |lecture| %>
+                  <% complete = watched?(current_user, lecture) %>
+                  <article
+                    class="lecture-card <%= 'is-current' if lecture.id == @lecture.id %> <%= 'is-complete' if complete %>"
+                    data-lecture-row-id="<%= lecture.id %>">
+                    <div class="lecture-card__top">
+                      <div style="display: flex; gap: 14px; align-items: flex-start;">
+                        <span class="lecture-badge <%= 'is-complete' if complete %>" data-lecture-badge-id="<%= lecture.id %>"><%= lecture.order_no %></span>
+                        <div>
+                          <h3><%= lecture.title %></h3>
+                          <p style="margin-top: 10px;"><%= duration_label(lecture.duration) %></p>
+                        </div>
+                      </div>
 
-    // 녹음 기능
-    async function startRecording() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
-
-        mediaRecorder.ondataavailable = (event) => {
-          audioChunks.push(event.data);
-        };
-
-        mediaRecorder.onstop = () => {
-          audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-          audioUrl = URL.createObjectURL(audioBlob);
-          document.getElementById('audio-playback').src = audioUrl;
-          document.getElementById('audio-playback').style.display = 'block';
-          document.getElementById('play-btn').disabled = false;
-          document.getElementById('download-btn').disabled = false;
-        };
-
-        mediaRecorder.start();
-        document.getElementById('record-btn').disabled = true;
-        document.getElementById('stop-btn').disabled = false;
-        document.getElementById('recording-status').textContent = '녹음 중...';
-      } catch (error) {
-        console.error('녹음 시작 실패:', error);
-        alert('마이크 접근 권한이 필요합니다.');
-      }
-    }
-
-    function stopRecording() {
-      if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-        mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        document.getElementById('record-btn').disabled = false;
-        document.getElementById('stop-btn').disabled = true;
-        document.getElementById('recording-status').textContent = '녹음 완료';
-      }
-    }
-
-    function playRecording() {
-      const audio = document.getElementById('audio-playback');
-      if (audio.src) {
-        audio.play();
-      }
-    }
-
-    function downloadRecording() {
-      if (audioBlob) {
-        const url = URL.createObjectURL(audioBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'speaking-practice-<%= @lecture.id %>.wav';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }
-    }
-
-    async function markAsWatched() {
-      try {
-        const response = await fetch('/api/v1/lectures/<%= @lecture.id %>/progress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify({ watched: true })
-        });
-
-        if (response.ok) {
-          // 시각적 업데이트
-          const lectureDiv = document.getElementById('lecture-<%= @lecture.id %>');
-          const lectureNumber = document.getElementById('lecture-number-<%= @lecture.id %>');
-          
-          if (lectureDiv) {
-            lectureDiv.classList.add('bg-green-800/50');
-          }
-          if (lectureNumber) {
-            lectureNumber.classList.remove('bg-blue-600');
-            lectureNumber.classList.add('bg-green-600');
-          }
-          
-          alert('시청 완료로 기록되었습니다!');
-        } else {
-          alert('오류가 발생했습니다.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('네트워크 오류가 발생했습니다.');
-      }
-    }
-
-    async function logout() {
-      try {
-        await fetch('/api/v1/auth/logout', {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          }
-        });
-        window.location.href = '/';
-      } catch (error) {
-        console.error('Logout error:', error);
-        window.location.href = '/';
-      }
-    }
-  </script>
-</body>
-</html>
+                      <% if lecture.id == @lecture.id %>
+                        <span class="pill pill--accent">현재 재생</span>
+                      <% else %>
+                        <%= link_to "열기", lecture_player_path(lecture), class: "button button--secondary button--small" %>
+                      <% end %>
+                    </div>
+                  </article>
+                <% end %>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>

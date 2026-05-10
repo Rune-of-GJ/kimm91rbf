@@ -1,0 +1,68 @@
+<% content_for :title, "SpeakFlow | Preview Coaching Products" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/student/coaching/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">첨삭 상품 테스트 페이지</h1>
+              <p class="section-copy">
+                월정액은 기본 훈련용으로 두고, 더 깊은 피드백은 별도 첨삭 상품으로 파는 구조를 확인하는 화면입니다.
+              </p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">현재 멤버십</span>
+                <div class="meta-list">
+                  <div class="meta-item"><span>활성 플랜</span><strong><%= @active_membership[:plan] %></strong></div>
+                  <div class="meta-item"><span>포함 첨삭</span><strong>월 <%= @active_membership[:included_credits] %>회</strong></div>
+                  <div class="meta-item"><span>남은 첨삭</span><strong><%= @active_membership[:remaining_credits] %>회</strong></div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <span class="pill">왜 별도 상품인가</span>
+                <div class="admin-preview-checks">
+                  <div class="admin-preview-check">
+                    <strong>월정액 기본 가치를 지킴</strong>
+                    <p>강의와 기본 훈련은 구독에 넣고, 고비용 첨삭은 별도 상품으로 분리합니다.</p>
+                  </div>
+                  <div class="admin-preview-check">
+                    <strong>Coach는 상위 플랜 차별점</strong>
+                    <p>월 2회 첨삭 포함만으로도 상위 플랜의 가치가 선명해집니다.</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="pricing-grid">
+              <% @coaching_products.each do |product| %>
+                <article class="surface-card admin-preview-panel membership-card">
+                  <span class="pill"><%= product[:credits] %>회권</span>
+                  <h3><%= product[:name] %></h3>
+                  <p><%= product[:pitch] %></p>
+                  <div class="commerce-price">
+                    <strong><%= number_to_currency(product[:price], unit: "₩", precision: 0) %></strong>
+                    <span>크레딧 <%= product[:credits] %>회 지급</span>
+                  </div>
+                  <div class="button-row">
+                    <%= link_to "요청 흐름 보기", preview_student_coaching_request_path, class: "button button--primary button--small" %>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

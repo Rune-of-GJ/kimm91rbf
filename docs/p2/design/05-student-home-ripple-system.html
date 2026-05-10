@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpeakFlow Design Example — Ripple System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./speakflow-ripple.css">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container site-header__row">
+        <a class="brand" href="./05-student-home-ripple-system.html" aria-label="SpeakFlow home">
+          <span class="brand__mark">
+            <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+          </span>
+          <span class="brand__text">SpeakFlow</span>
+        </a>
+
+        <nav class="nav" aria-label="Global">
+          <a class="is-active" href="./05-student-home-ripple-system.html">Home</a>
+          <a href="#">Programs</a>
+          <a href="#">Sessions</a>
+          <a href="#">Coaches</a>
+          <a href="#">Support</a>
+        </nav>
+
+        <div class="header-actions" aria-label="Quick actions">
+          <button class="icon-button" aria-label="Search">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="M16 16L21 21"></path>
+            </svg>
+          </button>
+          <button class="icon-button" aria-label="Profile">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 20C5.8 16.8 8.4 15 12 15C15.6 15 18.2 16.8 19 20"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero__ambient" aria-hidden="true">
+        <div class="hero__glow"></div>
+        <div class="hero__ring hero__ring--0"></div>
+        <div class="hero__ring hero__ring--1"></div>
+        <div class="hero__ring hero__ring--2"></div>
+        <div class="hero__ring hero__ring--3"></div>
+      </div>
+
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow reveal">Personalized Speaking Platform</p>
+          <h1 class="headline reveal reveal--delay-1">A calm speaking system
+built on reaction,
+spread, and afterglow</h1>
+          <p class="description reveal reveal--delay-2">
+            This example follows your ripple rules directly. One clear center point leads the hero,
+            the supporting information sits in wider rings, and the full page keeps the structure of
+            center, response, propagation, and fading resonance.
+          </p>
+
+          <div class="cta-group reveal reveal--delay-3">
+            <a class="button button--primary" href="#">Get Started Free</a>
+            <a class="button button--secondary" href="#">Learn More</a>
+          </div>
+        </div>
+
+        <div class="hero__media reveal reveal--delay-2">
+          <img
+            src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=80"
+            alt="Person preparing calmly in natural light"
+          >
+          <div class="hero__media-rings" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="hero-card">
+            <div>
+              <strong>Hero center point</strong>
+              <span>The headline is the primary center. The CTA and media note sit in the next rings as secondary responses.</span>
+            </div>
+            <div class="hero-card__echo" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="surface">
+      <div class="container surface__inner">
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Use the grid for structure and the ripple for emotional logic</h2>
+            <p>
+              The reading structure stays linear and calm, while the circles, glows, and motion cues quietly
+              explain where attention starts and how it should fade outward.
+            </p>
+          </div>
+
+          <div class="card-grid card-grid--3">
+            <article class="card">
+              <div class="card__icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="4.5"></circle>
+                </svg>
+              </div>
+              <h3>Center first</h3>
+              <p>
+                Each section starts by declaring one center point so the ripple does not become meaningless decoration.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card__icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 12H20"></path>
+                  <path d="M12 4V20"></path>
+                </svg>
+              </div>
+              <h3>Information expands outward</h3>
+              <p>
+                Important content stays close to the source while softer metadata and atmosphere move farther away.
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card__icon">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M6 12C8 10 9 10 12 10C15 10 16 10 18 12"></path>
+                  <path d="M4 16C7 13 8.5 13 12 13C15.5 13 17 13 20 16"></path>
+                </svg>
+              </div>
+              <h3>Motion ends softly</h3>
+              <p>
+                Hover, click, and reveal effects all follow a quiet ease-out pattern instead of loud or fast animation.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>One local center can drive an entire section</h2>
+            <p>
+              The green pulse in this feature block acts as the section center. The surrounding cards become rings
+              of interpretation rather than unrelated boxes.
+            </p>
+          </div>
+
+          <div class="wave-panel">
+            <div class="wave-panel__center" aria-hidden="true"></div>
+            <div class="wave-panel__ring wave-panel__ring--0" aria-hidden="true"></div>
+            <div class="wave-panel__ring wave-panel__ring--1" aria-hidden="true"></div>
+            <div class="wave-panel__ring wave-panel__ring--2" aria-hidden="true"></div>
+
+            <div class="wave-panel__content feature-showcase">
+              <div class="feature-board">
+                <div class="feature-board__row">
+                  <article class="mini-card">
+                    <strong>Daily warm-up</strong>
+                    <span>Closest to the center because it is the first reaction to the core speaking routine.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Coach notes</strong>
+                    <span>Second layer information that explains how the routine should adapt.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Review clips</strong>
+                    <span>Outer layer content that records what remains after the practice moment ends.</span>
+                  </article>
+                </div>
+
+                <div class="feature-board__row">
+                  <article class="mini-card">
+                    <strong>Interview mode</strong>
+                    <span>Structured answers and timing cues stay closer to the main speaking goal.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Stage mode</strong>
+                    <span>Presentation posture, opening control, and pause rhythm sit in the next ring.</span>
+                  </article>
+                  <article class="mini-card">
+                    <strong>Archive</strong>
+                    <span>Past sessions become the quiet afterglow layer that supports later action.</span>
+                  </article>
+                </div>
+              </div>
+
+              <aside class="feature-summary">
+                <span class="pill pill--accent">Ring 0 → Ring 3</span>
+                <h3>The whole section follows one propagation story.</h3>
+                <p>
+                  Rather than repeating circles everywhere, the section uses one anchor and lets layout density,
+                  contrast, and content priority fade outward around it.
+                </p>
+              </aside>
+            </div>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Numbers should also feel like they belong to the same system</h2>
+            <p>
+              These stat cards keep the reading order straight, but each uses subtle inner rings so they echo the same language.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-wave">
+              <strong>18K</strong>
+              <span>Total completed practice loops</span>
+            </article>
+            <article class="stat-wave">
+              <strong>4.9</strong>
+              <span>Coach satisfaction score</span>
+            </article>
+            <article class="stat-wave">
+              <strong>87%</strong>
+              <span>Users returning to the next routine</span>
+            </article>
+            <article class="stat-wave">
+              <strong>220m</strong>
+              <span>Replay time from reviewed clips</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Cards can carry a local ripple without breaking usability</h2>
+            <p>
+              Each card keeps a readable grid and left-aligned text, while the logo-derived mark becomes a small local center.
+            </p>
+          </div>
+
+          <div class="program-grid">
+            <article class="program-card">
+              <div class="program-card__mark" aria-hidden="true">
+                <span class="ripple-signature">
+                  <span class="ripple-signature__ring ripple-signature__ring--a"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--b"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--c"></span>
+                  <span class="ripple-signature__core"></span>
+                </span>
+              </div>
+              <span class="pill">Program 01</span>
+              <h3>Interview preparation flow</h3>
+              <p>
+                The logo mark is the local center, and the program description becomes the first expanding explanation.
+              </p>
+            </article>
+
+            <article class="program-card">
+              <div class="program-card__mark" aria-hidden="true">
+                <span class="ripple-signature">
+                  <span class="ripple-signature__ring ripple-signature__ring--a"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--b"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--c"></span>
+                  <span class="ripple-signature__core"></span>
+                </span>
+              </div>
+              <span class="pill pill--accent">Program 02</span>
+              <h3>Presentation confidence track</h3>
+              <p>
+                The ripple cue stays subtle, so the card feels connected to the brand without turning into an illustration panel.
+              </p>
+            </article>
+
+            <article class="program-card">
+              <div class="program-card__mark" aria-hidden="true">
+                <span class="ripple-signature">
+                  <span class="ripple-signature__ring ripple-signature__ring--a"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--b"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--c"></span>
+                  <span class="ripple-signature__core"></span>
+                </span>
+              </div>
+              <span class="pill">Program 03</span>
+              <h3>Voice and delivery reset</h3>
+              <p>
+                The structure remains practical first, while the circular falloff creates a quiet sense of continuity.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="band">
+            <div class="band__grid">
+            <div class="band__logo">
+              <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+            </div>
+
+              <div class="band__copy">
+                <span class="pill pill--accent">Center → reaction → spread → afterglow</span>
+                <h3>The logo becomes a compact version of the full page logic</h3>
+                <p>
+                  It starts with a small center and one clear response, then the surrounding rings take over as softer, wider, less urgent layers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Reviews show the afterglow stage</h2>
+            <p>
+              These cards place the visible center in the corner and let the quote read as the lingering response that follows the initial pulse.
+            </p>
+          </div>
+
+          <div class="review-grid">
+            <article class="review-card">
+              <span class="pill">User review</span>
+              <div class="review-card__center" aria-hidden="true"></div>
+              <blockquote>
+                “This feels calmer than a lot of growth-product homepages. The circles help guide attention without making the page noisy.”
+              </blockquote>
+              <footer>Minji Park · Interview coaching track</footer>
+            </article>
+
+            <article class="review-card">
+              <span class="pill pill--accent">Coach review</span>
+              <div class="review-card__center" aria-hidden="true"></div>
+              <blockquote>
+                “The important part is that the ripple logic matches content importance. It is not just circles dropped onto the layout.”
+              </blockquote>
+              <footer>Jiyoon Kim · Lead speaking coach</footer>
+            </article>
+
+            <article class="review-card">
+              <span class="pill">Team note</span>
+              <div class="review-card__center" aria-hidden="true"></div>
+              <blockquote>
+                “The system stays readable because text still reads in straight lines while the motion and shape language handle the emotional layer.”
+              </blockquote>
+              <footer>Product review · Internal design note</footer>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="section-heading">
+            <h2>Readable rules still come first</h2>
+            <p>
+              Even with a strong concept, the page keeps text linear, spacing stable, and the decorative rings quieter than the real content.
+            </p>
+          </div>
+
+          <div class="card-grid card-grid--2">
+            <article class="card">
+              <span class="pill">Why it stays usable</span>
+              <ul class="list">
+                <li>The layout is still grid-based and rational</li>
+                <li>Text alignment remains horizontal and easy to scan</li>
+                <li>The circles are strongest nearest the center and softer outside</li>
+                <li>Important actions do not rely on animation alone</li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <span class="pill">Why it matches your spec</span>
+              <ul class="list">
+                <li>Each section has one local center point</li>
+                <li>Animation follows emergence, spread, fade, and dissolve</li>
+                <li>Hover motion is restrained and click ripple is the main feedback</li>
+                <li>Reduced-motion mode is supported</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="surface-section">
+          <div class="cta-banner">
+            <div class="cta-banner__center" aria-hidden="true"></div>
+            <div class="cta-banner__ring cta-banner__ring--0" aria-hidden="true"></div>
+            <div class="cta-banner__ring cta-banner__ring--1" aria-hidden="true"></div>
+            <div class="cta-banner__ring cta-banner__ring--2" aria-hidden="true"></div>
+
+            <div class="cta-banner__grid">
+              <div>
+                <span class="pill pill--accent">Section transition as propagation</span>
+                <h2>The final CTA acts like the last strong pulse before the page settles.</h2>
+                <p>
+                  It uses one clear center, wider rings, and a stable grid so the exit point of the page still belongs to the same system.
+                </p>
+
+                <div class="cta-group" style="margin-top: 24px;">
+                  <a class="button button--primary" href="#">Move to dashboard variants</a>
+                  <a class="button button--secondary" href="#">Compare with earlier examples</a>
+                </div>
+              </div>
+
+              <div class="cta-banner__logo" aria-hidden="true">
+                <span class="ripple-signature ripple-signature--light">
+                  <span class="ripple-signature__ring ripple-signature__ring--a"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--b"></span>
+                  <span class="ripple-signature__ring ripple-signature__ring--c"></span>
+                  <span class="ripple-signature__core"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div class="site-footer__brand">
+          <a class="brand" href="./05-student-home-ripple-system.html" aria-label="SpeakFlow home">
+            <span class="brand__mark">
+              <img src="./assets/ripple-logo.png" alt="SpeakFlow ripple logo">
+            </span>
+            <span class="brand__text">SpeakFlow</span>
+          </a>
+          <p>
+            This version treats ripple as a real interaction and information grammar, not just an ornament layered over the page.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Programs</a>
+          <a href="#">Coaches</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const revealTargets = document.querySelectorAll(".reveal");
+
+    if (!reducedMotion.matches && "IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      revealTargets.forEach((target) => observer.observe(target));
+    } else {
+      revealTargets.forEach((target) => target.classList.add("is-visible"));
+    }
+
+    document.querySelectorAll(".button").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        if (reducedMotion.matches) return;
+
+        const rect = button.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        const maxSide = Math.max(rect.width, rect.height) * 1.8;
+
+        ripple.className = "button__ripple";
+        ripple.style.width = `${maxSide}px`;
+        ripple.style.height = `${maxSide}px`;
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+
+        button.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+      });
+    });
+  </script>
+</body>
+</html>

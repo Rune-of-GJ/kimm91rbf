@@ -1,0 +1,70 @@
+<% content_for :title, "SpeakFlow | 강사 정산 미리보기" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "preview/instructor/settlements/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <p class="eyebrow">Preview instructor</p>
+              <h1 class="section-title"><%= @instructor_name %>님의 정산 요약</h1>
+              <p class="section-copy"><%= @settlement_month %> 기준 월정액 시청 기여 정산과 첨삭 정산이 어떻게 합산되는지 보여주는 강사 시안입니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="stats-grid">
+              <article class="stat-card">
+                <span class="stat-card__value"><%= number_with_delimiter(@watch_minutes) %>분</span>
+                <span class="stat-card__label">유효 시청 시간</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @watch_share %>%</span>
+                <span class="stat-card__label">월정액 기여도</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= @coaching_requests %>건</span>
+                <span class="stat-card__label">완료 첨삭 건수</span>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__value"><%= number_to_currency(@final_payout, unit: "₩", precision: 0) %></span>
+                <span class="stat-card__label">이번 달 예상 지급액</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="detail-grid">
+              <article class="surface-card admin-preview-panel">
+                <h3>정산 구성</h3>
+                <div class="meta-list">
+                  <div class="meta-item"><span>월정액 정산</span><strong><%= number_to_currency(@membership_gross, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>첨삭 총매출</span><strong><%= number_to_currency(@coaching_gross, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>첨삭 수수료 10%</span><strong>- <%= number_to_currency(@coaching_fee, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>첨삭 지급액</span><strong><%= number_to_currency(@coaching_payout, unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>최종 지급액</span><strong><%= number_to_currency(@final_payout, unit: "₩", precision: 0) %></strong></div>
+                </div>
+              </article>
+
+              <article class="surface-card admin-preview-panel">
+                <h3>지급 정보</h3>
+                <div class="meta-list">
+                  <div class="meta-item"><span>지급 예정 월</span><strong><%= @settlement_month %></strong></div>
+                  <div class="meta-item"><span>지급 계좌</span><strong><%= @bank_account %></strong></div>
+                  <div class="meta-item"><span>최소 지급 기준</span><strong><%= number_to_currency(@hold_threshold, unit: "₩", precision: 0) %> 이상</strong></div>
+                </div>
+                <div class="admin-preview-note">
+                  <strong>확인 포인트</strong>
+                  <p>강사가 자신의 정산 근거를 이해할 수 있도록 시청 시간, 첨삭 건수, 공제 항목이 모두 한 화면에 보여야 합니다.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

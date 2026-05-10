@@ -1,136 +1,96 @@
-<% content_for :title, "로그인 | SpeakFlow" %>
+<% content_for :title, "SpeakFlow | Login" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>로그인 | SpeakFlow</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    [hidden] { display: none !important; }
-    body { @apply bg-slate-800; }
-  </style>
-</head>
-<body class="text-white">
-  <!-- 헤더 -->
-  <header class="sticky top-0 z-50 border-b border-blue-500/20 bg-slate-900/95 backdrop-blur">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <%= link_to root_path do %>
-          <div class="flex flex-col items-center">
-            <img src="/speak.png" alt="SpeakFlow" class="h-16 w-auto">
-            <span class="text-slate-400 text-sm mt-1">발표 능력 향상 플랫폼</span>
+<main class="page">
+  <section class="hero-shell">
+    <div class="container auth-layout"
+      data-controller="auth"
+      data-auth-initial-mode-value="<%= params[:signup] == 'true' ? 'signup' : 'login' %>"
+      data-auth-login-url-value="<%= api_v1_auth_login_path %>"
+      data-auth-signup-url-value="<%= api_v1_auth_signup_path %>">
+
+      <aside class="auth-visual">
+        <div class="auth-visual__glow" aria-hidden="true"></div>
+        <div class="auth-visual__rings" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div style="position: relative; z-index: 1; display: grid; gap: 26px; align-content: end; min-height: 100%;">
+          <div class="auth-visual__logo">
+            <%= image_tag "ripple-logo.png", alt: "SpeakFlow ripple logo" %>
           </div>
-        <% end %>
-      </div>
-      <div class="flex items-center gap-4">
-        <%= link_to "홈으로", root_path, class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition" %>
-      </div>
-    </div>
-  </header>
 
-  <main class="bg-slate-800 min-h-screen">
-    <div class="max-w-7xl mx-auto px-6 py-12">
-    <section class="mt-12 bg-slate-800 border border-slate-700 rounded-lg p-8 max-w-md mx-auto">
-      <div id="login-form">
-        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 로그인하세요</h2>
-        
-        <!-- 로그인 폼 -->
-        <%= form_with url: api_v1_auth_login_path, method: :post, local: false, html: { onsubmit: "return submitLogin(event)" }, class: "space-y-4 mb-6" do |f| %>
-          <%= f.email_field :email, placeholder: "이메일", value: "instructor@speakflow.kr", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.password_field :password, placeholder: "비밀번호", value: "password123", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.submit "로그인", class: "w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-semibold transition" %>
-        <% end %>
-
-        <div class="divider text-center text-slate-400 my-6">
-          <button onclick="showSignup()" class="text-blue-400 hover:text-blue-300">또는 가입하기</button>
+          <div>
+            <p class="eyebrow">join to speakflow</p>
+            <h1 class="auth-title" style="margin-top: 16px;">SpeakFlow와<br>함께하세요.</h1>
+            <p class="auth-copy" style="margin-top: 16px;">
+              계정을 만들어 SpeakFlow의 모든 강의와 기능을 이용해 보세요.<br>이미 계정이 있다면 로그인 후 바로 학습을 시작할 수 있습니다.
+            </p>
+          </div>
         </div>
-      </div>
+      </aside>
 
-      <div id="signup-form" style="display: none;">
-        <h2 class="text-2xl font-bold text-white mb-6 text-center">SpeakFlow에 가입하세요</h2>
-        
-        <!-- 회원가입 폼 -->
-        <%= form_with url: api_v1_auth_signup_path, method: :post, local: false, html: { onsubmit: "return submitSignup(event)" }, class: "space-y-4" do |f| %>
-          <%= f.text_field :name, placeholder: "이름", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.email_field :email, placeholder: "이메일", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.password_field :password, placeholder: "비밀번호", class: "w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400" %>
-          <%= f.submit "회원가입", class: "w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded font-semibold transition" %>
-        <% end %>
+      <section class="auth-panel">
+        <p class="eyebrow">Access</p>
 
-        <div class="divider text-center text-slate-400 my-6">
-          <button onclick="showLogin()" class="text-blue-400 hover:text-blue-300">또는 로그인하기</button>
+        <div data-auth-target="loginHeader">
+          <h2 class="auth-title">SpeakFlow에<br>로그인하세요.</h2>
+          <p class="auth-copy">돌아오셨군요! 로그인하세요.</p>
         </div>
-      </div>
-    </section>
+
+        <div data-auth-target="signupHeader" hidden>
+          <h2 class="auth-title">SpeakFlow에<br>회원가입하세요.</h2>
+          <p class="auth-copy">처음이라면 회원가입하세요.</p>
+        </div>
+
+        <div data-auth-target="status" class="status-banner" hidden></div>
+
+        <div data-auth-target="loginPanel">
+          <form action="<%= api_v1_auth_login_path %>" method="post" data-mode="login" data-action="submit->auth#submit">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <div class="field">
+              <label for="login-email">이메일</label>
+              <input id="login-email" name="email" type="email" value="instructor@speakflow.kr" required autocomplete="email">
+            </div>
+
+            <div class="field" style="margin-top: 14px;">
+              <label for="login-password">비밀번호</label>
+              <input id="login-password" name="password" type="password" value="password123" required autocomplete="current-password">
+            </div>
+
+            <div class="button-row" style="margin-top: 18px;">
+              <button type="submit" class="button button--primary" data-auth-target="submit">로그인</button>
+              <button type="button" class="button button--secondary" data-action="auth#showSignup">회원가입</button>
+            </div>
+          </form>
+        </div>
+
+        <div data-auth-target="signupPanel" hidden>
+          <form action="<%= api_v1_auth_signup_path %>" method="post" data-mode="signup" data-action="submit->auth#submit">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <div class="field">
+              <label for="signup-name">이름</label>
+              <input id="signup-name" name="name" type="text" required autocomplete="name">
+            </div>
+
+            <div class="field" style="margin-top: 14px;">
+              <label for="signup-email">이메일</label>
+              <input id="signup-email" name="email" type="email" required autocomplete="email">
+            </div>
+
+            <div class="field" style="margin-top: 14px;">
+              <label for="signup-password">비밀번호</label>
+              <input id="signup-password" name="password" type="password" required minlength="8" autocomplete="new-password">
+            </div>
+
+            <div class="button-row" style="margin-top: 18px;">
+              <button type="submit" class="button button--primary" data-auth-target="submit">회원가입</button>
+              <button type="button" class="button button--secondary" data-action="auth#showLogin">로그인으로 돌아가기</button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
-  </main>
-
-  <script>
-    // 페이지 로드 시 URL 파라미터 확인
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('signup') === 'true') {
-        showSignup();
-      }
-    });
-
-    function showSignup() {
-      document.getElementById('login-form').style.display = 'none';
-      document.getElementById('signup-form').style.display = 'block';
-    }
-
-    function showLogin() {
-      document.getElementById('signup-form').style.display = 'none';
-      document.getElementById('login-form').style.display = 'block';
-    }
-
-    async function submitLogin(event) {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
-
-      try {
-        const response = await fetch('/api/v1/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          window.location.href = '/';
-        } else {
-          const error = await response.json();
-          alert(error.error || '로그인 실패');
-        }
-      } catch (err) {
-        alert('네트워크 오류');
-      }
-      return false;
-    }
-
-    async function submitSignup(event) {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const data = Object.fromEntries(formData);
-
-      try {
-        const response = await fetch('/api/v1/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (response.ok) {
-          window.location.href = '/';
-        } else {
-          const error = await response.json();
-          alert(error.errors ? error.errors.join(', ') : '회원가입 실패');
-        }
-      } catch (err) {
-        alert('네트워크 오류');
-      }
-      return false;
-    }
-  </script>
-</body>
-</html>
+  </section>
+</main>
