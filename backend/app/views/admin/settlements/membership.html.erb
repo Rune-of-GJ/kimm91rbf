@@ -11,7 +11,7 @@
             <div class="section-heading">
               <p class="eyebrow">Admin settlement</p>
               <h1 class="section-title">월정액 정산</h1>
-              <p class="section-copy">구독 생성 기준 매출에서 공제 항목을 제외하고, 유효 시청 시간 비율로 강사 정산 풀을 배분합니다.</p>
+              <p class="section-copy">구독 매출에서 공제 항목을 제외한 뒤, 유효 시청 시간 비율로 강사 정산 예상액을 계산합니다.</p>
             </div>
           </section>
 
@@ -40,7 +40,7 @@
             <div class="detail-grid">
               <article class="surface-card admin-preview-panel">
                 <span class="pill pill--accent">공제 항목</span>
-                <div class="meta-list">
+                <div class="meta-list" style="margin-top: 18px;">
                   <div class="meta-item"><span>환불액</span><strong><%= number_to_currency(@membership_report[:refund_amount], unit: "₩", precision: 0) %></strong></div>
                   <div class="meta-item"><span>PG 수수료 3.3%</span><strong><%= number_to_currency(@membership_report[:pg_fee_amount], unit: "₩", precision: 0) %></strong></div>
                   <div class="meta-item"><span>세금 10%</span><strong><%= number_to_currency(@membership_report[:tax_amount], unit: "₩", precision: 0) %></strong></div>
@@ -50,45 +50,57 @@
 
               <article class="surface-card admin-preview-panel">
                 <span class="pill">정산 기준</span>
-                <div class="admin-preview-flow">
-                  <span class="admin-preview-step">구독 총매출 집계</span>
-                  <span class="admin-preview-step">공제 항목 차감</span>
-                  <span class="admin-preview-step">강사 풀 60%</span>
-                  <span class="admin-preview-step">유효 시청 시간 비율 배분</span>
-                </div>
-                <div class="admin-preview-note">
-                  <strong>최소 지급 조건</strong>
-                  <p>월 유효 시청 시간 <%= @membership_report[:minimum_watch_minutes] %>분 이상, 정산금 <%= number_to_currency(@membership_report[:minimum_payout_amount], unit: "₩", precision: 0) %> 이상일 때 지급합니다.</p>
+                <div class="meta-list" style="margin-top: 18px;">
+                  <div class="meta-item"><span>강사 정산 비율</span><strong>60%</strong></div>
+                  <div class="meta-item"><span>최소 시청 시간</span><strong><%= @membership_report[:minimum_watch_minutes] %>분</strong></div>
+                  <div class="meta-item"><span>최소 지급 금액</span><strong><%= number_to_currency(@membership_report[:minimum_payout_amount], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>정산 방식</span><strong>유효 시청 시간 비율</strong></div>
                 </div>
               </article>
             </div>
           </section>
 
           <section class="page-section">
-            <div class="admin-preview-table admin-preview-table--settlements">
-              <div class="admin-preview-table__row admin-preview-table__row--head">
-                <span>강사</span>
-                <span>유효 시청 시간</span>
-                <span>기여도</span>
-                <span>상태</span>
-                <span>정산금</span>
+            <article class="surface-card admin-preview-panel">
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">Settlement rows</span>
+                  <h3 style="margin-top: 14px;">강사별 월정액 정산</h3>
+                </div>
               </div>
-              <% @membership_report[:rows].each do |row| %>
-                <div class="admin-preview-table__row admin-preview-table__row--settlement">
-                  <span><strong><%= row[:instructor] %></strong></span>
-                  <span><%= row[:watch_minutes] %>분</span>
-                  <span><%= number_to_percentage(row[:share] * 100, precision: 1) %></span>
-                  <span><%= row[:eligible] ? "지급 가능" : "이월" %></span>
-                  <span>
-                    <strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong>
-                    <% if row[:hold_amount].positive? %>
-                      <br>
-                      <small>이월 <%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></small>
-                    <% end %>
-                  </span>
+
+              <% if @membership_report[:rows].present? %>
+                <div class="admin-preview-table admin-preview-table--settlements" style="margin-top: 18px;">
+                  <div class="admin-preview-table__row admin-preview-table__row--head">
+                    <span>강사</span>
+                    <span>유효 시청 시간</span>
+                    <span>기여도</span>
+                    <span>상태</span>
+                    <span>예상 지급액</span>
+                  </div>
+                  <% @membership_report[:rows].each do |row| %>
+                    <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                      <span><strong><%= row[:instructor] %></strong></span>
+                      <span><%= row[:watch_minutes] %>분</span>
+                      <span><%= number_to_percentage(row[:share] * 100, precision: 1) %></span>
+                      <span><%= row[:eligible] ? "지급 대상" : "이월" %></span>
+                      <span>
+                        <strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong>
+                        <% if row[:hold_amount].positive? %>
+                          <br>
+                          <small>이월 <%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></small>
+                        <% end %>
+                      </span>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="admin-preview-note" style="margin-top: 18px;">
+                  <strong>이번 달 정산 대상 데이터가 없습니다.</strong>
+                  <p>현재 월 기준 구독 시작 내역과 유효 시청 완료 기록이 있어야 정산 표가 채워집니다.</p>
                 </div>
               <% end %>
-            </div>
+            </article>
           </section>
         </section>
       </div>

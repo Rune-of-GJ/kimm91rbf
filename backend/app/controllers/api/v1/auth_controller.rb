@@ -1,14 +1,3 @@
-﻿class Api::V1::AuthController < Api::V1::BaseController
-  private
-
-  def auth_params
-    permitted = params.permit(:name, :email, :password)
-    permitted[:name] = permitted[:name].to_s.strip if permitted.key?(:name)
-    permitted[:email] = permitted[:email].to_s.strip if permitted.key?(:email)
-    permitted[:password] = permitted[:password].to_s.strip if permitted.key?(:password)
-    permitted
-  end
-end
 module Api
   module V1
     class AuthController < BaseController
@@ -16,7 +5,7 @@ module Api
         user = User.new(signup_params)
 
         if user.save
-          session[:user_id] = user.id
+          set_jwt_cookie(user)
           respond_to do |format|
             format.html { redirect_to root_path, notice: "회원가입이 완료되었습니다." }
             format.json { render json: { user: user_payload(user) }, status: :created }
@@ -35,14 +24,14 @@ module Api
         user = User.find_by(email: email)
 
         if user&.authenticate(password)
-          session[:user_id] = user.id
+          set_jwt_cookie(user)
           respond_to do |format|
             format.html { redirect_to root_path, notice: "로그인되었습니다." }
             format.json do
               render json: {
                 user: user_payload(user),
-                token_type: "Session",
-                expires_in: 3600
+                token_type: "JWT",
+                expires_in: 86400
               }, status: :ok
             end
           end
@@ -57,19 +46,35 @@ module Api
       def refresh
         return render json: { error: "Authentication required" }, status: :unauthorized unless current_user
 
+        set_jwt_cookie(current_user)
         render json: {
           user: user_payload(current_user),
-          token_type: "Session",
-          expires_in: 3600
+          token_type: "JWT",
+          expires_in: 86400
         }, status: :ok
       end
 
       def logout
+        cookies.delete(:jwt_token)
         reset_session
-        head :no_content
+        respond_to do |format|
+          format.html { redirect_to root_path, notice: "로그아웃되었습니다." }
+          format.json { head :no_content }
+        end
       end
 
       private
+
+      def set_jwt_cookie(user)
+        token = JwtService.encode(user_id: user.id)
+        cookies[:jwt_token] = {
+          value: token,
+          httponly: true,
+          expires: 24.hours.from_now,
+          secure: request.ssl?,
+          same_site: :lax
+        }
+      end
 
       def signup_params
         params.permit(:email, :password, :name)

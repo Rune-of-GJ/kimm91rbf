@@ -82,7 +82,7 @@ class SettlementReportBuilder
         coaching_payout: coaching_payout,
         hold_amount: hold_amount,
         final_payout: final_payout,
-        status: hold_amount.positive? ? "이월" : "지급 대기"
+        status: hold_amount.positive? ? "이월" : "지급 대상"
       }
     end
   end

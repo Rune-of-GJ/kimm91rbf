@@ -1,10 +1,16 @@
-﻿class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::Base
   helper_method :current_user
 
   private
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id])
+    @current_user ||= begin
+      token = cookies[:jwt_token]
+      if token
+        payload = JwtService.decode(token)
+        User.find_by(id: payload[:user_id]) if payload
+      end
+    end
   end
 
   def require_login!

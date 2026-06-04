@@ -10,7 +10,7 @@
           <section class="page-section">
             <div class="section-heading">
               <h1 class="section-title">요금제 비교</h1>
-              <p class="section-copy">기본 강의 시청은 월정액에 포함하고, 1:1 첨삭은 Coach 포함 또는 별도 구매로 분리합니다.</p>
+              <p class="section-copy">강의 시청과 리허설은 월정액에 포함되고, 1:1 첨삭은 플랜 혜택 또는 별도 구매로 이용합니다.</p>
             </div>
           </section>
 
@@ -21,15 +21,27 @@
                   <span class="pill <%= 'pill--accent' if plan.featured? %>"><%= plan.featured? ? "추천" : "플랜" %></span>
                   <h3><%= plan.name %></h3>
                   <p><%= plan.tagline %></p>
-                  <div class="commerce-price">
+
+                  <div class="commerce-price commerce-price--membership">
                     <strong><%= number_to_currency(plan.monthly_price, unit: "₩", precision: 0) %></strong>
-                    <span>매월 자동 갱신 (취소선 수정하기)</span>
+                    <span class="commerce-price__note">매월 자동 갱신 · 언제든 해지 가능</span>
                   </div>
+
                   <ul class="commerce-list">
-                    <li>기본 강의 시청 <strong><%= plan.name == "Lite" ? "핵심 강의" : "전체 강의" %></strong></li>
-                    <li>월 리허설 제출 <strong><%= plan.monthly_rehearsal_limit >= 999 ? "무제한" : "#{plan.monthly_rehearsal_limit}회" %></strong></li>
-                    <li>포함 첨삭 <strong><%= plan.monthly_coaching_credits.positive? ? "월 #{plan.monthly_coaching_credits}회" : "미포함" %></strong></li>
+                    <li>
+                      기본 강의 시청
+                      <strong><%= plan.name == "Lite" ? "핵심 강의" : "전체 강의" %></strong>
+                    </li>
+                    <li>
+                      월 리허설 제출
+                      <strong><%= plan.monthly_rehearsal_limit >= 999 ? "무제한" : "#{plan.monthly_rehearsal_limit}회" %></strong>
+                    </li>
+                    <li>
+                      포함 첨삭
+                      <strong><%= plan.monthly_coaching_credits.positive? ? "월 #{plan.monthly_coaching_credits}회" : "미포함" %></strong>
+                    </li>
                   </ul>
+
                   <div class="button-row">
                     <%= link_to "이 플랜으로 보기", membership_checkout_path(plan: plan.slug), class: "button button--primary button--small" %>
                   </div>

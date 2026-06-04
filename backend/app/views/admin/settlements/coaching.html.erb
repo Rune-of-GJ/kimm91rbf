@@ -11,7 +11,7 @@
             <div class="section-heading">
               <p class="eyebrow">Admin settlement</p>
               <h1 class="section-title">첨삭 정산</h1>
-              <p class="section-copy">완료된 첨삭 요청을 기준으로 매출을 집계하고, 플랫폼 수수료 10%를 제외한 90%를 강사에게 지급합니다.</p>
+              <p class="section-copy">완료된 첨삭 요청 매출을 기준으로 플랫폼 수수료 10%를 제외한 강사 정산 예상액을 보여줍니다.</p>
             </div>
           </section>
 
@@ -38,39 +38,39 @@
 
           <section class="page-section">
             <article class="surface-card admin-preview-panel">
-              <h3>첨삭 정산 규칙</h3>
-              <div class="admin-preview-flow">
-                <span class="admin-preview-step">완료 요청 집계</span>
-                <span class="admin-preview-step">요청별 매출 계산</span>
-                <span class="admin-preview-step">플랫폼 10%</span>
-                <span class="admin-preview-step">강사 90%</span>
+              <div class="split-between">
+                <div>
+                  <span class="pill pill--accent">Settlement rows</span>
+                  <h3 style="margin-top: 14px;">강사별 첨삭 정산</h3>
+                </div>
               </div>
-              <div class="admin-preview-note">
-                <strong>포함 단가 기준</strong>
-                <p>별도 구매 첨삭권은 실제 구매가를, Coach 플랜 포함 첨삭은 플랜의 포함 단가를 기준으로 환산합니다.</p>
-              </div>
-            </article>
-          </section>
 
-          <section class="page-section">
-            <div class="admin-preview-table admin-preview-table--settlements">
-              <div class="admin-preview-table__row admin-preview-table__row--head">
-                <span>강사</span>
-                <span>완료 건수</span>
-                <span>총매출</span>
-                <span>수수료 10%</span>
-                <span>정산금</span>
-              </div>
-              <% @coaching_report[:rows].each do |row| %>
-                <div class="admin-preview-table__row admin-preview-table__row--settlement">
-                  <span><strong><%= row[:instructor] %></strong></span>
-                  <span><%= row[:completed_requests] %>건</span>
-                  <span><%= number_to_currency(row[:gross], unit: "₩", precision: 0) %></span>
-                  <span>- <%= number_to_currency(row[:platform_fee], unit: "₩", precision: 0) %></span>
-                  <span><strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong></span>
+              <% if @coaching_report[:rows].present? %>
+                <div class="admin-preview-table admin-preview-table--settlements" style="margin-top: 18px;">
+                  <div class="admin-preview-table__row admin-preview-table__row--head">
+                    <span>강사</span>
+                    <span>완료 건수</span>
+                    <span>총매출</span>
+                    <span>수수료 10%</span>
+                    <span>예상 지급액</span>
+                  </div>
+                  <% @coaching_report[:rows].each do |row| %>
+                    <div class="admin-preview-table__row admin-preview-table__row--settlement">
+                      <span><strong><%= row[:instructor] %></strong></span>
+                      <span><%= row[:completed_requests] %>건</span>
+                      <span><%= number_to_currency(row[:gross], unit: "₩", precision: 0) %></span>
+                      <span>- <%= number_to_currency(row[:platform_fee], unit: "₩", precision: 0) %></span>
+                      <span><strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong></span>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="admin-preview-note" style="margin-top: 18px;">
+                  <strong>이번 달 완료된 첨삭 요청이 없습니다.</strong>
+                  <p><code>reviewed_at</code>이 현재 월에 찍힌 완료 첨삭 요청이 있어야 정산 표가 채워집니다.</p>
                 </div>
               <% end %>
-            </div>
+            </article>
           </section>
         </section>
       </div>

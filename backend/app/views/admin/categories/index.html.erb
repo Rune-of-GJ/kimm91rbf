@@ -25,7 +25,7 @@
               </article>
               <article class="stat-card">
                 <span class="stat-card__value"><%= @category_counts[:empty] %></span>
-                <span class="stat-card__label">빈 카테고리</span>
+                <span class="stat-card__label">비어 있음</span>
               </article>
               <article class="stat-card">
                 <span class="stat-card__value"><%= @category_counts[:courses] %></span>
@@ -84,11 +84,6 @@
                     <%= link_to "초기화", admin_categories_path, class: "button button--secondary button--small" %>
                   </div>
                 </form>
-
-                <div class="admin-preview-note">
-                  <strong>운영 메모</strong>
-                  <p>강의가 연결된 카테고리는 바로 삭제되지 않도록 막아두었습니다. 강의 정리 후 삭제하는 흐름입니다.</p>
-                </div>
               </article>
             </div>
           </section>
@@ -102,7 +97,7 @@
                 </div>
               </div>
 
-              <div class="admin-preview-table">
+              <div class="admin-preview-table" style="margin-top: 18px;">
                 <div class="admin-preview-table__row admin-preview-table__row--head">
                   <span>카테고리명</span>
                   <span>설명</span>
@@ -117,7 +112,7 @@
                     <span><%= category.description.presence || "설명 없음" %></span>
                     <span><%= category.courses.size %>개</span>
                     <span>
-                      <%= form_with model: category, url: admin_category_path(category, q: @query.presence), method: :patch, local: true, class: "admin-inline-form" do |form| %>
+                      <%= form_with model: category, url: admin_category_path(category, q: @query.presence), method: :patch, local: true do |form| %>
                         <div class="admin-preview-search">
                           <%= form.text_field :name, value: category.name, placeholder: "카테고리명" %>
                           <%= form.text_area :description, value: category.description, rows: 3, placeholder: "설명" %>

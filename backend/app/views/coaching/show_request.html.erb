@@ -23,7 +23,6 @@
               <article class="surface-card admin-preview-panel">
                 <span class="pill <%= 'pill--accent' if @feedback_request.completed? %>"><%= @feedback_request.status.humanize %></span>
                 <h3 style="margin-top: 18px;"><%= @feedback_request.title %></h3>
-                <p><%= @feedback_request.note.presence || "남긴 메모가 없습니다." %></p>
 
                 <div class="meta-list" style="margin-top: 18px;">
                   <div class="meta-item"><span>대상 강의</span><strong><%= @feedback_request.course&.title || "미지정" %></strong></div>
@@ -31,33 +30,53 @@
                   <div class="meta-item"><span>사용 크레딧</span><strong><%= @feedback_request.credit_label %></strong></div>
                   <div class="meta-item"><span>첨삭 강사</span><strong><%= @feedback_request.instructor&.name || "배정 전" %></strong></div>
                   <div class="meta-item"><span>요청일</span><strong><%= display_date(@feedback_request.created_at.to_date) %></strong></div>
-                  <div class="meta-item"><span>음성 경로</span><strong><%= @feedback_request.audio_reference.presence || "없음" %></strong></div>
                 </div>
               </article>
 
               <article class="surface-card admin-preview-panel">
-                <span class="pill">강사 피드백</span>
+                <span class="pill">보낸 자료</span>
 
-                <% if @feedback_request.response_summary.present? %>
-                  <div class="admin-preview-note">
-                    <strong>총평</strong>
-                    <p><%= @feedback_request.response_summary %></p>
-                  </div>
-
-                  <% if @feedback_request.response_timecodes.present? %>
-                    <div class="admin-preview-note" style="margin-top: 18px;">
-                      <strong>타임코드 메모</strong>
-                      <p style="white-space: pre-line;"><%= @feedback_request.response_timecodes %></p>
-                    </div>
-                  <% end %>
-                <% else %>
-                  <div class="admin-preview-note">
-                    <strong>아직 피드백이 등록되지 않았습니다.</strong>
-                    <p>강사가 확인을 시작하면 이 영역에 총평과 타임코드 메모가 표시됩니다.</p>
+                <% if @feedback_request.audio_reference.present? %>
+                  <div class="submission-audio-card">
+                    <strong>업로드 음성</strong>
+                    <audio controls class="audio-player">
+                      <source src="<%= @feedback_request.audio_reference %>">
+                      브라우저가 오디오 재생을 지원하지 않습니다.
+                    </audio>
                   </div>
                 <% end %>
+
+                <div class="submission-note-card" style="margin-top: 18px;">
+                  <strong>남긴 메모</strong>
+                  <p style="white-space: pre-line;"><%= @feedback_request.note.presence || "남긴 메모가 없습니다." %></p>
+                </div>
               </article>
             </div>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel">
+              <span class="pill">강사 피드백</span>
+
+              <% if @feedback_request.response_summary.present? %>
+                <div class="submission-note-card" style="margin-top: 18px;">
+                  <strong>총평</strong>
+                  <p><%= @feedback_request.response_summary %></p>
+                </div>
+
+                <% if @feedback_request.response_timecodes.present? %>
+                  <div class="submission-note-card submission-note-card--soft" style="margin-top: 18px;">
+                    <strong>타임코드 메모</strong>
+                    <p style="white-space: pre-line;"><%= @feedback_request.response_timecodes %></p>
+                  </div>
+                <% end %>
+              <% else %>
+                <div class="admin-preview-note" style="margin-top: 18px;">
+                  <strong>아직 피드백이 등록되지 않았습니다.</strong>
+                  <p>강사가 요청을 확인하면 이 영역에 총평과 세부 메모가 표시됩니다.</p>
+                </div>
+              <% end %>
+            </article>
           </section>
         </section>
       </div>

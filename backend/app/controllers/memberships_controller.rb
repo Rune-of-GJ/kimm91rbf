@@ -49,7 +49,7 @@ class MembershipsController < ApplicationController
     subscription = current_user.active_subscription
 
     unless subscription
-      redirect_to membership_account_path, alert: "해지할 활성 멤버십이 없습니다."
+      redirect_to membership_account_path, alert: "현재 활성 멤버십이 없습니다."
       return
     end
 
@@ -74,5 +74,10 @@ class MembershipsController < ApplicationController
     @selected_plan = @membership_plans.find(&:featured?) || @membership_plans.first
     @recent_feedback_requests = current_user.feedback_requests.order(created_at: :desc).limit(3)
     @recent_subscriptions = current_user.subscriptions.includes(:membership_plan).order(created_at: :desc).limit(5)
+
+    credit_entries = current_user.coaching_credit_entries.available_for_consumption
+    @included_coaching_credits = credit_entries.where(source_type: "Subscription").sum(:remaining_credits)
+    @purchased_coaching_credits = credit_entries.where(source_type: "CoachingPurchase").sum(:remaining_credits)
+    @total_coaching_credits = @included_coaching_credits + @purchased_coaching_credits
   end
 end

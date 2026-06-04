@@ -16,26 +16,35 @@
           </section>
 
           <section class="page-section">
-            <div class="admin-preview-table admin-preview-table--wide">
-              <div class="admin-preview-table__row admin-preview-table__row--head">
-                <span>강사</span>
-                <span>월정액 정산</span>
-                <span>첨삭 정산</span>
-                <span>이월액</span>
-                <span>최종 지급액</span>
-                <span>상태</span>
-              </div>
-              <% @settlement_rows.each do |row| %>
-                <div class="admin-preview-table__row admin-preview-table__row--wide">
-                  <span><strong><%= row[:instructor] %></strong></span>
-                  <span><%= number_to_currency(row[:membership_payout], unit: "₩", precision: 0) %></span>
-                  <span><%= number_to_currency(row[:coaching_payout], unit: "₩", precision: 0) %></span>
-                  <span><%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></span>
-                  <span><strong><%= number_to_currency(row[:final_payout], unit: "₩", precision: 0) %></strong></span>
-                  <span><%= row[:status] %></span>
+            <article class="surface-card admin-preview-panel">
+              <% if @settlement_rows.present? %>
+                <div class="admin-preview-table admin-preview-table--wide">
+                  <div class="admin-preview-table__row admin-preview-table__row--head">
+                    <span>강사</span>
+                    <span>월정액 정산</span>
+                    <span>첨삭 정산</span>
+                    <span>이월액</span>
+                    <span>최종 지급액</span>
+                    <span>상태</span>
+                  </div>
+                  <% @settlement_rows.each do |row| %>
+                    <div class="admin-preview-table__row admin-preview-table__row--wide">
+                      <span><strong><%= row[:instructor] %></strong></span>
+                      <span><%= number_to_currency(row[:membership_payout], unit: "₩", precision: 0) %></span>
+                      <span><%= number_to_currency(row[:coaching_payout], unit: "₩", precision: 0) %></span>
+                      <span><%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></span>
+                      <span><strong><%= number_to_currency(row[:final_payout], unit: "₩", precision: 0) %></strong></span>
+                      <span><%= row[:status] %></span>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="admin-preview-note">
+                  <strong>이번 달 강사별 정산 집계가 없습니다.</strong>
+                  <p>월정액 시청 데이터나 완료 첨삭 요청이 들어오면 이 표에 강사별 예상 지급액이 표시됩니다.</p>
                 </div>
               <% end %>
-            </div>
+            </article>
           </section>
         </section>
       </div>

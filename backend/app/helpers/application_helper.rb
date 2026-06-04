@@ -93,4 +93,16 @@ module ApplicationHelper
       "https://www.youtube.com/embed/#{Regexp.last_match(1)}"
     end
   end
+
+  def rehearsal_audio_path(note)
+    note.to_s[/업로드 파일:\s*(\/uploads\/rehearsal_audio\/[^\s]+)/, 1] ||
+      note.to_s[/\/uploads\/rehearsal_audio\/[^\s]+/, 0]
+  end
+
+  def rehearsal_note_body(note)
+    note.to_s
+      .gsub(/업로드 파일:\s*\/uploads\/rehearsal_audio\/[^\s]+/, "")
+      .gsub(/\/uploads\/rehearsal_audio\/[^\s]+/, "")
+      .strip
+  end
 end

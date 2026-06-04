@@ -19,3 +19,8 @@
 /frontend/node_modules
 .byebug_history
 .DS_Store
+/submissions/
+/tmp/
+/deploy_bundle/
+CLAUDE_HANDOFF.md
+DEPLOY_EC2.md

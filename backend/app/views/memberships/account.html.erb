@@ -10,7 +10,7 @@
           <section class="page-section">
             <div class="section-heading">
               <h1 class="section-title">내 멤버십</h1>
-              <p class="section-copy">현재 멤버십 상태와 첨삭 크레딧, 최근 요청 상태를 한 번에 확인하세요.</p>
+              <p class="section-copy">현재 이용 중인 플랜과 첨삭 크레딧, 최근 멤버십 변경 이력을 한 번에 확인할 수 있습니다.</p>
             </div>
           </section>
 
@@ -21,11 +21,13 @@
                   <span class="pill pill--accent">활성 구독</span>
                   <h3><%= @active_subscription.membership_plan.name %></h3>
                   <p><%= @active_subscription.membership_plan.tagline %></p>
+
                   <div class="meta-list" style="margin-top: 18px;">
                     <div class="meta-item"><span>시작일</span><strong><%= display_date(@active_subscription.started_at.to_date) %></strong></div>
-                    <div class="meta-item"><span>다음 갱신</span><strong><%= display_date(@active_subscription.current_period_end.to_date) %></strong></div>
+                    <div class="meta-item"><span>다음 결제일</span><strong><%= display_date(@active_subscription.current_period_end.to_date) %></strong></div>
                     <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "₩", precision: 0) %></strong></div>
                   </div>
+
                   <div class="button-row membership-account-actions" style="margin-top: 18px;">
                     <%= link_to "플랜 변경", membership_plans_path, class: "button button--secondary button--small" %>
                     <%= button_to "멤버십 해지", membership_cancel_path, method: :patch, class: "button button--ghost button--small", form_class: "inline-form" %>
@@ -34,8 +36,14 @@
 
                 <article class="surface-card admin-preview-panel">
                   <span class="pill">첨삭 크레딧</span>
-                  <h3><%= current_user.coaching_credits_balance %>회 사용 가능</h3>
-                  <p>월정액에 포함된거랑 따로 산거 분리해서 표시하도록 수정.</p>
+                  <h3>총 <%= @total_coaching_credits %>회 사용 가능</h3>
+                  <div class="meta-list" style="margin-top: 18px;">
+                    <div class="meta-item"><span>월정액 포함</span><strong><%= @included_coaching_credits %>회</strong></div>
+                    <div class="meta-item"><span>별도 구매</span><strong><%= @purchased_coaching_credits %>회</strong></div>
+                    <div class="meta-item"><span>총 보유</span><strong><%= @total_coaching_credits %>회</strong></div>
+                  </div>
+                  <p style="margin-top: 18px;">첨삭 요청 시 기본 우선순위는 월정액 포함 크레딧 먼저, 그다음 별도 구매 크레딧입니다.</p>
+
                   <div class="button-row membership-account-actions" style="margin-top: 18px;">
                     <%= link_to "첨삭권 보러가기", coaching_products_path, class: "button button--secondary button--small" %>
                     <%= link_to "첨삭 요청하기", new_coaching_request_path, class: "button button--primary button--small" %>
@@ -45,7 +53,7 @@
             <% else %>
               <article class="surface-card admin-preview-panel">
                 <h3>아직 활성 멤버십이 없습니다.</h3>
-                <p style="margin-top: 14px;">멤버십을 시작하여 SpeakFlow의 모든 기능을 바로 이용하세요.</p>
+                <p style="margin-top: 14px;">원하는 플랜을 선택하고 SpeakFlow 강의와 리허설 기능을 바로 시작해보세요.</p>
                 <div class="button-row" style="margin-top: 18px;">
                   <%= link_to "멤버십 시작하기", membership_plans_path, class: "button button--primary" %>
                 </div>
@@ -56,7 +64,7 @@
           <section class="page-section">
             <div class="section-heading">
               <h2 class="section-title">멤버십 기록</h2>
-              <p class="section-copy">최근에 시작하거나 변경한 멤버십을 확인할 수 있습니다.</p>
+              <p class="section-copy">최근 가입하거나 변경한 멤버십 이력을 확인할 수 있습니다.</p>
             </div>
 
             <% if @recent_subscriptions.any? %>
@@ -79,7 +87,7 @@
           <section class="page-section">
             <div class="section-heading">
               <h2 class="section-title">최근 첨삭 요청</h2>
-              <p class="section-copy">최근 보낸 요청 상태까지 함께 이어서 확인할 수 있습니다.</p>
+              <p class="section-copy">최근 보낸 첨삭 요청과 현재 상태를 빠르게 확인할 수 있습니다.</p>
             </div>
 
             <% if @recent_feedback_requests.any? %>
@@ -99,7 +107,7 @@
             <% else %>
               <article class="surface-card">
                 <h3>아직 첨삭 요청이 없습니다.</h3>
-                <p style="margin-top: 14px;">첨삭권이 있다면 바로 음성과 메모를 올려 요청을 시작할 수 있습니다.</p>
+                <p style="margin-top: 14px;">첨삭권이 있다면 음성과 메모를 올려 첨삭 요청을 시작할 수 있습니다.</p>
               </article>
             <% end %>
           </section>

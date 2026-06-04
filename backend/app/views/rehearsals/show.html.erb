@@ -1,12 +1,15 @@
 <% content_for :title, "SpeakFlow | 리허설 상세" %>
 
+<% audio_path = rehearsal_audio_path(@rehearsal_submission.note) %>
+<% note_body = rehearsal_note_body(@rehearsal_submission.note) %>
+
 <main class="page">
   <section class="surface">
     <div class="container surface__inner">
       <section class="page-section">
         <div class="section-heading">
           <h1 class="section-title">리허설 상세</h1>
-          <p class="section-copy">제출한 리허설 메모와 연결된 강의 정보를 자세히 확인할 수 있습니다.</p>
+          <p class="section-copy">제출한 리허설과 메모, 연결된 강의 정보를 한 화면에서 확인할 수 있습니다.</p>
         </div>
 
         <div class="button-row">
@@ -30,9 +33,20 @@
 
           <article class="surface-card admin-preview-panel">
             <span class="pill">남긴 메모</span>
-            <div class="admin-preview-note" style="margin-top: 18px;">
-              <strong>리허설 기록</strong>
-              <p style="white-space: pre-line;"><%= @rehearsal_submission.note.presence || "남긴 메모가 없습니다." %></p>
+
+            <% if audio_path.present? %>
+              <div class="submission-audio-card">
+                <strong>업로드 음성</strong>
+                <audio controls class="audio-player">
+                  <source src="<%= audio_path %>">
+                  브라우저가 오디오 재생을 지원하지 않습니다.
+                </audio>
+              </div>
+            <% end %>
+
+            <div class="submission-note-card" style="margin-top: 18px;">
+              <strong>리허설 메모</strong>
+              <p style="white-space: pre-line;"><%= note_body.presence || "남긴 메모가 없습니다." %></p>
             </div>
           </article>
         </div>

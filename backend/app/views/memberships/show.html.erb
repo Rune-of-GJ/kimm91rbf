@@ -1,0 +1,41 @@
+<% content_for :title, "SpeakFlow | 멤버십" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">SpeakFlow 멤버십</h1>
+              <p class="section-copy">월정액 하나로 강의 시청과 리허설을 이어가고, 필요한 경우 1:1 첨삭까지 확장할 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="pricing-grid">
+              <% @membership_plans.each do |plan| %>
+                <article class="surface-card admin-preview-panel membership-card <%= 'membership-card--featured' if plan.featured? %>">
+                  <span class="pill <%= 'pill--accent' if plan.featured? %>"><%= plan.featured? ? "추천 플랜" : "월정액" %></span>
+                  <h3><%= plan.name %></h3>
+                  <p><%= plan.tagline %></p>
+                  <div class="commerce-price commerce-price--membership">
+                    <strong><%= number_to_currency(plan.monthly_price, unit: "₩", precision: 0) %></strong>
+                    <span class="commerce-price__note">강의 시청 + 리허설 제출 포함</span>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+
+            <div class="button-row" style="margin-top: 24px;">
+              <%= link_to "요금제 비교 보기", membership_plans_path, class: "button button--primary" %>
+              <%= link_to "내 멤버십 확인", membership_account_path, class: "button button--secondary" %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>
