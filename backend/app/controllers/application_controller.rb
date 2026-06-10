@@ -24,4 +24,19 @@ class ApplicationController < ActionController::Base
 
     redirect_to login_path, alert: "로그인이 필요합니다."
   end
+
+  def set_jwt_cookie(user)
+    token = JwtService.encode(user_id: user.id)
+    cookies[:jwt_token] = {
+      value: token,
+      httponly: true,
+      expires: 24.hours.from_now,
+      secure: secure_cookie?,
+      same_site: :lax
+    }
+  end
+
+  def secure_cookie?
+    request.headers["X-Forwarded-Proto"].to_s.split(",").first.to_s.strip == "https"
+  end
 end

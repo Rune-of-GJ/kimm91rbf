@@ -50,47 +50,7 @@ Rails.application.routes.draw do
     get "settlements", to: "settlements#index", as: :settlements
     get "settlements/month", to: "settlements#month", as: :settlement_month
     resources :courses, only: [:index, :new, :create, :edit, :update, :destroy] do
-      resources :lectures, only: [:new, :create, :edit, :update], module: :courses
-    end
-  end
-
-  namespace :preview do
-    namespace :admin do
-      get "dashboard", to: "admin#dashboard"
-      get "entry", to: "admin#entry"
-      get "account", to: "admin#account"
-      get "policy", to: "admin#policy"
-      get "users", to: "admin#users"
-      get "courses", to: "admin#courses"
-      get "settlements/membership", to: "admin#settlement_membership", as: :settlement_membership
-      get "settlements/coaching", to: "admin#settlement_coaching", as: :settlement_coaching
-      get "settlements/instructors", to: "admin#settlement_instructors", as: :settlement_instructors
-    end
-
-    namespace :instructor do
-      get "courses/new", to: "courses#new", as: :course_new
-    end
-
-    namespace :student do
-      get "paid-course", to: "commerce#course_detail", as: :paid_course
-      get "cart", to: "commerce#cart", as: :cart
-      get "checkout", to: "commerce#checkout", as: :checkout
-      get "order-complete", to: "commerce#order_complete", as: :order_complete
-      get "membership", to: "memberships#landing", as: :membership
-      get "membership/plans", to: "memberships#plans", as: :membership_plans
-      get "membership/checkout", to: "memberships#checkout", as: :membership_checkout
-      get "membership/account", to: "memberships#account", as: :membership_account
-      get "coaching/products", to: "coaching#products", as: :coaching_products
-      get "coaching/request", to: "coaching#request_form", as: :coaching_request
-      get "coaching/requests", to: "coaching#requests", as: :coaching_requests
-      get "coaching/request-complete", to: "coaching#request_complete", as: :coaching_request_complete
-    end
-
-    namespace :instructor do
-      get "coaching/queue", to: "coaching#queue", as: :coaching_queue
-      get "coaching/review", to: "coaching#review", as: :coaching_review
-      get "settlements", to: "settlements#index", as: :settlements
-      get "settlements/month", to: "settlements#month", as: :settlement_month
+      resources :lectures, only: [:new, :create, :edit, :update, :destroy], module: :courses
     end
   end
 

@@ -65,17 +65,6 @@ module Api
 
       private
 
-      def set_jwt_cookie(user)
-        token = JwtService.encode(user_id: user.id)
-        cookies[:jwt_token] = {
-          value: token,
-          httponly: true,
-          expires: 24.hours.from_now,
-          secure: request.ssl?,
-          same_site: :lax
-        }
-      end
-
       def signup_params
         params.permit(:email, :password, :name)
       end

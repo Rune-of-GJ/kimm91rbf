@@ -10,8 +10,8 @@ module Admin
       @admin_user = User.new(admin_user_params.merge(role: :admin))
 
       if @admin_user.save
-        session[:user_id] = @admin_user.id
-        redirect_to admin_dashboard_path, notice: "첫 관리자 계정이 생성되었습니다."
+        set_jwt_cookie(@admin_user)
+        redirect_to admin_dashboard_path, notice: "첫 관리자 계정을 생성했습니다."
       else
         render :new, status: :unprocessable_entity
       end
@@ -28,5 +28,6 @@ module Admin
     def admin_user_params
       params.require(:user).permit(:name, :email, :password)
     end
+
   end
 end

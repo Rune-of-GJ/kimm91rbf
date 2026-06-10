@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  before_action :set_current_user
+  before_action :require_login_for_html!, only: [:my_courses, :progress]
   before_action :set_categories, only: [:dashboard, :categories, :courses, :api_lab]
   before_action :set_selected_category, only: [:dashboard, :courses]
   before_action :set_courses, only: [:dashboard, :courses, :api_lab]
@@ -31,10 +31,6 @@ class PagesController < ApplicationController
   def api_lab; end
 
   private
-
-  def set_current_user
-    @current_user = User.find_by(id: session[:user_id]) if session[:user_id]
-  end
 
   def set_categories
     @categories = Category.includes(:courses).order(:name)
