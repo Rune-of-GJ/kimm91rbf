@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   def enroll
     course = Course.find(params[:id])
 
-    unless current_user.enrolled_courses.include?(course)
+    unless Enrollment.exists?(user: current_user, course: course)
       current_user.enrolled_courses << course
     end
 

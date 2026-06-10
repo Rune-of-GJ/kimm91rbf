@@ -33,9 +33,28 @@ module ApplicationHelper
     end
   end
 
+  # 요청당 1회만 DB 조회 후 Set으로 캐시 — watched?/course_progress_stats N+1 방지
+  def watched_lecture_ids(user)
+    @watched_lecture_ids ||= {}
+    @watched_lecture_ids[user.id] ||= user.progresses.where(watched: true).pluck(:lecture_id).to_set
+  end
+
+  def watched?(user, lecture)
+    return false unless user
+
+    watched_lecture_ids(user).include?(lecture.id)
+  end
+
   def course_progress_stats(user, course)
     total = course.lectures.size
-    watched = user ? user.progresses.where(lecture_id: course.lecture_ids, watched: true).count : 0
+
+    watched = if user
+      course_lecture_ids = course.lectures.map(&:id).to_set
+      watched_lecture_ids(user).intersection(course_lecture_ids).size
+    else
+      0
+    end
+
     rate = total.zero? ? 0 : ((watched.to_f / total) * 100).round
 
     {
@@ -46,9 +65,11 @@ module ApplicationHelper
   end
 
   def overall_progress_stats(user)
-    courses = user ? user.learning_courses : []
+    return { courses_count: 0, total_lectures: 0, watched_lectures: 0, rate: 0 } unless user
+
+    courses = user.learning_courses
     total_lectures = courses.sum { |course| course.lectures.size }
-    watched_lectures = user ? user.progresses.where(watched: true).count : 0
+    watched_lectures = watched_lecture_ids(user).size
     rate = total_lectures.zero? ? 0 : ((watched_lectures.to_f / total_lectures) * 100).round
 
     {
@@ -57,10 +78,6 @@ module ApplicationHelper
       watched_lectures: watched_lectures,
       rate: rate
     }
-  end
-
-  def watched?(user, lecture)
-    user&.progresses&.find_by(lecture: lecture)&.watched?
   end
 
   def duration_label(duration)

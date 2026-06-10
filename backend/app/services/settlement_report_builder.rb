@@ -15,7 +15,9 @@ class SettlementReportBuilder
 
   def membership_report
     @membership_report ||= begin
-      gross_revenue = subscription_scope.sum { |subscription| subscription.membership_plan.monthly_price }
+      gross_revenue = Subscription.where(started_at: month_range)
+        .joins(:membership_plan)
+        .sum("membership_plans.monthly_price")
       refund_amount = 0
       pg_fee_amount = (gross_revenue * PG_FEE_RATE).round
       tax_amount = (gross_revenue * TAX_RATE).round
@@ -110,7 +112,7 @@ class SettlementReportBuilder
   end
 
   def watch_progress_scope
-    @watch_progress_scope ||= Progress.includes(:user, lecture: { course: :instructor })
+    @watch_progress_scope ||= Progress.includes(user: :subscriptions, lecture: { course: :instructor })
       .where(watched: true, watched_at: month_range)
   end
 

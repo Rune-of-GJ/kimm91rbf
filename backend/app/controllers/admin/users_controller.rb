@@ -3,11 +3,12 @@ module Admin
     before_action :set_user, only: [:update, :destroy]
 
     def index
+      role_counts = User.group(:role).count
       @admin_counts = {
-        users: User.count,
-        admins: User.where(role: :admin).count,
-        instructors: User.where(role: :instructor).count,
-        students: User.where(role: :student).count
+        users: role_counts.values.sum,
+        admins: role_counts["admin"].to_i,
+        instructors: role_counts["instructor"].to_i,
+        students: role_counts["student"].to_i
       }
 
       @role_filter = params[:role].presence_in(%w[all admin instructor student]) || "all"
