@@ -25,7 +25,7 @@
                   <div class="meta-list" style="margin-top: 18px;">
                     <div class="meta-item"><span>시작일</span><strong><%= display_date(@active_subscription.started_at.to_date) %></strong></div>
                     <div class="meta-item"><span>다음 결제일</span><strong><%= display_date(@active_subscription.current_period_end.to_date) %></strong></div>
-                    <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "₩", precision: 0) %></strong></div>
+                    <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "원", precision: 0) %></strong></div>
                   </div>
 
                   <div class="button-row membership-account-actions" style="margin-top: 18px;">
@@ -36,13 +36,15 @@
 
                 <article class="surface-card admin-preview-panel">
                   <span class="pill">첨삭 크레딧</span>
-                  <h3>총 <%= @total_coaching_credits %>회 사용 가능</h3>
+                  <h3><%= @total_coaching_credits %>회 사용 가능</h3>
+
                   <div class="meta-list" style="margin-top: 18px;">
                     <div class="meta-item"><span>월정액 포함</span><strong><%= @included_coaching_credits %>회</strong></div>
                     <div class="meta-item"><span>별도 구매</span><strong><%= @purchased_coaching_credits %>회</strong></div>
                     <div class="meta-item"><span>총 보유</span><strong><%= @total_coaching_credits %>회</strong></div>
                   </div>
-                  <p style="margin-top: 18px;">첨삭 요청 시 기본 우선순위는 월정액 포함 크레딧 먼저, 그다음 별도 구매 크레딧입니다.</p>
+
+                  <p style="margin-top: 18px;">현재 사용할 수 있는 첨삭 크레딧을 월정액 포함분과 별도 구매분으로 나누어 확인할 수 있습니다.</p>
 
                   <div class="button-row membership-account-actions" style="margin-top: 18px;">
                     <%= link_to "첨삭권 보러가기", coaching_products_path, class: "button button--secondary button--small" %>
@@ -87,7 +89,7 @@
           <section class="page-section">
             <div class="section-heading">
               <h2 class="section-title">최근 첨삭 요청</h2>
-              <p class="section-copy">최근 보낸 첨삭 요청과 현재 상태를 빠르게 확인할 수 있습니다.</p>
+              <p class="section-copy">최근에 보낸 첨삭 요청과 현재 상태를 빠르게 확인할 수 있습니다.</p>
             </div>
 
             <% if @recent_feedback_requests.any? %>

@@ -25,7 +25,7 @@
               시청 완료 표시
             </button>
           <% else %>
-            <%= link_to "로그인 후 진도 저장", login_path, class: "button button--primary" %>
+            <%= link_to "로그인 후 진도 저장", login_path(return_to: request.fullpath), class: "button button--primary" %>
           <% end %>
         </div>
       </div>
@@ -93,7 +93,7 @@
             <article class="summary-panel">
               <span class="pill">Course context</span>
               <h3 style="margin-top: 14px;"><%= @course.title %></h3>
-              <p style="margin-top: 14px;">강사 <%= @course.instructor_name %> · 전체 강의 <%= @course.lectures.count %>개</p>
+              <p style="margin-top: 14px;">강사 <%= @course.instructor_name %> · 전체 강의 <%= @course.lectures.size %>개</p>
             </article>
 
             <article class="surface-card">

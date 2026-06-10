@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | Edit Lecture" %>
+<% content_for :title, "SpeakFlow | 섹션 수정" %>
 
 <main class="page">
   <section class="surface surface--preview-admin">
@@ -10,24 +10,16 @@
           <section class="page-section">
             <div class="section-heading">
               <p class="eyebrow">Instructor</p>
-              <h1 class="section-title">강의편 수정</h1>
-              <p class="section-copy"><%= @course.title %> 안의 강의편 정보를 수정합니다.</p>
+              <h1 class="section-title">섹션 수정</h1>
+              <p class="section-copy"><%= @course.title %> 안의 섹션 제목과 유튜브 링크를 수정합니다.</p>
             </div>
           </section>
 
           <section class="page-section">
-            <div class="detail-grid">
+            <div class="detail-grid detail-grid--wide">
               <article class="surface-card admin-preview-panel">
-                <span class="pill pill--accent">강의편 수정</span>
-                <%= render "form", submit_label: "강의편 저장" %>
-              </article>
-
-              <article class="surface-card admin-preview-panel">
-                <span class="pill">편집 중인 강의</span>
-                <div class="admin-preview-note">
-                  <strong><%= @lecture.order_no %>. <%= @lecture.title %></strong>
-                  <p style="margin-top: 8px;">영상 URL, 순서, 길이를 수정하면 강의 플레이어와 진도 화면에 바로 반영됩니다.</p>
-                </div>
+                <span class="pill pill--accent">섹션 수정</span>
+                <%= render "form", submit_label: "섹션 저장" %>
               </article>
             </div>
           </section>

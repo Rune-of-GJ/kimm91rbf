@@ -15,7 +15,7 @@ class JwtService
   end
 
   def self.secret
-    Rails.application.credentials.secret_key_base
+    Rails.application.secret_key_base.presence || ENV["SECRET_KEY_BASE"].presence
   end
   private_class_method :secret
 end

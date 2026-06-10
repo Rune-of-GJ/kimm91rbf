@@ -1873,6 +1873,224 @@ iframe {
   line-height: 1.6;
 }
 
+.course-create-card {
+  min-height: 240px;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  text-align: center;
+  border: 1px dashed rgba(26, 26, 26, 0.14);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.course-create-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(182, 230, 58, 0.72);
+  box-shadow: var(--shadow-soft);
+}
+
+.course-create-card__plus {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background: rgba(182, 230, 58, 0.24);
+  color: var(--color-heading);
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.course-create-card strong {
+  font-size: 28px;
+  letter-spacing: -0.04em;
+}
+
+.course-create-card p {
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.course-card {
+  gap: 14px;
+}
+
+.course-card--compact {
+  min-height: 0;
+  padding: 24px;
+}
+
+.course-card__thumbnail {
+  min-height: 168px;
+}
+
+.course-card__meta {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.course-card__meta--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.course-card__actions {
+  align-items: start;
+}
+
+.course-create-card--compact {
+  min-height: 180px;
+}
+
+.thumbnail-upload-preview {
+  min-height: 220px;
+  margin-top: 12px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--color-line-1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.84);
+  overflow: hidden;
+}
+
+.thumbnail-upload-preview img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.thumbnail-upload-preview__empty {
+  padding: 24px;
+  color: var(--color-body);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.admin-preview-form-grid--wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-preview-form-grid--wider {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-preview-form-grid--section {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) auto;
+  align-items: end;
+}
+
+.field--span-2 {
+  grid-column: span 2;
+}
+
+.field--section-url {
+  grid-column: auto;
+}
+
+.field--section-action {
+  display: grid;
+  align-self: end;
+}
+
+.field--section-action .button {
+  width: 100%;
+}
+
+.course-card__details {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+}
+
+.course-card__details summary {
+  list-style: none;
+}
+
+.course-card__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.course-card__details-body {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.course-builder-section {
+  display: grid;
+  gap: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-line-3);
+}
+
+.course-builder-title {
+  margin: 0 0 6px;
+  color: var(--color-heading);
+  font-size: 28px;
+  letter-spacing: -0.04em;
+}
+
+.course-builder-copy {
+  margin: 0;
+  color: var(--color-body);
+}
+
+.course-builder-rows {
+  display: grid;
+  gap: 16px;
+}
+
+.course-builder-row {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--color-line-3);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.course-builder-row__header {
+  align-items: center;
+}
+
+.course-edit-panel {
+  width: 100%;
+}
+
+.course-edit-panel--primary {
+  padding: 32px;
+}
+
+.course-edit-panel--sections {
+  display: grid;
+  gap: 22px;
+  padding: 32px;
+}
+
+.course-edit-panel__header {
+  display: grid;
+  gap: 10px;
+}
+
+.course-edit-panel__copy {
+  margin: 0;
+  color: var(--color-body);
+}
+
+.course-edit-panel__divider {
+  height: 1px;
+  background: var(--color-line-3);
+}
+
+.admin-preview-list--sections {
+  gap: 14px;
+}
+
+.admin-preview-list__item--section {
+  min-height: 88px;
+}
+
 .admin-preview-checks {
   display: grid;
   gap: 14px;
@@ -1978,6 +2196,7 @@ iframe {
 
 .commerce-price__note {
   text-decoration: none !important;
+  color: var(--color-body) !important;
 }
 
 .commerce-price--compact strong {
@@ -2080,6 +2299,7 @@ iframe {
 .commerce-price--membership span {
   text-decoration: none;
   font-size: 16px;
+  color: var(--color-body);
 }
 
 .checkout-summary {

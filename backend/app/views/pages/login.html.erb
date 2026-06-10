@@ -6,7 +6,8 @@
       data-controller="auth"
       data-auth-initial-mode-value="<%= params[:signup] == 'true' ? 'signup' : 'login' %>"
       data-auth-login-url-value="<%= api_v1_auth_login_path %>"
-      data-auth-signup-url-value="<%= api_v1_auth_signup_path %>">
+      data-auth-signup-url-value="<%= api_v1_auth_signup_path %>"
+      data-auth-return-to-value="<%= params[:return_to].to_s.match?(%r{\A/[^/]}) ? params[:return_to] : '/' %>">
 
       <aside class="auth-visual">
         <div class="auth-visual__glow" aria-hidden="true"></div>
@@ -51,12 +52,12 @@
             <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
             <div class="field">
               <label for="login-email">이메일</label>
-              <input id="login-email" name="email" type="email" value="instructor@speakflow.kr" required autocomplete="email">
+              <input id="login-email" name="email" type="email" required autocomplete="email">
             </div>
 
             <div class="field" style="margin-top: 14px;">
               <label for="login-password">비밀번호</label>
-              <input id="login-password" name="password" type="password" value="password123" required autocomplete="current-password">
+              <input id="login-password" name="password" type="password" required autocomplete="current-password">
             </div>
 
             <div class="button-row" style="margin-top: 18px;">

@@ -24,3 +24,5 @@
 /deploy_bundle/
 CLAUDE_HANDOFF.md
 DEPLOY_EC2.md
+/backend/public/uploads/
+.tmp_pydeps/

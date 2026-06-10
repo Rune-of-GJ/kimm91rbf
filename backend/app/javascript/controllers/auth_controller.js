@@ -5,7 +5,8 @@ export default class extends Controller {
   static values = {
     initialMode: String,
     loginUrl: String,
-    signupUrl: String
+    signupUrl: String,
+    returnTo: { type: String, default: "/" }
   }
 
   connect() {
@@ -52,7 +53,7 @@ export default class extends Controller {
       })
 
       if (response.ok) {
-        window.location.href = "/"
+        window.location.href = this.returnToValue || "/"
         return
       }
 
@@ -77,6 +78,13 @@ export default class extends Controller {
   setBusy(busy) {
     this.submitTargets.forEach((button) => {
       button.disabled = busy
+      if (busy) {
+        button.dataset.originalText = button.textContent
+        button.textContent = "처리 중..."
+      } else if (button.dataset.originalText) {
+        button.textContent = button.dataset.originalText
+        delete button.dataset.originalText
+      }
     })
   }
 

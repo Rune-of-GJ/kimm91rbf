@@ -49,8 +49,9 @@
           </svg>
         </button>
       <% else %>
-        <%= link_to "로그인", login_path, class: "button button--secondary button--small" %>
-        <%= link_to "시작하기", login_path(signup: true), class: "button button--primary button--small" %>
+        <% header_return_to = current_page?(login_path) ? nil : request.fullpath %>
+        <%= link_to "로그인", login_path(return_to: header_return_to), class: "button button--secondary button--small" %>
+        <%= link_to "시작하기", login_path(signup: true, return_to: header_return_to), class: "button button--primary button--small" %>
       <% end %>
     </div>
   </div>

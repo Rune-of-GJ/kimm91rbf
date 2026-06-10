@@ -20,7 +20,7 @@
           <% if current_user %>
             <%= link_to "내 강의 보기", my_courses_path, class: "button button--primary" %>
           <% else %>
-            <%= link_to "로그인", login_path, class: "button button--primary" %>
+            <%= link_to "로그인", login_path(return_to: request.fullpath), class: "button button--primary" %>
           <% end %>
         </div>
       </div>
@@ -72,7 +72,7 @@
 
                 <div class="meta-list">
                   <div class="meta-item"><span>강사</span><strong><%= course.instructor_name %></strong></div>
-                  <div class="meta-item"><span>강의 수</span><strong><%= course.lectures.count %>개</strong></div>
+                  <div class="meta-item"><span>강의 수</span><strong><%= course.lectures.size %>개</strong></div>
                   <div class="meta-item"><span>개강일</span><strong><%= display_date(course.start_date) %></strong></div>
                 </div>
 
@@ -83,7 +83,7 @@
                   <% elsif current_user %>
                     <%= link_to "수강하기", course_detail_path(course), class: "button button--primary button--small" %>
                   <% else %>
-                    <%= link_to "로그인", login_path, class: "button button--primary button--small" %>
+                    <%= link_to "로그인", login_path(return_to: request.fullpath), class: "button button--primary button--small" %>
                   <% end %>
                 </div>
               </article>

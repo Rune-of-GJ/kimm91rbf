@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | 강의 등록" %>
+<% content_for :title, "SpeakFlow | 강의 생성" %>
 
 <main class="page">
   <section class="surface surface--preview-admin">
@@ -10,14 +10,110 @@
           <section class="page-section">
             <div class="section-heading">
               <p class="eyebrow">Instructor</p>
-              <h1 class="section-title">강의 등록</h1>
-              <p class="section-copy">강의 기본 정보와 썸네일을 입력해 새로운 강의를 열 수 있습니다.</p>
+              <h1 class="section-title">새 강의 만들기</h1>
+              <p class="section-copy">코스 제목과 소개를 먼저 만들고, 아래에서 섹션과 유튜브 영상을 여러 개 이어서 등록할 수 있습니다.</p>
             </div>
           </section>
 
           <section class="page-section">
-            <div class="detail-grid">
-              <%= render "form", course: @course, categories: @categories, submit_label: "강의 등록" %>
+            <div class="detail-grid detail-grid--wide">
+              <article class="surface-card admin-preview-panel">
+                <span class="pill pill--accent">강의 생성</span>
+
+                <%= form_with model: [:instructor, @course], class: "admin-preview-panel", multipart: true, data: { controller: "lecture-builder" } do |form| %>
+                  <div class="admin-preview-form-grid admin-preview-form-grid--wide">
+                    <label class="field">
+                      <span>강의 제목</span>
+                      <%= form.text_field :title, placeholder: "예: 설득력 있는 발표 구조 만들기" %>
+                    </label>
+
+                    <label class="field">
+                      <span>강사</span>
+                      <input type="text" value="<%= current_user.name %>" readonly>
+                    </label>
+
+                    <label class="field">
+                      <span>카테고리</span>
+                      <%= form.collection_select :category_id, @categories, :id, :name, { prompt: "카테고리를 선택하세요" }, {} %>
+                    </label>
+
+                    <label class="field field--full" data-controller="file-preview">
+                      <span>썸네일 파일</span>
+                      <%= file_field_tag "course[thumbnail_file]", accept: "image/*", data: { action: "change->file-preview#preview", file_preview_target: "input" } %>
+                      <div class="thumbnail-upload-preview">
+                        <img hidden data-file-preview-target="image" alt="썸네일 미리보기">
+                        <div class="thumbnail-upload-preview__empty" data-file-preview-target="empty">
+                          선택한 이미지가 여기에 미리보기로 표시됩니다.
+                        </div>
+                      </div>
+                    </label>
+
+                    <label class="field field--full">
+                      <span>강의 소개</span>
+                      <%= form.text_area :description, placeholder: "강의 목표와 수강생이 얻게 될 변화를 적어주세요." %>
+                    </label>
+                  </div>
+
+                  <div class="course-builder-section">
+                    <div class="split-between">
+                      <div>
+                        <h2 class="course-builder-title">섹션 등록</h2>
+                        <p class="course-builder-copy">섹션은 입력한 순서대로 자동 정렬되고, 영상 길이는 유튜브 링크의 시작 시간 값이 있으면 자동 반영됩니다.</p>
+                      </div>
+                      <button type="button" class="button button--secondary button--small" data-action="click->lecture-builder#addRow">섹션 추가</button>
+                    </div>
+
+                    <div class="course-builder-rows" data-lecture-builder-target="rows">
+                      <% @lecture_rows.each_with_index do |row, index| %>
+                        <article class="course-builder-row" data-lecture-builder-row>
+                          <div class="split-between course-builder-row__header">
+                            <span class="pill" data-lecture-builder-index>섹션 <%= index + 1 %></span>
+                            <button type="button" class="button button--secondary button--small" data-action="click->lecture-builder#removeRow">삭제</button>
+                          </div>
+
+                          <div class="admin-preview-form-grid admin-preview-form-grid--wide">
+                            <label class="field">
+                              <span>섹션 제목</span>
+                              <%= text_field_tag "course[lecture_rows_attributes][][title]", row["title"], placeholder: "예: 1강. 설득 구조 이해하기" %>
+                            </label>
+
+                            <label class="field field--full">
+                              <span>유튜브 URL</span>
+                              <%= url_field_tag "course[lecture_rows_attributes][][video_url]", row["video_url"], placeholder: "https://www.youtube.com/watch?v=..." %>
+                            </label>
+                          </div>
+                        </article>
+                      <% end %>
+                    </div>
+
+                    <template data-lecture-builder-target="template">
+                      <article class="course-builder-row" data-lecture-builder-row>
+                        <div class="split-between course-builder-row__header">
+                          <span class="pill" data-lecture-builder-index>섹션</span>
+                          <button type="button" class="button button--secondary button--small" data-action="click->lecture-builder#removeRow">삭제</button>
+                        </div>
+
+                        <div class="admin-preview-form-grid admin-preview-form-grid--wide">
+                          <label class="field">
+                            <span>섹션 제목</span>
+                            <input type="text" name="course[lecture_rows_attributes][][title]" placeholder="예: 2강. 사례로 흐름 익히기">
+                          </label>
+
+                          <label class="field field--full">
+                            <span>유튜브 URL</span>
+                            <input type="url" name="course[lecture_rows_attributes][][video_url]" placeholder="https://www.youtube.com/watch?v=...">
+                          </label>
+                        </div>
+                      </article>
+                    </template>
+                  </div>
+
+                  <div class="button-row">
+                    <%= form.submit "강의 생성", class: "button button--primary" %>
+                    <%= link_to "강의 목록으로", instructor_courses_path, class: "button button--secondary" %>
+                  </div>
+                <% end %>
+              </article>
             </div>
           </section>
         </section>

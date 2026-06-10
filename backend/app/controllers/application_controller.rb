@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   def require_login_for_html!
     return if current_user
 
-    redirect_to login_path, alert: "로그인이 필요합니다."
+    redirect_to login_path(return_to: request.fullpath), alert: "로그인이 필요합니다."
   end
 
   def set_jwt_cookie(user)

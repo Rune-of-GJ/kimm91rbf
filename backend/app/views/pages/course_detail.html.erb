@@ -22,7 +22,7 @@
           <% elsif current_user %>
             <%= link_to "멤버십으로 학습", membership_checkout_path(plan: "pro"), class: "button button--primary" %>
           <% else %>
-            <%= link_to "로그인", login_path, class: "button button--primary" %>
+            <%= link_to "로그인", login_path(return_to: request.fullpath), class: "button button--primary" %>
           <% end %>
 
           <%= link_to "전체 강의 보기", courses_path, class: "button button--secondary" %>

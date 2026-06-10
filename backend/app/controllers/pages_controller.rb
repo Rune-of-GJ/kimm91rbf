@@ -20,8 +20,8 @@ class PagesController < ApplicationController
   def my_courses; end
 
   def lecture_player
-    @lecture = Lecture.includes(:course).find(params[:id])
-    @course = @lecture.course
+    @lecture = Lecture.find(params[:id])
+    @course = Course.includes(:lectures).find(@lecture.course_id)
   end
 
   def progress; end
@@ -55,7 +55,7 @@ class PagesController < ApplicationController
     lecture = Lecture.includes(:course).find(params[:id])
 
     unless current_user
-      redirect_to login_path, alert: "로그인이 필요합니다."
+      redirect_to login_path(return_to: request.fullpath), alert: "로그인이 필요합니다."
       return
     end
 

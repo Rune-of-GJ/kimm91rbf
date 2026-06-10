@@ -44,7 +44,7 @@
                     <%= form.select :course_id,
                       options_for_select([["강의를 선택하세요", ""]] + @available_courses.map { |course| [course.title, course.id] }, @feedback_request.course_id),
                       {},
-                      data: { coaching_request_target: "courseSelect", action: "change->coaching-request#filterLectures" } %>
+                      { required: true, data: { coaching_request_target: "courseSelect", action: "change->coaching-request#filterLectures" } } %>
                   </div>
 
                   <div class="field">
@@ -52,6 +52,7 @@
                     <select
                       name="feedback_request[lecture_id]"
                       id="feedback_request_lecture_id"
+                      required
                       data-coaching-request-target="lectureSelect">
                       <option value="">강의편을 선택하세요</option>
                       <% @available_lectures.each do |lecture| %>

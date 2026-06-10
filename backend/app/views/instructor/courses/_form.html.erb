@@ -1,11 +1,11 @@
-<article class="surface-card admin-preview-panel">
+<article class="surface-card admin-preview-panel <%= local_assigns[:form_article_class] %>">
   <span class="pill pill--accent"><%= submit_label %></span>
 
   <%= form_with model: [:instructor, course], class: "admin-preview-panel", multipart: true do |form| %>
-    <div class="admin-preview-form-grid">
-      <label class="field">
+    <div class="<%= local_assigns[:form_grid_class] || 'admin-preview-form-grid admin-preview-form-grid--wide' %>">
+      <label class="field field--span-2">
         <span>강의 제목</span>
-        <%= form.text_field :title, placeholder: "예: 발표 자신감 트랙" %>
+        <%= form.text_field :title, placeholder: "예: 프로페셔널 보이스 트레이닝" %>
       </label>
 
       <label class="field">
@@ -18,62 +18,33 @@
         <%= form.collection_select :category_id, categories, :id, :name, { prompt: "카테고리를 선택하세요" }, {} %>
       </label>
 
-      <label class="field">
-        <span>수강신청 마감일</span>
-        <%= form.date_field :enrollment_deadline %>
-      </label>
-
-      <label class="field">
-        <span>강의 시작일</span>
-        <%= form.date_field :start_date %>
-      </label>
-
-      <label class="field">
-        <span>강의 종료일</span>
-        <%= form.date_field :end_date %>
-      </label>
-
-      <label class="field field--full">
+      <label class="field field--full" data-controller="file-preview">
         <span>썸네일 파일</span>
-        <%= file_field_tag "course[thumbnail_file]", accept: "image/*" %>
+        <%= file_field_tag "course[thumbnail_file]", accept: "image/*", data: { action: "change->file-preview#preview", file_preview_target: "input" } %>
+        <div class="thumbnail-upload-preview">
+          <% if course.thumbnail_url.present? %>
+            <img src="<%= course.thumbnail_url %>" data-file-preview-target="image" alt="<%= course.title.presence || '강의' %> 썸네일 미리보기">
+            <div hidden class="thumbnail-upload-preview__empty" data-file-preview-target="empty">
+              선택한 이미지가 여기에서 미리보기로 표시됩니다.
+            </div>
+          <% else %>
+            <img hidden data-file-preview-target="image" alt="썸네일 미리보기">
+            <div class="thumbnail-upload-preview__empty" data-file-preview-target="empty">
+              선택한 이미지가 여기에서 미리보기로 표시됩니다.
+            </div>
+          <% end %>
+        </div>
       </label>
 
       <label class="field field--full">
         <span>강의 소개</span>
-        <%= form.text_area :description, placeholder: "강의 목표와 수강생이 얻게 될 결과를 적어주세요." %>
+        <%= form.text_area :description, placeholder: "강의 목표와 수강생이 얻게 될 변화를 적어주세요." %>
       </label>
     </div>
 
     <div class="button-row">
       <%= form.submit submit_label, class: "button button--primary button--small" %>
-      <%= link_to "내 강의로 돌아가기", instructor_courses_path, class: "button button--secondary button--small" %>
-    </div>
-  <% end %>
-</article>
-
-<article class="surface-card admin-preview-panel">
-  <span class="pill">등록 가이드</span>
-  <div class="admin-preview-thumbnail">
-    <% if course.thumbnail_url.present? %>
-      <img src="<%= course.thumbnail_url %>" alt="<%= course.title.presence || "강의" %> 썸네일 미리보기">
-    <% else %>
-      <div class="admin-preview-thumbnail__mock">
-        <span>Thumbnail</span>
-        <strong>16:9 비율 권장</strong>
-        <p>썸네일은 파일 업로드로 교체할 수 있습니다.</p>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="admin-preview-note">
-    <strong>일정 규칙</strong>
-    <p>강의 종료일은 시작일보다 빠를 수 없고, 수강신청 마감일은 종료일보다 늦을 수 없습니다.</p>
-  </div>
-
-  <% if course.persisted? %>
-    <div class="admin-preview-note">
-      <strong>현재 강의 상태</strong>
-      <p><%= pluralize(course.lectures.count, "lecture") %> / 수강생 <%= course.enrollments.count %>명</p>
+      <%= link_to "강의 목록으로", instructor_courses_path, class: "button button--secondary button--small" %>
     </div>
   <% end %>
 </article>

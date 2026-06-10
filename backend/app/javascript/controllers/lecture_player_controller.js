@@ -104,6 +104,12 @@ export default class extends Controller {
 
   async markWatched() {
     if (!this.progressUrlValue) return
+    if (this.hasWatchButtonTarget && this.watchButtonTarget.disabled) return
+
+    if (this.hasWatchButtonTarget) {
+      this.watchButtonTarget.disabled = true
+      this.watchButtonTarget.textContent = "저장 중..."
+    }
 
     try {
       const response = await fetch(this.progressUrlValue, {
@@ -131,6 +137,10 @@ export default class extends Controller {
       badge?.classList.add("is-complete")
       this.renderStatus("현재 강의를 시청 완료로 표시했어요.", "is-success")
     } catch (_error) {
+      if (this.hasWatchButtonTarget) {
+        this.watchButtonTarget.disabled = false
+        this.watchButtonTarget.textContent = "시청 완료 표시"
+      }
       this.renderStatus("시청 완료 상태를 저장하지 못했어요.", "is-error")
     }
   }

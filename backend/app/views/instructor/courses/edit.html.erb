@@ -11,14 +11,72 @@
             <div class="section-heading">
               <p class="eyebrow">Instructor</p>
               <h1 class="section-title">강의 수정</h1>
-              <p class="section-copy">기존 강의의 일정, 설명, 썸네일을 현재 운영 상황에 맞게 고칠 수 있습니다.</p>
+              <p class="section-copy">코스 정보는 위에서 넓게 수정하고, 아래에서 섹션을 추가하거나 관리할 수 있습니다.</p>
             </div>
           </section>
 
           <section class="page-section">
-            <div class="detail-grid">
-              <%= render "form", course: @course, categories: @categories, submit_label: "강의 수정" %>
-            </div>
+            <%= render "form",
+              course: @course,
+              categories: @categories,
+              submit_label: "강의 수정",
+              form_article_class: "course-edit-panel course-edit-panel--primary",
+              form_grid_class: "admin-preview-form-grid admin-preview-form-grid--wide admin-preview-form-grid--wider" %>
+          </section>
+
+          <section class="page-section">
+            <article class="surface-card admin-preview-panel course-edit-panel course-edit-panel--sections">
+              <div class="course-edit-panel__header">
+                <span class="pill">섹션 추가</span>
+                <p class="course-edit-panel__copy">새 섹션을 추가하고, 아래에서 기존 섹션을 수정하거나 삭제할 수 있습니다.</p>
+              </div>
+
+              <%= form_with model: [:instructor, @course, @new_lecture], class: "admin-preview-panel" do |form| %>
+                <div class="admin-preview-form-grid admin-preview-form-grid--wide admin-preview-form-grid--section">
+                  <label class="field">
+                    <span>섹션 제목</span>
+                    <%= form.text_field :title, placeholder: "예: 3강. 사례로 설득 흐름 만들기" %>
+                  </label>
+
+                  <label class="field field--section-url">
+                    <span>유튜브 URL</span>
+                    <%= form.url_field :video_url, placeholder: "https://www.youtube.com/watch?v=..." %>
+                  </label>
+
+                  <div class="field field--section-action">
+                    <span>&nbsp;</span>
+                    <%= form.submit "섹션 추가", class: "button button--primary button--small" %>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="course-edit-panel__divider"></div>
+
+              <div class="course-edit-panel__header">
+                <span class="pill">현재 섹션</span>
+              </div>
+
+              <% if @course.lectures.any? %>
+                <div class="admin-preview-list admin-preview-list--sections">
+                  <% @course.lectures.order(:order_no).each do |lecture| %>
+                    <div class="admin-preview-list__item admin-preview-list__item--section">
+                      <div>
+                        <strong><%= lecture.order_no %>. <%= lecture.title %></strong>
+                      </div>
+                      <div class="button-row">
+                        <%= link_to "수정", edit_instructor_course_lecture_path(@course, lecture), class: "button button--secondary button--small" %>
+                        <%= button_to "삭제", instructor_course_lecture_path(@course, lecture), method: :delete, class: "button button--secondary button--small", form: { data: { turbo_confirm: "이 섹션을 삭제할까요?" } } %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="admin-preview-note">
+                  <strong>등록된 섹션이 없습니다.</strong>
+                  <p>위 입력칸에서 첫 번째 섹션을 바로 추가해 주세요.</p>
+                </div>
+              <% end %>
+            </article>
           </section>
         </section>
       </div>
