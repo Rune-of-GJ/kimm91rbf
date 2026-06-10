@@ -26,10 +26,11 @@ gem "jwt", "~> 2.9"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+# Use the database-backed adapters for Rails.cache, Active Job
+# solid_cable은 boot 시 초기화 순서 버그로 제외 (ActionCable 미사용)
 gem "solid_cache"
 gem "solid_queue"
-gem "solid_cable"
+# gem "solid_cable"  # 필요 시 DB 연결 설정 후 활성화
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
