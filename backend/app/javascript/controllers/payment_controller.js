@@ -19,8 +19,7 @@ export default class extends Controller {
     this.payBtnTarget.textContent = "결제 준비 중..."
 
     try {
-      const { loadTossPayments } = await import("https://js.tosspayments.com/v2/payment")
-      const tossPayments = await loadTossPayments(this.clientKeyValue)
+      const tossPayments = TossPayments(this.clientKeyValue)
       const payment = tossPayments.payment({ customerKey: this.customerKeyValue })
 
       await payment.requestPayment({
