@@ -29,15 +29,15 @@
                   <span><strong>월정액</strong></span>
                   <span><%= @instructor_settlement[:membership][:watch_minutes] %>분 / <%= number_to_percentage(@instructor_settlement[:membership][:share] * 100, precision: 1) %></span>
                   <span><%= @instructor_settlement[:membership][:eligible] ? "기준 충족" : "이월 기준" %></span>
-                  <span><%= number_to_currency(@instructor_settlement[:membership][:hold_amount], unit: "₩", precision: 0) %></span>
-                  <span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "₩", precision: 0) %></strong></span>
+                  <span><%= number_to_currency(@instructor_settlement[:membership][:hold_amount], unit: "원", precision: 0, format: "%n%u") %></span>
+                  <span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "원", precision: 0, format: "%n%u") %></strong></span>
                 </div>
                 <div class="admin-preview-table__row admin-preview-table__row--settlement">
                   <span><strong>첨삭</strong></span>
                   <span><%= @instructor_settlement[:coaching][:completed_requests] %>건 완료</span>
-                  <span><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "₩", precision: 0) %></span>
-                  <span><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "₩", precision: 0) %></span>
-                  <span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "₩", precision: 0) %></strong></span>
+                  <span><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "원", precision: 0, format: "%n%u") %></span>
+                  <span><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "원", precision: 0, format: "%n%u") %></span>
+                  <span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "원", precision: 0, format: "%n%u") %></strong></span>
                 </div>
               </div>
             </article>

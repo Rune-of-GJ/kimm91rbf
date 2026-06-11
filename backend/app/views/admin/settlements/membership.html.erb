@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | Admin Membership Settlements" %>
+<% content_for :title, "SpeakFlow | 월정액 정산" %>
 
 <main class="page">
   <section class="surface surface--preview-admin">
@@ -18,15 +18,15 @@
           <section class="page-section">
             <div class="stats-grid">
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@membership_report[:subscription_revenue], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@membership_report[:subscription_revenue], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label"><%= @membership_report[:month_label] %> 구독 총매출</span>
               </article>
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@membership_report[:settlement_revenue], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@membership_report[:settlement_revenue], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">정산 가능 매출</span>
               </article>
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@membership_report[:instructor_pool_amount], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@membership_report[:instructor_pool_amount], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">강사 정산 풀 60%</span>
               </article>
               <article class="stat-card">
@@ -41,10 +41,10 @@
               <article class="surface-card admin-preview-panel">
                 <span class="pill pill--accent">공제 항목</span>
                 <div class="meta-list" style="margin-top: 18px;">
-                  <div class="meta-item"><span>환불액</span><strong><%= number_to_currency(@membership_report[:refund_amount], unit: "₩", precision: 0) %></strong></div>
-                  <div class="meta-item"><span>PG 수수료 3.3%</span><strong><%= number_to_currency(@membership_report[:pg_fee_amount], unit: "₩", precision: 0) %></strong></div>
-                  <div class="meta-item"><span>세금 10%</span><strong><%= number_to_currency(@membership_report[:tax_amount], unit: "₩", precision: 0) %></strong></div>
-                  <div class="meta-item"><span>기타 공제</span><strong><%= number_to_currency(@membership_report[:other_deduction_amount], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>환불액</span><strong><%= number_to_currency(@membership_report[:refund_amount], unit: "원", precision: 0, format: "%n%u") %></strong></div>
+                  <div class="meta-item"><span>PG 수수료 3.3%</span><strong><%= number_to_currency(@membership_report[:pg_fee_amount], unit: "원", precision: 0, format: "%n%u") %></strong></div>
+                  <div class="meta-item"><span>세금 10%</span><strong><%= number_to_currency(@membership_report[:tax_amount], unit: "원", precision: 0, format: "%n%u") %></strong></div>
+                  <div class="meta-item"><span>기타 공제</span><strong><%= number_to_currency(@membership_report[:other_deduction_amount], unit: "원", precision: 0, format: "%n%u") %></strong></div>
                 </div>
               </article>
 
@@ -53,7 +53,7 @@
                 <div class="meta-list" style="margin-top: 18px;">
                   <div class="meta-item"><span>강사 정산 비율</span><strong>60%</strong></div>
                   <div class="meta-item"><span>최소 시청 시간</span><strong><%= @membership_report[:minimum_watch_minutes] %>분</strong></div>
-                  <div class="meta-item"><span>최소 지급 금액</span><strong><%= number_to_currency(@membership_report[:minimum_payout_amount], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>최소 지급 금액</span><strong><%= number_to_currency(@membership_report[:minimum_payout_amount], unit: "원", precision: 0, format: "%n%u") %></strong></div>
                   <div class="meta-item"><span>정산 방식</span><strong>유효 시청 시간 비율</strong></div>
                 </div>
               </article>
@@ -64,7 +64,7 @@
             <article class="surface-card admin-preview-panel">
               <div class="split-between">
                 <div>
-                  <span class="pill pill--accent">Settlement rows</span>
+                  <span class="pill pill--accent">강사별 월정액 정산</span>
                   <h3 style="margin-top: 14px;">강사별 월정액 정산</h3>
                 </div>
               </div>
@@ -85,10 +85,10 @@
                       <span><%= number_to_percentage(row[:share] * 100, precision: 1) %></span>
                       <span><%= row[:eligible] ? "지급 대상" : "이월" %></span>
                       <span>
-                        <strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong>
+                        <strong><%= number_to_currency(row[:payout], unit: "원", precision: 0, format: "%n%u") %></strong>
                         <% if row[:hold_amount].positive? %>
                           <br>
-                          <small>이월 <%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></small>
+                          <small>이월 <%= number_to_currency(row[:hold_amount], unit: "원", precision: 0, format: "%n%u") %></small>
                         <% end %>
                       </span>
                     </div>

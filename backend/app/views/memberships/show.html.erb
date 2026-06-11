@@ -22,7 +22,7 @@
                   <h3><%= plan.name %></h3>
                   <p><%= plan.tagline %></p>
                   <div class="commerce-price commerce-price--membership">
-                    <strong><%= number_to_currency(plan.monthly_price, unit: "₩", precision: 0) %></strong>
+                    <strong><%= number_to_currency(plan.monthly_price, unit: "원", precision: 0, format: "%n%u") %></strong>
                     <span class="commerce-price__note">강의 시청 + 리허설 제출 포함</span>
                   </div>
                 </article>

@@ -25,7 +25,7 @@
                   <div class="meta-list" style="margin-top: 18px;">
                     <div class="meta-item"><span>시작일</span><strong><%= display_date(@active_subscription.started_at.to_date) %></strong></div>
                     <div class="meta-item"><span>다음 결제일</span><strong><%= display_date(@active_subscription.current_period_end.to_date) %></strong></div>
-                    <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "원", precision: 0) %></strong></div>
+                    <div class="meta-item"><span>월 구독료</span><strong><%= number_to_currency(@active_subscription.membership_plan.monthly_price, unit: "원", precision: 0, format: "%n%u") %></strong></div>
                   </div>
 
                   <div class="button-row membership-account-actions" style="margin-top: 18px;">

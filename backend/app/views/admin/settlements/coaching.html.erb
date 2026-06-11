@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | Admin Coaching Settlements" %>
+<% content_for :title, "SpeakFlow | 첨삭 정산" %>
 
 <main class="page">
   <section class="surface surface--preview-admin">
@@ -18,15 +18,15 @@
           <section class="page-section">
             <div class="stats-grid">
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:gross], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:gross], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">첨삭 총매출</span>
               </article>
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:platform_fee], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:platform_fee], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">플랫폼 수수료 10%</span>
               </article>
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:instructor_total], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@coaching_report[:instructor_total], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">강사 지급 총액</span>
               </article>
               <article class="stat-card">
@@ -40,7 +40,7 @@
             <article class="surface-card admin-preview-panel">
               <div class="split-between">
                 <div>
-                  <span class="pill pill--accent">Settlement rows</span>
+                  <span class="pill pill--accent">강사별 정산 내역</span>
                   <h3 style="margin-top: 14px;">강사별 첨삭 정산</h3>
                 </div>
               </div>
@@ -58,9 +58,9 @@
                     <div class="admin-preview-table__row admin-preview-table__row--settlement">
                       <span><strong><%= row[:instructor] %></strong></span>
                       <span><%= row[:completed_requests] %>건</span>
-                      <span><%= number_to_currency(row[:gross], unit: "₩", precision: 0) %></span>
-                      <span>- <%= number_to_currency(row[:platform_fee], unit: "₩", precision: 0) %></span>
-                      <span><strong><%= number_to_currency(row[:payout], unit: "₩", precision: 0) %></strong></span>
+                      <span><%= number_to_currency(row[:gross], unit: "원", precision: 0, format: "%n%u") %></span>
+                      <span>- <%= number_to_currency(row[:platform_fee], unit: "원", precision: 0, format: "%n%u") %></span>
+                      <span><strong><%= number_to_currency(row[:payout], unit: "원", precision: 0, format: "%n%u") %></strong></span>
                     </div>
                   <% end %>
                 </div>

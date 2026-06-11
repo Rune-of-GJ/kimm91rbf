@@ -4,7 +4,7 @@
 
 [구매 정보]
 상품: <%= @product.name %>
-결제 금액: <%= number_to_currency(@purchase.paid_amount, unit: "₩", precision: 0) %>
+결제 금액: <%= number_to_currency(@purchase.paid_amount, unit: "원", precision: 0, format: "%n%u") %>
 지급 크레딧: <%= @purchase.credits_amount %>회
 구매일: <%= @purchase.created_at.strftime("%Y.%m.%d") %>
 

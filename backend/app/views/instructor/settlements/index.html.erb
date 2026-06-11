@@ -30,7 +30,7 @@
                 <span class="stat-card__label">완료 첨삭 건수</span>
               </article>
               <article class="stat-card">
-                <span class="stat-card__value"><%= number_to_currency(@instructor_settlement[:final_payout], unit: "₩", precision: 0) %></span>
+                <span class="stat-card__value"><%= number_to_currency(@instructor_settlement[:final_payout], unit: "원", precision: 0, format: "%n%u") %></span>
                 <span class="stat-card__label">예상 지급액</span>
               </article>
             </div>
@@ -44,7 +44,7 @@
                   <div class="meta-item"><span>유효 시청 시간</span><strong><%= @instructor_settlement[:membership][:watch_minutes] %>분</strong></div>
                   <div class="meta-item"><span>기여도</span><strong><%= number_to_percentage(@instructor_settlement[:membership][:share] * 100, precision: 1) %></strong></div>
                   <div class="meta-item"><span>상태</span><strong><%= @instructor_settlement[:membership][:eligible] ? "지급 대상" : "이월" %></strong></div>
-                  <div class="meta-item"><span>예상 지급액</span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>예상 지급액</span><strong><%= number_to_currency(@instructor_settlement[:membership][:payout], unit: "원", precision: 0, format: "%n%u") %></strong></div>
                 </div>
               </article>
 
@@ -52,9 +52,9 @@
                 <span class="pill">첨삭 정산</span>
                 <div class="meta-list" style="margin-top: 18px;">
                   <div class="meta-item"><span>완료 건수</span><strong><%= @instructor_settlement[:coaching][:completed_requests] %>건</strong></div>
-                  <div class="meta-item"><span>총매출</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "₩", precision: 0) %></strong></div>
-                  <div class="meta-item"><span>플랫폼 수수료</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "₩", precision: 0) %></strong></div>
-                  <div class="meta-item"><span>예상 지급액</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "₩", precision: 0) %></strong></div>
+                  <div class="meta-item"><span>총매출</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:gross], unit: "원", precision: 0, format: "%n%u") %></strong></div>
+                  <div class="meta-item"><span>플랫폼 수수료</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:platform_fee], unit: "원", precision: 0, format: "%n%u") %></strong></div>
+                  <div class="meta-item"><span>예상 지급액</span><strong><%= number_to_currency(@instructor_settlement[:coaching][:payout], unit: "원", precision: 0, format: "%n%u") %></strong></div>
                 </div>
               </article>
             </div>

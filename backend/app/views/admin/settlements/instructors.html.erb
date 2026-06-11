@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | Admin Instructor Settlement Summary" %>
+<% content_for :title, "SpeakFlow | 강사별 정산 요약" %>
 
 <main class="page">
   <section class="surface surface--preview-admin">
@@ -30,10 +30,10 @@
                   <% @settlement_rows.each do |row| %>
                     <div class="admin-preview-table__row admin-preview-table__row--wide">
                       <span><strong><%= row[:instructor] %></strong></span>
-                      <span><%= number_to_currency(row[:membership_payout], unit: "₩", precision: 0) %></span>
-                      <span><%= number_to_currency(row[:coaching_payout], unit: "₩", precision: 0) %></span>
-                      <span><%= number_to_currency(row[:hold_amount], unit: "₩", precision: 0) %></span>
-                      <span><strong><%= number_to_currency(row[:final_payout], unit: "₩", precision: 0) %></strong></span>
+                      <span><%= number_to_currency(row[:membership_payout], unit: "원", precision: 0, format: "%n%u") %></span>
+                      <span><%= number_to_currency(row[:coaching_payout], unit: "원", precision: 0, format: "%n%u") %></span>
+                      <span><%= number_to_currency(row[:hold_amount], unit: "원", precision: 0, format: "%n%u") %></span>
+                      <span><strong><%= number_to_currency(row[:final_payout], unit: "원", precision: 0, format: "%n%u") %></strong></span>
                       <span><%= row[:status] %></span>
                     </div>
                   <% end %>

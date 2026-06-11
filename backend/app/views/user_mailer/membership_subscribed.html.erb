@@ -27,7 +27,7 @@
 
       <div class="highlight">
         <strong><%= @plan.name %></strong>
-        <span>월 <%= number_to_currency(@plan.monthly_price, unit: "₩", precision: 0) %></span>
+        <span>월 <%= number_to_currency(@plan.monthly_price, unit: "원", precision: 0, format: "%n%u") %></span>
       </div>
 
       <div>

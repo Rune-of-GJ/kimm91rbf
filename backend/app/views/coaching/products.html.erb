@@ -53,7 +53,7 @@
                   <% end %>
 
                   <div class="commerce-price">
-                    <strong><%= number_to_currency(product.price, unit: "₩", precision: 0) %></strong>
+                    <strong><%= number_to_currency(product.price, unit: "원", precision: 0, format: "%n%u") %></strong>
                     <span class="commerce-price__note">크레딧 <%= product.credits_amount %>회 지급</span>
                   </div>
 

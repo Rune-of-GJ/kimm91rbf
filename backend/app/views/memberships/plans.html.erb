@@ -23,7 +23,7 @@
                   <p><%= plan.tagline %></p>
 
                   <div class="commerce-price commerce-price--membership">
-                    <strong><%= number_to_currency(plan.monthly_price, unit: "원", precision: 0) %></strong>
+                    <strong><%= number_to_currency(plan.monthly_price, unit: "원", precision: 0, format: "%n%u") %></strong>
                     <span class="commerce-price__note">매월 자동 갱신 · 언제든 해지 가능</span>
                   </div>
 
