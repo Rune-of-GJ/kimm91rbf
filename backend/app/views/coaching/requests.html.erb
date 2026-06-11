@@ -21,7 +21,7 @@
                   <article class="course-card">
                     <div class="course-card__top">
                       <div>
-                        <span class="pill <%= 'pill--accent' if request.completed? %>"><%= request.status.humanize %></span>
+                        <span class="pill <%= 'pill--accent' if request.completed? %>"><%= ({ "queued" => "대기 중", "reviewing" => "검토 중", "completed" => "완료" }[request.status] || request.status) %></span>
                         <h3 style="margin-top: 14px;"><%= request.title %></h3>
                       </div>
                       <span class="orb-ripple" aria-hidden="true">

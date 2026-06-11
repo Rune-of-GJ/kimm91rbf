@@ -1,7 +1,7 @@
 <aside class="side-panel" data-shell-target="panel" aria-label="사용자 메뉴">
   <div class="side-panel__header">
     <div>
-      <p class="eyebrow">My ripple</p>
+      <p class="eyebrow">내 활동</p>
       <h2><%= current_user.name %></h2>
     </div>
 
@@ -22,7 +22,7 @@
       <span class="side-panel__orb" aria-hidden="true"></span>
       <div>
         <strong><%= current_user.email %></strong>
-        <span><%= current_user.role.to_s.humanize %></span>
+        <span><%= ({ "student" => "수강생", "instructor" => "강사", "admin" => "관리자" }[current_user.role.to_s] || current_user.role.to_s) %></span>
       </div>
     </div>
 

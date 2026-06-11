@@ -73,7 +73,7 @@
               <div class="course-grid">
                 <% @recent_subscriptions.each do |subscription| %>
                   <article class="course-card">
-                    <span class="pill <%= 'pill--accent' if subscription.active_now? %>"><%= subscription.status.humanize %></span>
+                    <span class="pill <%= 'pill--accent' if subscription.active_now? %>"><%= ({ "active" => "활성", "replaced" => "변경됨", "canceled" => "해지됨" }[subscription.status] || subscription.status) %></span>
                     <h3 style="margin-top: 14px;"><%= subscription.membership_plan.name %></h3>
                     <p><%= subscription.membership_plan.tagline %></p>
                     <div class="meta-list">
@@ -96,7 +96,7 @@
               <div class="course-grid">
                 <% @recent_feedback_requests.each do |request| %>
                   <article class="course-card">
-                    <span class="pill"><%= request.status.humanize %></span>
+                    <span class="pill"><%= ({ "queued" => "대기 중", "reviewing" => "검토 중", "completed" => "완료" }[request.status] || request.status) %></span>
                     <h3 style="margin-top: 14px;"><%= request.title %></h3>
                     <p><%= request.credit_label %></p>
                     <div class="meta-list">

@@ -35,7 +35,7 @@
       <% if current_user %>
         <div class="user-chip">
           <strong><%= current_user.name %></strong>
-          <span><%= current_user.role.to_s.humanize %></span>
+          <span><%= ({ "student" => "수강생", "instructor" => "강사", "admin" => "관리자" }[current_user.role.to_s] || current_user.role.to_s) %></span>
         </div>
 
         <button

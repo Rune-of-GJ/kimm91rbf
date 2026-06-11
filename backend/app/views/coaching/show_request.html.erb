@@ -21,7 +21,7 @@
           <section class="page-section">
             <div class="detail-grid">
               <article class="surface-card admin-preview-panel">
-                <span class="pill <%= 'pill--accent' if @feedback_request.completed? %>"><%= @feedback_request.status.humanize %></span>
+                <span class="pill <%= 'pill--accent' if @feedback_request.completed? %>"><%= ({ "queued" => "대기 중", "reviewing" => "검토 중", "completed" => "완료" }[@feedback_request.status] || @feedback_request.status) %></span>
                 <h3 style="margin-top: 18px;"><%= @feedback_request.title %></h3>
 
                 <div class="meta-list" style="margin-top: 18px;">
