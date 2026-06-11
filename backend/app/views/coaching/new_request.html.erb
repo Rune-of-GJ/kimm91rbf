@@ -15,6 +15,17 @@
           </section>
 
           <section class="page-section">
+            <% if @coaching_balance == 0 %>
+              <article class="surface-card admin-preview-note" style="margin-bottom: 24px;">
+                <strong>첨삭 크레딧이 없습니다.</strong>
+                <p style="margin-top: 8px;">요청을 보내려면 크레딧이 필요합니다. 멤버십 플랜을 통해 매월 크레딧을 받거나, 첨삭 크레딧을 별도로 구매할 수 있습니다.</p>
+                <div class="button-row" style="margin-top: 14px;">
+                  <%= link_to "크레딧 구매하기", coaching_products_path, class: "button button--primary button--small" %>
+                  <%= link_to "멤버십 보기", membership_plans_path, class: "button button--secondary button--small" %>
+                </div>
+              </article>
+            <% end %>
+
             <article class="surface-card admin-preview-panel">
               <div class="meta-list" style="margin-bottom: 24px;">
                 <div class="meta-item"><span>현재 첨삭 잔액</span><strong><%= @coaching_balance %>회</strong></div>
@@ -83,7 +94,7 @@
                 </div>
 
                 <div class="button-row coaching-request-actions">
-                  <%= form.submit "첨삭 요청 보내기", class: "button button--primary" %>
+                  <%= form.submit "첨삭 요청 보내기", class: "button button--primary", disabled: @coaching_balance == 0 %>
                   <%= link_to "첨삭 상품 보기", coaching_products_path, class: "button button--secondary" %>
                 </div>
               <% end %>

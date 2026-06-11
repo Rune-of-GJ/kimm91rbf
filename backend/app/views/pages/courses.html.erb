@@ -1,4 +1,4 @@
-<% content_for :title, "SpeakFlow | Courses" %>
+<% content_for :title, "SpeakFlow | 강의" %>
 
 <% selected_label = @selected_category&.name || "전체 강의" %>
 <% enrolled_ids = current_user ? current_user.enrolled_courses.ids : [] %>
@@ -9,7 +9,7 @@
 
     <div class="container hero-shell__grid">
       <div class="hero-shell__copy">
-        <p class="eyebrow">Course library</p>
+        <p class="eyebrow">강의 라이브러리</p>
         <h1 class="hero-shell__title"><%= selected_label %>에서<br>나에게 맞는 강의는?</h1>
         <p class="hero-shell__body">
           카테고리별로 강의를 탐색해 보세요.
@@ -32,7 +32,7 @@
         <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
 
         <div class="hero-focus__content">
-          <span class="pill pill--accent">Browse cue</span>
+          <span class="pill pill--accent">강의 탐색</span>
           <strong><%= @courses.count %>개의 강의가 현재 목록에 있습니다.</strong>
           <p>카테고리와 커리큘럼을 먼저 비교하고 내 학습 흐름에 맞는 강의를 골라볼 수 있습니다.</p>
         </div>

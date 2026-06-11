@@ -12,7 +12,7 @@
 
     <div class="container hero-shell__grid">
       <div class="hero-shell__copy">
-        <p class="eyebrow">Lecture player</p>
+        <p class="eyebrow">강의 플레이어</p>
         <h1 class="hero-shell__title"><%= @lecture.order_no %>. <%= @lecture.title %></h1>
         <p class="hero-shell__body">
           <%= @course.title %> 안에서 현재 듣고 있는 강의입니다. 시청, 메모, 녹음, 복기가 하나의 흐름으로 이어집니다.
@@ -37,7 +37,7 @@
         <div class="hero-focus__ring hero-focus__ring--c" aria-hidden="true"></div>
 
         <div class="hero-focus__content">
-          <span class="pill pill--accent">Playback cue</span>
+          <span class="pill pill--accent">재생 안내</span>
           <strong>현재 강의는 <%= duration_label(@lecture.duration) %> 분량입니다.</strong>
           <p>핵심 시청 화면은 가운데 두고, 메모와 녹음은 그 바깥 레이어로 배치했습니다.</p>
         </div>
@@ -91,7 +91,7 @@
 
           <div style="display: grid; gap: 18px;">
             <article class="summary-panel">
-              <span class="pill">Course context</span>
+              <span class="pill">현재 강의 정보</span>
               <h3 style="margin-top: 14px;"><%= @course.title %></h3>
               <p style="margin-top: 14px;">강사 <%= @course.instructor_name %> · 전체 강의 <%= @course.lectures.size %>개</p>
             </article>

@@ -109,11 +109,18 @@ class MembershipsController < ApplicationController
       return
     end
 
-    subscription.update!(
-      status: :canceled,
-      canceled_at: Time.current,
-      current_period_end: Time.current
-    )
+    ActiveRecord::Base.transaction do
+      subscription.update!(
+        status: :canceled,
+        canceled_at: Time.current,
+        current_period_end: Time.current
+      )
+
+      current_user.coaching_credit_entries
+        .where(source: subscription)
+        .available_for_consumption
+        .update_all(expires_at: Time.current)
+    end
 
     redirect_to membership_account_path, notice: "#{subscription.membership_plan.name} 멤버십을 해지했습니다."
   end

@@ -10,7 +10,7 @@
 
     <div class="container hero-shell__grid">
       <div class="hero-shell__copy">
-        <p class="eyebrow">Course detail</p>
+        <p class="eyebrow">강의 상세</p>
         <h1 class="hero-shell__title"><%= @course.title %></h1>
         <p class="hero-shell__body"><%= @course.description %></p>
 
@@ -54,7 +54,7 @@
       <section class="page-section">
         <div class="detail-grid">
           <article class="summary-panel">
-            <span class="pill">Course summary</span>
+            <span class="pill">강의 요약</span>
             <h3 style="margin-top: 14px;"><%= @course.title %></h3>
             <p style="margin-top: 14px;">
               강의의 메시지, 전달 방식, 커리큘럼 순서를 차분하게 훑어볼 수 있도록 정리했습니다.
@@ -73,9 +73,15 @@
               <div class="meta-item"><span>수강 마감</span><strong><%= display_date(@course.enrollment_deadline) %></strong></div>
               <div class="meta-item"><span>강사</span><strong><%= @course.instructor_name %></strong></div>
             </div>
-            <% if current_user && !enrolled %>
+            <% if !current_user %>
+              <div class="status-banner" style="margin-top: 18px;">
+                로그인하면 이 강의를 바로 학습할 수 있습니다.
+                <%= link_to "로그인하기", login_path(return_to: request.fullpath), class: "button button--primary button--small", style: "margin-top: 12px; display: inline-block;" %>
+              </div>
+            <% elsif !enrolled %>
               <div class="status-banner" style="margin-top: 18px;">
                 SpeakFlow 멤버십을 시작하면 이 강의를 바로 학습할 수 있습니다.
+                <%= link_to "멤버십 시작하기", membership_plans_path, class: "button button--primary button--small", style: "margin-top: 12px; display: inline-block;" %>
               </div>
             <% end %>
           </article>
