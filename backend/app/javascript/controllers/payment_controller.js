@@ -7,7 +7,6 @@ export default class extends Controller {
     orderName: String,
     successUrl: String,
     failUrl: String,
-    customerKey: String,
     customerEmail: String,
     customerName: String,
   }
@@ -20,11 +19,8 @@ export default class extends Controller {
 
     try {
       const tossPayments = TossPayments(this.clientKeyValue)
-      const payment = tossPayments.payment({ customerKey: this.customerKeyValue })
-
-      await payment.requestPayment({
-        method: "CARD",
-        amount: { currency: "KRW", value: this.amountValue },
+      await tossPayments.requestPayment("카드", {
+        amount: this.amountValue,
         orderId: crypto.randomUUID(),
         orderName: this.orderNameValue,
         successUrl: this.successUrlValue,
