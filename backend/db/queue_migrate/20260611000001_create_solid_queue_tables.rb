@@ -94,7 +94,7 @@ class CreateSolidQueueTables < ActiveRecord::Migration[8.1]
     add_index :solid_queue_semaphores, :expires_at
 
     create_table :solid_queue_recurring_tasks do |t|
-      t.string :key, null: false, primary_key: true
+      t.string :key, null: false, index: { unique: true }
       t.string :schedule, null: false
       t.string :class_name
       t.text :arguments
