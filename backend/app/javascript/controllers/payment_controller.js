@@ -21,7 +21,7 @@ export default class extends Controller {
       const tossPayments = TossPayments(this.clientKeyValue)
       await tossPayments.requestPayment("카드", {
         amount: this.amountValue,
-        orderId: crypto.randomUUID(),
+        orderId: "order-" + Date.now() + "-" + Math.random().toString(36).slice(2, 9),
         orderName: this.orderNameValue,
         successUrl: this.successUrlValue,
         failUrl: this.failUrlValue,
