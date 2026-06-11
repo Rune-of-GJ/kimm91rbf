@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME_PRODUCTION}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME_PRODUCTION}
+    volumes:
+      - pg_data_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME_PRODUCTION} -d ${DB_NAME_PRODUCTION}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_LEVEL: info
+      APP_HOST: speakflow.kro.kr
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME_PRODUCTION}
+      DB_USERNAME_PRODUCTION: ${DB_USERNAME_PRODUCTION}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME_PRODUCTION: ${DB_NAME_PRODUCTION}
+      DB_NAME_PRODUCTION_CACHE: ${DB_NAME_PRODUCTION_CACHE}
+      DB_NAME_PRODUCTION_QUEUE: ${DB_NAME_PRODUCTION_QUEUE}
+      DB_NAME_PRODUCTION_CABLE: ${DB_NAME_PRODUCTION_CABLE}
+      SOLID_QUEUE_IN_PUMA: "true"
+      GMAIL_USERNAME: ${GMAIL_USERNAME}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+      TOSS_CLIENT_KEY: ${TOSS_CLIENT_KEY}
+      TOSS_SECRET_KEY: ${TOSS_SECRET_KEY}
+      SENTRY_DSN: ${SENTRY_DSN}
+    ports:
+      - "80:80"
+    volumes:
+      - uploads_data:/rails/public/uploads
+      - storage_data:/rails/storage
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/up || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pg_data_prod:
+  uploads_data:
+  storage_data:

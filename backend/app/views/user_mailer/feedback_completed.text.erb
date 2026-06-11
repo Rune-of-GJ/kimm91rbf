@@ -1,0 +1,17 @@
+안녕하세요, <%= @student.name %>님!
+
+강사 <%= @instructor&.name %>님이 첨삭을 완료했습니다.
+
+[첨삭 정보]
+강의: <%= @feedback_request.course&.title %>
+강의 회차: <%= @feedback_request.lecture&.title %>
+완료일: <%= @feedback_request.reviewed_at&.strftime("%Y.%m.%d %H:%M") %>
+
+<% if @feedback_request.feedback_text.present? %>
+[강사 피드백]
+<%= @feedback_request.feedback_text %>
+<% end %>
+
+첨삭 내용 보기: <%= coaching_request_detail_url(@feedback_request) %>
+
+SpeakFlow

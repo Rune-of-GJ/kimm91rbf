@@ -2387,6 +2387,50 @@ iframe {
   margin-top: 4px;
 }
 
+.checkout-card-form {
+  display: grid;
+  gap: 14px;
+}
+
+.checkout-card-form .form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(244, 244, 239, 0.6);
+  margin-bottom: 6px;
+}
+
+.checkout-card-form .form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 15px;
+  color: #f4f4ef;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+  letter-spacing: 0.06em;
+}
+
+.checkout-card-form .form-input::placeholder {
+  color: rgba(244, 244, 239, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.checkout-card-form .form-input:focus {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.checkout-card-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 .coaching-request-form {
   display: grid;
   gap: 24px;

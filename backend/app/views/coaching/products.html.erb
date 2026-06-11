@@ -58,7 +58,7 @@
                   </div>
 
                   <div class="button-row">
-                    <%= button_to "#{product.name} 구매", coaching_purchase_path(product_id: product.id), method: :post, class: "button button--primary button--small", form_class: "inline-form" %>
+                    <%= link_to "#{product.name} 구매", coaching_checkout_path(product_id: product.id), class: "button button--primary button--small" %>
                   </div>
                 </article>
               <% end %>

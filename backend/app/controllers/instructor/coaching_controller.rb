@@ -39,6 +39,7 @@ module Instructor
       @feedback_request.reviewed_at = Time.current
 
       if @feedback_request.save
+        UserMailer.feedback_completed(@feedback_request).deliver_later
         redirect_to instructor_coaching_queue_path, notice: "첨삭 완료 처리에 성공했습니다!"
       else
         flash.now[:alert] = @feedback_request.errors.full_messages.join(", ")

@@ -1,0 +1,13 @@
+안녕하세요, <%= @user.name %>님!
+
+첨삭 크레딧 구매가 완료되었습니다.
+
+[구매 정보]
+상품: <%= @product.name %>
+결제 금액: <%= number_to_currency(@purchase.paid_amount, unit: "₩", precision: 0) %>
+지급 크레딧: <%= @purchase.credits_amount %>회
+구매일: <%= @purchase.created_at.strftime("%Y.%m.%d") %>
+
+첨삭 요청하기: <%= new_coaching_request_url %>
+
+SpeakFlow

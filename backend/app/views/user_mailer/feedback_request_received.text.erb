@@ -1,0 +1,13 @@
+안녕하세요, <%= @instructor.name %> 강사님!
+
+<%= @student.name %> 학생으로부터 새 첨삭 요청이 도착했습니다.
+
+[요청 정보]
+요청 학생: <%= @student.name %>
+강의: <%= @feedback_request.course&.title %>
+강의 회차: <%= @feedback_request.lecture&.title %>
+요청일: <%= @feedback_request.created_at.strftime("%Y.%m.%d %H:%M") %>
+
+첨삭 큐 바로 가기: <%= instructor_coaching_queue_url %>
+
+SpeakFlow

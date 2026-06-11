@@ -96,10 +96,61 @@ class CoachingController < ApplicationController
         )
       end
 
+      UserMailer.feedback_request_received(@feedback_request).deliver_later
       redirect_to coaching_requests_path, notice: "첨삭 요청에 성공했습니다!"
     else
       render :new_request, status: :unprocessable_entity
     end
+  end
+
+  def checkout_product
+    @product = CoachingProduct.active.find(params.require(:product_id))
+  end
+
+  def payment_success
+    product = CoachingProduct.active.find(params.require(:product_id))
+    payment_key = params.require(:paymentKey)
+    order_id = params.require(:orderId)
+    amount = params.require(:amount).to_i
+
+    unless amount == product.price.to_i
+      redirect_to coaching_payment_fail_path(message: "결제 금액이 올바르지 않습니다.")
+      return
+    end
+
+    unless confirm_toss_payment(payment_key, order_id, amount)
+      redirect_to coaching_payment_fail_path(message: "결제 검증에 실패했습니다.")
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      purchase = current_user.coaching_purchases.create!(
+        coaching_product: product,
+        status: :completed,
+        paid_amount: product.price,
+        credits_amount: product.credits_amount
+      )
+
+      UserMailer.coaching_credits_purchased(purchase).deliver_later
+
+      current_user.coaching_credit_entries.create!(
+        source: purchase,
+        credits_amount: product.credits_amount,
+        remaining_credits: product.credits_amount,
+        label: "#{product.name} 구매 크레딧"
+      )
+    end
+
+    redirect_to coaching_products_path, notice: "#{product.name} 구매가 완료되었습니다!"
+  rescue ActiveRecord::RecordNotFound
+    redirect_to coaching_products_path, alert: "상품 정보를 찾을 수 없습니다."
+  rescue => e
+    Rails.logger.error "Coaching payment_success error: #{e.message}"
+    redirect_to coaching_payment_fail_path(message: "서버 오류가 발생했습니다.")
+  end
+
+  def payment_fail
+    @message = params[:message] || params[:code] || "결제가 취소되었습니다."
   end
 
   private

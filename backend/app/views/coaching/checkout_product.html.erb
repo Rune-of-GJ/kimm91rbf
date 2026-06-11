@@ -1,0 +1,86 @@
+<% content_for :title, "SpeakFlow | 첨삭 크레딧 구매" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "coaching/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">첨삭 크레딧 구매</h1>
+              <p class="section-copy">토스페이먼츠로 안전하게 결제할 수 있습니다.</p>
+            </div>
+          </section>
+
+          <section class="page-section preview-checkout-grid">
+            <article class="surface-card admin-preview-panel membership-card">
+              <span class="pill pill--accent"><%= @product.credits_amount %>크레딧</span>
+              <div class="membership-card__headline">
+                <strong><%= @product.name %></strong>
+                <p><%= @product.tagline %></p>
+              </div>
+
+              <div class="checkout-summary">
+                <div class="commerce-price">
+                  <strong><%= number_to_currency(@product.price, unit: "₩", precision: 0) %></strong>
+                  <span>크레딧 <%= @product.credits_amount %>회 지급</span>
+                </div>
+
+                <div class="checkout-summary__facts">
+                  <div class="checkout-summary__fact">
+                    <span>현재 잔액</span>
+                    <strong><%= @coaching_balance %>회</strong>
+                  </div>
+                  <div class="checkout-summary__fact">
+                    <span>구매 후 잔액</span>
+                    <strong><%= @coaching_balance + @product.credits_amount %>회</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="surface-card admin-preview-panel checkout-payment"
+                     data-controller="payment"
+                     data-payment-client-key-value="<%= ENV.fetch('TOSS_CLIENT_KEY', 'test_ck_AQ92ymxN34dP5NRGWRQj3ajRKXvd') %>"
+                     data-payment-amount-value="<%= @product.price.to_i %>"
+                     data-payment-order-name-value="<%= @product.name %>"
+                     data-payment-success-url-value="<%= coaching_payment_success_url(product_id: @product.id) %>"
+                     data-payment-fail-url-value="<%= coaching_payment_fail_url %>"
+                     data-payment-customer-key-value="user-<%= current_user.id %>"
+                     data-payment-customer-email-value="<%= current_user.email %>"
+                     data-payment-customer-name-value="<%= current_user.name %>">
+              <h3>결제</h3>
+              <p class="checkout-payment__copy">토스페이먼츠 테스트 결제 — 실제 금액이 청구되지 않습니다.</p>
+
+              <div class="checkout-payment__rows">
+                <div class="checkout-payment__row">
+                  <span>상품</span>
+                  <strong><%= @product.name %></strong>
+                </div>
+                <div class="checkout-payment__row">
+                  <span>결제 금액</span>
+                  <strong><%= number_to_currency(@product.price, unit: "₩", precision: 0) %></strong>
+                </div>
+                <div class="checkout-payment__row">
+                  <span>지급 크레딧</span>
+                  <strong><%= @product.credits_amount %>회</strong>
+                </div>
+              </div>
+
+              <div class="button-row checkout-payment__actions">
+                <button type="button" class="button button--primary"
+                        data-payment-target="payBtn"
+                        data-action="click->payment#pay">
+                  <%= number_to_currency(@product.price, unit: "₩", precision: 0) %> 결제하기
+                </button>
+                <%= link_to "돌아가기", coaching_products_path, class: "button button--ghost button--small" %>
+              </div>
+            </article>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,27 @@
+<% content_for :title, "SpeakFlow | 결제 실패" %>
+
+<main class="page">
+  <section class="surface surface--preview-admin">
+    <div class="container surface__inner">
+      <div class="admin-preview-shell">
+        <%= render "memberships/nav" %>
+
+        <section class="admin-preview-main">
+          <section class="page-section">
+            <div class="section-heading">
+              <h1 class="section-title">결제에 실패했습니다</h1>
+              <p class="section-copy"><%= @message %></p>
+            </div>
+          </section>
+
+          <section class="page-section">
+            <div class="button-row">
+              <%= link_to "다시 시도하기", membership_checkout_path, class: "button button--primary" %>
+              <%= link_to "플랜 선택으로", membership_plans_path, class: "button button--ghost button--small" %>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

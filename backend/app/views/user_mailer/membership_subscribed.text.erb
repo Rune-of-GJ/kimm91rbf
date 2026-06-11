@@ -1,0 +1,14 @@
+안녕하세요, <%= @user.name %>님!
+
+<%= @plan.name %> 멤버십에 가입해 주셔서 감사합니다.
+
+[가입 정보]
+플랜: <%= @plan.name %>
+월 이용료: <%= number_to_currency(@plan.monthly_price, unit: "₩", precision: 0) %>
+시작일: <%= @subscription.started_at.strftime("%Y.%m.%d") %>
+다음 결제일: <%= @subscription.current_period_end.strftime("%Y.%m.%d") %>
+<% if @plan.monthly_coaching_credits.positive? %>포함 첨삭 크레딧: 월 <%= @plan.monthly_coaching_credits %>회<% end %>
+
+SpeakFlow 시작하기: <%= root_url %>
+
+SpeakFlow

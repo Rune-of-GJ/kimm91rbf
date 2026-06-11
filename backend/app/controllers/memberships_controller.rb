@@ -32,6 +32,8 @@ class MembershipsController < ApplicationController
         current_period_end: 1.month.from_now
       )
 
+      UserMailer.membership_subscribed(subscription).deliver_later
+
       next unless plan.monthly_coaching_credits.positive?
 
       current_user.coaching_credit_entries.create!(
@@ -43,6 +45,60 @@ class MembershipsController < ApplicationController
     end
 
     redirect_to membership_account_path, notice: "#{plan.name} 멤버십 가입에 성공했습니다!"
+  end
+
+  def payment_success
+    plan = MembershipPlan.active.find(params.require(:plan_id))
+    payment_key = params.require(:paymentKey)
+    order_id = params.require(:orderId)
+    amount = params.require(:amount).to_i
+
+    unless amount == plan.monthly_price.to_i
+      redirect_to membership_payment_fail_path(message: "결제 금액이 올바르지 않습니다.")
+      return
+    end
+
+    unless confirm_toss_payment(payment_key, order_id, amount)
+      redirect_to membership_payment_fail_path(message: "결제 검증에 실패했습니다.")
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      current_user.subscriptions.active.update_all(
+        status: Subscription.statuses[:replaced],
+        canceled_at: Time.current,
+        updated_at: Time.current
+      )
+
+      subscription = current_user.subscriptions.create!(
+        membership_plan: plan,
+        status: :active,
+        started_at: Time.current,
+        current_period_end: 1.month.from_now
+      )
+
+      UserMailer.membership_subscribed(subscription).deliver_later
+
+      next unless plan.monthly_coaching_credits.positive?
+
+      current_user.coaching_credit_entries.create!(
+        source: subscription,
+        credits_amount: plan.monthly_coaching_credits,
+        remaining_credits: plan.monthly_coaching_credits,
+        label: "#{plan.name} 포함 첨삭 크레딧"
+      )
+    end
+
+    redirect_to membership_account_path, notice: "#{plan.name} 멤버십 가입이 완료되었습니다!"
+  rescue ActiveRecord::RecordNotFound
+    redirect_to membership_plans_path, alert: "플랜 정보를 찾을 수 없습니다."
+  rescue => e
+    Rails.logger.error "Membership payment_success error: #{e.message}"
+    redirect_to membership_payment_fail_path(message: "서버 오류가 발생했습니다.")
+  end
+
+  def payment_fail
+    @message = params[:message] || params[:code] || "결제가 취소되었습니다."
   end
 
   def cancel

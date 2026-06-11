@@ -39,4 +39,25 @@ class ApplicationController < ActionController::Base
   def secure_cookie?
     request.headers["X-Forwarded-Proto"].to_s.split(",").first.to_s.strip == "https"
   end
+
+  def confirm_toss_payment(payment_key, order_id, amount)
+    uri = URI("https://api.tosspayments.com/v1/payments/confirm")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.read_timeout = 10
+
+    credentials = Base64.strict_encode64("#{ENV.fetch('TOSS_SECRET_KEY', '')}:")
+    req = Net::HTTP::Post.new(uri.path, {
+      "Content-Type" => "application/json",
+      "Authorization" => "Basic #{credentials}"
+    })
+    req.body = { paymentKey: payment_key, orderId: order_id, amount: amount }.to_json
+
+    res = http.request(req)
+    data = JSON.parse(res.body)
+    res.is_a?(Net::HTTPSuccess) && data["status"] == "DONE"
+  rescue => e
+    Rails.logger.error "Toss confirm error: #{e.message}"
+    false
+  end
 end

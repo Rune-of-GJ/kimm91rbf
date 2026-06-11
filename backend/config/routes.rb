@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get "membership/account", to: "memberships#account", as: :membership_account
   post "membership/subscribe", to: "memberships#subscribe", as: :membership_subscribe
   patch "membership/cancel", to: "memberships#cancel", as: :membership_cancel
+  get "membership/payment/success", to: "memberships#payment_success", as: :membership_payment_success
+  get "membership/payment/fail", to: "memberships#payment_fail", as: :membership_payment_fail
   get "rehearsals", to: "rehearsals#index", as: :rehearsals
   get "rehearsals/:id", to: "rehearsals#show", as: :rehearsal_detail
   post "rehearsals", to: "rehearsals#create", as: :rehearsal_submissions
@@ -26,6 +28,9 @@ Rails.application.routes.draw do
   get "coaching/requests/:id", to: "coaching#show_request", as: :coaching_request_detail
   get "coaching/request", to: "coaching#new_request", as: :new_coaching_request
   post "coaching/request", to: "coaching#create_request", as: :coaching_request
+  get "coaching/checkout", to: "coaching#checkout_product", as: :coaching_checkout
+  get "coaching/payment/success", to: "coaching#payment_success", as: :coaching_payment_success
+  get "coaching/payment/fail", to: "coaching#payment_fail", as: :coaching_payment_fail
 
   namespace :admin do
     root "dashboard#show"
