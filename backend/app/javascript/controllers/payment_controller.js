@@ -31,6 +31,7 @@ export default class extends Controller {
     } catch (e) {
       if (e?.code !== "USER_CANCEL") {
         console.error("Toss payment error:", e)
+        alert(e?.message || "결제 중 오류가 발생했습니다. 다시 시도해 주세요.")
       }
       this.payBtnTarget.disabled = false
       this.payBtnTarget.textContent = "결제하기"

@@ -69,7 +69,9 @@ class RehearsalsController < ApplicationController
     uploads_dir = Rails.root.join("public", "uploads", "rehearsal_audio")
     FileUtils.mkdir_p(uploads_dir)
 
-    extension = File.extname(upload.original_filename.to_s).presence || ".bin"
+    allowed = %w[.mp3 .wav .m4a .webm .ogg .aac .flac]
+    extension = File.extname(upload.original_filename.to_s).downcase
+    extension = ".bin" unless allowed.include?(extension)
     filename = "rehearsal-#{current_user.id}-#{SecureRandom.hex(8)}#{extension}"
     absolute_path = uploads_dir.join(filename)
 
