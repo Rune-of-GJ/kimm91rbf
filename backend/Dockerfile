@@ -73,6 +73,10 @@ USER 1000:1000
 COPY --chown=rails:rails --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --chown=rails:rails --from=build /rails /rails
 
+# Ensure upload and log directories are writable
+RUN mkdir -p public/uploads/feedback_audio public/uploads/rehearsal_audio public/uploads/course_thumbnails log && \
+    chmod -R 755 public/uploads log
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
