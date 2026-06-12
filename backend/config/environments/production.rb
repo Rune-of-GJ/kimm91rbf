@@ -44,14 +44,6 @@ Rails.application.configure do
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
 
-  # Write logs to file with daily rotation (persisted via Docker volume mount at /rails/log)
-  config.logger = ActiveSupport::Logger.new(
-    Rails.root.join("log", "production.log"),
-    1,    # keep 1 old log file
-    50.megabytes
-  ).tap { |l| l.formatter = Logger::Formatter.new }
-  config.log_tags = [:request_id]
-
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
