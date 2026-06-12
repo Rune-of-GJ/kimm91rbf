@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+# Starts solid_queue supervisor (workers + dispatchers)
+require_relative "../config/environment"
+SolidQueue::Supervisor.start

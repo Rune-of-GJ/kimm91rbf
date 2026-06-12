@@ -44,6 +44,11 @@ class MembershipsController < ApplicationController
       )
     end
 
+    DiscordNotifier.notify(
+      title: "새 멤버십 가입",
+      description: "**#{current_user.name}** 님이 **#{plan.name}** 플랜에 가입했습니다.",
+      color: :success
+    )
     redirect_to membership_account_path, notice: "#{plan.name} 멤버십 가입에 성공했습니다!"
   end
 
@@ -89,6 +94,11 @@ class MembershipsController < ApplicationController
       )
     end
 
+    DiscordNotifier.notify(
+      title: "멤버십 결제 완료",
+      description: "**#{current_user.name}** 님이 **#{plan.name}** 플랜을 결제했습니다. (#{ActiveSupport::NumberHelper.number_to_currency(plan.monthly_price, unit: '원', precision: 0, format: '%n%u')})",
+      color: :success
+    )
     redirect_to membership_account_path, notice: "#{plan.name} 멤버십 가입이 완료되었습니다!"
   rescue ActiveRecord::RecordNotFound
     redirect_to membership_plans_path, alert: "플랜 정보를 찾을 수 없습니다."

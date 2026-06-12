@@ -41,18 +41,50 @@ services:
       TOSS_CLIENT_KEY: ${TOSS_CLIENT_KEY}
       TOSS_SECRET_KEY: ${TOSS_SECRET_KEY}
       SENTRY_DSN: ${SENTRY_DSN}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
     ports:
       - "80:80"
     volumes:
       - uploads_data:/rails/public/uploads
       - storage_data:/rails/storage
+      - log_data:/rails/log
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/up || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 10
 
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: bundle exec ruby bin/jobs
+    depends_on:
+      db:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME_PRODUCTION}
+      DB_USERNAME_PRODUCTION: ${DB_USERNAME_PRODUCTION}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME_PRODUCTION: ${DB_NAME_PRODUCTION}
+      DB_NAME_PRODUCTION_CACHE: ${DB_NAME_PRODUCTION_CACHE}
+      DB_NAME_PRODUCTION_QUEUE: ${DB_NAME_PRODUCTION_QUEUE}
+      DB_NAME_PRODUCTION_CABLE: ${DB_NAME_PRODUCTION_CABLE}
+      GMAIL_USERNAME: ${GMAIL_USERNAME}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+    volumes:
+      - log_data:/rails/log
+
 volumes:
   pg_data_prod:
   uploads_data:
   storage_data:
+  log_data:

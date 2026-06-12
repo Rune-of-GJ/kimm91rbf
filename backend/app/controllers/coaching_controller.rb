@@ -97,6 +97,11 @@ class CoachingController < ApplicationController
       end
 
       UserMailer.feedback_request_received(@feedback_request).deliver_later
+      DiscordNotifier.notify(
+        title: "새 첨삭 요청",
+        description: "**#{current_user.name}** 님이 첨삭을 요청했습니다.\n강의: #{@feedback_request.course&.title || '미지정'} · 제목: #{@feedback_request.title}",
+        color: :info
+      )
       redirect_to coaching_requests_path, notice: "첨삭 요청에 성공했습니다!"
     else
       render :new_request, status: :unprocessable_entity

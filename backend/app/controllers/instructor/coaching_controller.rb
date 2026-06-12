@@ -40,6 +40,11 @@ module Instructor
 
       if @feedback_request.save
         UserMailer.feedback_completed(@feedback_request).deliver_later
+        DiscordNotifier.notify(
+          title: "첨삭 완료",
+          description: "**#{current_user.name}** 강사가 **#{@feedback_request.user.name}** 님의 첨삭을 완료했습니다.\n제목: #{@feedback_request.title}",
+          color: :success
+        )
         redirect_to instructor_coaching_queue_path, notice: "첨삭 완료 처리에 성공했습니다!"
       else
         flash.now[:alert] = @feedback_request.errors.full_messages.join(", ")
